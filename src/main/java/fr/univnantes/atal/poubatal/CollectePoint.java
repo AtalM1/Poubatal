@@ -23,13 +23,13 @@ public class CollectePoint {
         
         String[] columns = csvRow.split(",");
         
-        streetName = columns[1];
-        city = columns[2];
-        numberDescription = columns[9];
-        zoneName = columns[13];
+        streetName = columns[1].replaceAll("\"", "");
+        city = columns[2].replaceAll("\"", "");
+        numberDescription = columns[9].replaceAll("\"", "");
+        zoneName = columns[13].replaceAll("\"", "");
         
-        yellowBin = new CollectableDays(columns[11]);
-        blueBin = new CollectableDays(columns[10]);
+        yellowBin = new CollectableDays(columns[11].replaceAll("\"", ""));
+        blueBin = new CollectableDays(columns[10].replaceAll("\"", ""));
         
     }
     
