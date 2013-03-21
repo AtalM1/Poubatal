@@ -20,6 +20,8 @@ import java.net.MalformedURLException;
  * @author sildar
  */
 public class DataManager {
+    private static final Logger log = Logger.getLogger(DataManager.class.getName());
+
 
     URL urlToFetch;
     List<CollectePoint> points;
@@ -41,7 +43,7 @@ public class DataManager {
                 System.out.println("Now using http_proxy=" + proxy_url);
             }
         } catch(MalformedURLException ex) {
-            Logger.getLogger(DataManager.class.getName()).log(Level.WARNING, null, ex);
+            log.warning(ex.toString());
         }
 
         try {
@@ -68,7 +70,7 @@ public class DataManager {
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, null, ex);
+            log.severe(ex.toString());
         }
     }
 
@@ -93,7 +95,7 @@ public class DataManager {
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, null, ex);
+            log.severe(ex.toString());
         }
     }
 }
