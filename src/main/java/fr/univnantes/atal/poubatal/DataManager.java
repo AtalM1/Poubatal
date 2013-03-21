@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.net.URL;
+import java.net.MalformedURLException;
 
 /**
  *
@@ -24,24 +26,34 @@ public class DataManager {
 
     public DataManager() {
 
-        /*
-        String host = "cache.cites-u.univ-nantes.fr";
-        //String host = "cache.wifi.univ-nantes.fr";
-        System.getProperties().put("proxySet", "true");
-        System.getProperties().put("proxyHost", host);
-        System.getProperties().put("proxyPort", "3128");
-         */
+
+        String http_proxy = System.getenv().get("http_proxy");
+        try {
+            if (http_proxy != null) {
+                URL proxy_url = new URL(http_proxy);
+
+                System.getProperties().put("proxySet", "true");
+                System.getProperties().put("proxyHost", proxy_url.getHost());
+
+                if (proxy_url.getPort() > 0) {
+                    System.getProperties().put("proxyPort", String.valueOf(proxy_url.getPort()));
+                }
+                System.out.println("Now using http_proxy=" + proxy_url);
+            }
+        } catch(MalformedURLException ex) {
+            Logger.getLogger(DataManager.class.getName()).log(Level.WARNING, null, ex);
+        }
+
         try {
             points = new ArrayList<CollectePoint>();
 
             String urlString = "http://data.nantes.fr/api/publication/"
-                    + "JOURS_COLLECTE_DECHETS_VDN/JOURS_COLLECTE_DECHETS_VDN_STBL/content/"
-                    + "?format=csv";
+                + "JOURS_COLLECTE_DECHETS_VDN/JOURS_COLLECTE_DECHETS_VDN_STBL/content/"
+                + "?format=csv";
 
             urlToFetch = new URL(urlString);
 
-            InputStreamReader in = new InputStreamReader(
-                    urlToFetch.openConnection().getInputStream());
+            InputStreamReader in = new InputStreamReader(urlToFetch.openConnection().getInputStream());
             BufferedReader buffer = new BufferedReader(in);
 
             //reads the header
@@ -66,8 +78,7 @@ public class DataManager {
 
     public void updateData() {
         try {
-            InputStreamReader in = new InputStreamReader(
-                    urlToFetch.openConnection().getInputStream());
+            InputStreamReader in = new InputStreamReader(urlToFetch.openConnection().getInputStream());
             BufferedReader buffer = new BufferedReader(in);
 
             //reads the header
