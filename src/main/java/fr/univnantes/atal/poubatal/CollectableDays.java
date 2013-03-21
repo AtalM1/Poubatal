@@ -19,7 +19,13 @@ class CollectableDays extends ArrayList<String>{
         dayString = dayString.replaceAll("-", " ");
         dayString = dayString.replaceAll("\\s+", " ");
         
-        this.addAll(Arrays.asList(dayString.split(" ")));
+        if (!dayString.contains("mixte")){
+            this.addAll(Arrays.asList(dayString.split(" ")));
+        }
+        else
+        {
+            //handle mixtes ?
+        }
         
     }
     

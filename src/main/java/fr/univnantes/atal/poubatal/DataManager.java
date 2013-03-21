@@ -24,13 +24,13 @@ public class DataManager {
 
     public DataManager() {
 
-        
+        /*
         String host = "cache.cites-u.univ-nantes.fr";
         //String host = "cache.wifi.univ-nantes.fr";
         System.getProperties().put("proxySet", "true");
         System.getProperties().put("proxyHost", host);
         System.getProperties().put("proxyPort", "3128");
-         
+         */
         try {
             points = new ArrayList<CollectePoint>();
 
