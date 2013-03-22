@@ -4,10 +4,6 @@
  */
 package fr.univnantes.atal.poubatal.api;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -19,22 +15,6 @@ public class APIResponseTest {
     
     public APIResponseTest() {
     }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
 
     /**
      * Test of toJson method, of class APIResponse.
@@ -43,8 +23,9 @@ public class APIResponseTest {
     public void testToJson() {
         System.out.println("Test toJson");
         APIResponse instance = new APIResponse();
-        String expResult = "toto";
-        String result = "toto";
-        assertEquals(expResult, result);
+        instance.getMap().put("error", APIError.SERVICE_NON_EXISTING);
+        String expResult = "{\"error\":{\"id\":";
+        String result = instance.toJson();
+        assertTrue(result.startsWith(expResult));
     }
 }
