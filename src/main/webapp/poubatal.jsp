@@ -29,5 +29,42 @@
          }
         %>
         
+	<script type="text/javascript">
+		function load() {
+			console.log('Google API loading...');
+			/* gapi.client.setApiKey('311668897898.apps.googleusercontent.com');*/
+			gapi.client.load('oauth2', 'v2', authorize);
+			//$('authorize').click(authorize);
+			console.log('hey2');
+		}
+			
+		function authorize(event) {
+			// Step 3: get authorization to use private data
+			gapi.auth.authorize({
+				client_id: '385110343883.apps.googleusercontent.com', 
+				scope: [
+				'https://www.googleapis.com/auth/userinfo.email',
+				'https://www.googleapis.com/auth/userinfo.profile'
+				], 
+				immediate: false
+			}, handle_token);
+			return false;
+		}
+
+		function handle_token(auth_result) {
+			console.log(auth_result)
+			if (auth_result && !auth_result.error) {
+				gapi.auth.setToken(auth_result);
+				var request = gapi.client.oauth2.userinfo.get();
+				request.execute(handle_email);
+			} else {
+			}
+		}
+
+		function handle_email(email_result) {
+			console.log(email_result);
+		}
+	</script>
+	<script type="text/javascript" src="https://apis.google.com/js/client.js?onload=load"></script>
     </body>
 </html>
