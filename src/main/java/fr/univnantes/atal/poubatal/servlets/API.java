@@ -41,18 +41,16 @@ public class API extends HttpServlet {
                 data.getAddressList().add("adresse 1");
                 data.getAddressList().add("adresse 2");
                 data.getAddressList().add("adresse 3");
-                APIResponse apiResponse = new APIResponse(new APIError(), data);
+                APIResponse apiResponse = new APIResponse();
+                apiResponse.getMap().put("data", data);
                 out.println(apiResponse.toJson());
             } else if (request.getPathInfo().equalsIgnoreCase("/add")) {
                 APIResponse apiResponse = new APIResponse();
-                out.println(apiResponse.toJson());
-            } else if (request.getPathInfo().equalsIgnoreCase("/unknown-error")) {
-                APIResponse apiResponse = new APIResponse();
-                apiResponse.setError(new APIError(5));
+                apiResponse.getMap().put("ok", "ok");
                 out.println(apiResponse.toJson());
             } else {
                 APIResponse apiResponse = new APIResponse();
-                apiResponse.setError(new APIError(APIError.SERVICE_NON_EXISTING));
+                apiResponse.getMap().put("error", APIError.SERVICE_NON_EXISTING);
                 out.println(apiResponse.toJson());
             }
 

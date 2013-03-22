@@ -4,29 +4,20 @@
  */
 package fr.univnantes.atal.poubatal.api;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  *
  * @author Noemi
  */
 public class APIError {
 
-    public static final int SUCCESS = 0;
-    public static final int SERVICE_NON_EXISTING = 1;
-    private int id;
-    private Map<Integer, String> messages;
-
-    public APIError() {
-        this(SUCCESS);
-    }
+    public static final APIError SERVICE_NON_EXISTING = new APIError(0, "Service dosen't exist.");
     
-    public APIError(int id) {
+    private int id;
+    private String message;
+    
+    private APIError(int id, String message) {
         this.id = id;
-        messages = new HashMap();
-        messages.put(SUCCESS, "succès");
-        messages.put(SERVICE_NON_EXISTING, "le service demandé n'existe pas");
+        this.message = message;
     }
 
     /**
@@ -37,21 +28,9 @@ public class APIError {
     }
 
     /**
-     * @param id the id to set
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    /**
      * @return the message
      */
     public String getMessage() {
-        String ret = messages.get(id);
-        if (ret != null) {
-            return ret;
-        } else {
-            return "erreur inconnue";
-        }
+        return message;
     }
 }

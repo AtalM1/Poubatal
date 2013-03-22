@@ -4,6 +4,7 @@
  */
 package fr.univnantes.atal.poubatal.api;
 
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -15,9 +16,9 @@ import static org.junit.Assert.*;
  *
  * @author Noemi
  */
-public class APIResponseTest {
+public class APIDataDirectoryTest {
     
-    public APIResponseTest() {
+    public APIDataDirectoryTest() {
     }
     
     @BeforeClass
@@ -34,17 +35,5 @@ public class APIResponseTest {
     
     @After
     public void tearDown() {
-    }
-
-    /**
-     * Test of toJson method, of class APIResponse.
-     */
-    @Test
-    public void testToJson() {
-        System.out.println("Test toJson");
-        APIResponse instance = new APIResponse();
-        String expResult = "toto";
-        String result = "toto";
-        assertEquals(expResult, result);
     }
 }

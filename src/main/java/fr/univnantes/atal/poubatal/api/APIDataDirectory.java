@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author Noemi
  */
-public class APIDataDirectory implements APIData {
+public class APIDataDirectory {
     
     private List<String> addressList;
     

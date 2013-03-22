@@ -15,9 +15,9 @@ import static org.junit.Assert.*;
  *
  * @author Noemi
  */
-public class APIResponseTest {
+public class APIErrorTest {
     
-    public APIResponseTest() {
+    public APIErrorTest() {
     }
     
     @BeforeClass
@@ -34,17 +34,5 @@ public class APIResponseTest {
     
     @After
     public void tearDown() {
-    }
-
-    /**
-     * Test of toJson method, of class APIResponse.
-     */
-    @Test
-    public void testToJson() {
-        System.out.println("Test toJson");
-        APIResponse instance = new APIResponse();
-        String expResult = "toto";
-        String result = "toto";
-        assertEquals(expResult, result);
     }
 }
