@@ -32,10 +32,7 @@
 	<script type="text/javascript">
 		function load() {
 			console.log('Google API loading...');
-			/* gapi.client.setApiKey('311668897898.apps.googleusercontent.com');*/
 			gapi.client.load('oauth2', 'v2', authorize);
-			//$('authorize').click(authorize);
-			console.log('hey2');
 		}
 			
 		function authorize(event) {

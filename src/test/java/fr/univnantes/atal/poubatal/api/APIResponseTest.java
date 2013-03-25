@@ -19,8 +19,8 @@ public class APIResponseTest {
     public void testToJson() {
         System.out.println("Test toJson");
         APIResponse instance = new APIResponse();
-        instance.getMap().put("error", APIError.SERVICE_NON_EXISTING);
-        String expResult = "{\"error\":{\"id\":";
+        instance.getMap().put("result", APIResult.SERVICE_NON_EXISTING);
+        String expResult = "{\"result\":{\"id\":";
         String result = instance.toJson();
         assertTrue(result.startsWith(expResult));
     }

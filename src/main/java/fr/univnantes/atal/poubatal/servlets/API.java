@@ -5,7 +5,7 @@
 package fr.univnantes.atal.poubatal.servlets;
 
 import fr.univnantes.atal.poubatal.api.APIDataDirectory;
-import fr.univnantes.atal.poubatal.api.APIError;
+import fr.univnantes.atal.poubatal.api.APIResult;
 import fr.univnantes.atal.poubatal.api.APIResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -37,24 +37,28 @@ public class API extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             if (request.getPathInfo().equalsIgnoreCase("/directory")) {
-                APIDataDirectory data = new APIDataDirectory();
-                data.getAddressList().add("adresse 1");
-                data.getAddressList().add("adresse 2");
-                data.getAddressList().add("adresse 3");
-                APIResponse apiResponse = new APIResponse();
-                apiResponse.getMap().put("data", data);
-                out.println(apiResponse.toJson());
-            } else if (request.getPathInfo().equalsIgnoreCase("/add")) {
-                APIResponse apiResponse = new APIResponse();
-                apiResponse.getMap().put("ok", "ok");
-                out.println(apiResponse.toJson());
+                out.println(apiDirectory(request.getParameter("address"), "oauth"));
+            } else if (request.getPathInfo().equalsIgnoreCase("/add-address")) {
+                out.println(apiAddAddress(request.getParameter("address"), "oauth"));
+            } else if (request.getPathInfo().equalsIgnoreCase("/delete-address")) {
+                out.println(apiDeleteAddress(request.getParameter("address"), "oauth"));
+            } else if (request.getPathInfo().equalsIgnoreCase("/new-account")) {
+                out.println(apiNewAccount("oauth"));
+            } else if (request.getPathInfo().equalsIgnoreCase("/delete-account")) {
+                out.println(apiDeleteAccount("oauth"));
+            } else if (request.getPathInfo().equalsIgnoreCase("/add-notif")) {
+                out.println(apiAddNotif(request.getParameter("type"), request.getParameter("value"), "oauth"));
+            } else if (request.getPathInfo().equalsIgnoreCase("/delete-notif")) {
+                out.println(apiAddNotif(request.getParameter("notif"), "oauth"));
+            } else if (request.getPathInfo().equalsIgnoreCase("/address-list")) {
+                out.println(apiAddressList("oauth"));
+            } else if (request.getPathInfo().equalsIgnoreCase("/notif-list")) {
+                out.println(apiAddressList("oauth"));
             } else {
                 APIResponse apiResponse = new APIResponse();
-                apiResponse.getMap().put("error", APIError.SERVICE_NON_EXISTING);
+                apiResponse.getMap().put("result", APIResult.SERVICE_NON_EXISTING);
                 out.println(apiResponse.toJson());
             }
-
-
         } finally {
             out.close();
         }
@@ -100,4 +104,127 @@ public class API extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String apiDirectory(String address, String oauthKey) {
+        // Gestion des erreurs de paramètres
+        if (address == null || oauthKey == null) {
+            APIResponse apiResponse = new APIResponse();
+            apiResponse.getMap().put("result", APIResult.WRONG_PARAMETERS);
+            return apiResponse.toJson();
+        } else {
+            APIDataDirectory data = new APIDataDirectory();
+            data.getAddressList().add(address + " 1");
+            data.getAddressList().add(address + " 2");
+            data.getAddressList().add(address + " 3");
+            APIResponse apiResponse = new APIResponse();
+            apiResponse.getMap().put("result", APIResult.SUCCESS);
+            apiResponse.getMap().put("data", data);
+            return apiResponse.toJson();
+        }
+
+    }
+    
+    private String apiAddAddress(String address, String oauthKey) {
+        // Gestion des erreurs de paramètres
+        if (address == null || oauthKey == null) {
+            APIResponse apiResponse = new APIResponse();
+            apiResponse.getMap().put("result", APIResult.WRONG_PARAMETERS);
+            return apiResponse.toJson();
+        } else {
+            APIResponse apiResponse = new APIResponse();
+            apiResponse.getMap().put("result", APIResult.SUCCESS);
+            return apiResponse.toJson();
+        }
+    }
+    
+    private String apiDeleteAddress(String address, String oauthKey) {
+        // Gestion des erreurs de paramètres
+        if (address == null || oauthKey == null) {
+            APIResponse apiResponse = new APIResponse();
+            apiResponse.getMap().put("result", APIResult.WRONG_PARAMETERS);
+            return apiResponse.toJson();
+        } else {
+            APIResponse apiResponse = new APIResponse();
+            apiResponse.getMap().put("result", APIResult.SUCCESS);
+            return apiResponse.toJson();
+        }
+    }
+    
+    private String apiNewAccount(String oauthKey) {
+        // Gestion des erreurs de paramètres
+        if (oauthKey == null) {
+            APIResponse apiResponse = new APIResponse();
+            apiResponse.getMap().put("result", APIResult.WRONG_PARAMETERS);
+            return apiResponse.toJson();
+        } else {
+            APIResponse apiResponse = new APIResponse();
+            apiResponse.getMap().put("result", APIResult.SUCCESS);
+            return apiResponse.toJson();
+        }
+    }
+    
+    private String apiDeleteAccount(String oauthKey) {
+        // Gestion des erreurs de paramètres
+        if (oauthKey == null) {
+            APIResponse apiResponse = new APIResponse();
+            apiResponse.getMap().put("result", APIResult.WRONG_PARAMETERS);
+            return apiResponse.toJson();
+        } else {
+            APIResponse apiResponse = new APIResponse();
+            apiResponse.getMap().put("result", APIResult.SUCCESS);
+            return apiResponse.toJson();
+        }
+    }
+    
+    private String apiAddNotif(String type, String value, String oauthKey) {
+        // Gestion des erreurs de paramètres
+        if (type == null || value == null || oauthKey == null) {
+            APIResponse apiResponse = new APIResponse();
+            apiResponse.getMap().put("result", APIResult.WRONG_PARAMETERS);
+            return apiResponse.toJson();
+        } else {
+            APIResponse apiResponse = new APIResponse();
+            apiResponse.getMap().put("result", APIResult.SUCCESS);
+            return apiResponse.toJson();
+        }
+    }
+    
+    private String apiAddNotif(String notif, String oauthKey) {
+        // Gestion des erreurs de paramètres
+        if (notif == null || oauthKey == null) {
+            APIResponse apiResponse = new APIResponse();
+            apiResponse.getMap().put("result", APIResult.WRONG_PARAMETERS);
+            return apiResponse.toJson();
+        } else {
+            APIResponse apiResponse = new APIResponse();
+            apiResponse.getMap().put("result", APIResult.SUCCESS);
+            return apiResponse.toJson();
+        }
+    }
+    
+    private String apiAddressList(String oauthKey) {
+        // Gestion des erreurs de paramètres
+        if (oauthKey == null) {
+            APIResponse apiResponse = new APIResponse();
+            apiResponse.getMap().put("result", APIResult.WRONG_PARAMETERS);
+            return apiResponse.toJson();
+        } else {
+            APIResponse apiResponse = new APIResponse();
+            apiResponse.getMap().put("result", APIResult.SUCCESS);
+            return apiResponse.toJson();
+        }
+    }
+    
+    private String apiNotifList(String oauthKey) {
+        // Gestion des erreurs de paramètres
+        if (oauthKey == null) {
+            APIResponse apiResponse = new APIResponse();
+            apiResponse.getMap().put("result", APIResult.WRONG_PARAMETERS);
+            return apiResponse.toJson();
+        } else {
+            APIResponse apiResponse = new APIResponse();
+            apiResponse.getMap().put("result", APIResult.SUCCESS);
+            return apiResponse.toJson();
+        }
+    }
 }

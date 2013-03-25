@@ -26,7 +26,7 @@ public class APIResponse {
         try {
             return mapper.writeValueAsString(getMap());
         } catch (JsonProcessingException ex) {
-            return "erreur : " + ex.getMessage();
+            return "error : " + ex.getMessage();
         }
     }
 
