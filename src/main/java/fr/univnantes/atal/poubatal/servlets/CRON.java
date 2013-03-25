@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import fr.univnantes.atal.poubatal.DataManager;
 
 public class CRON extends HttpServlet {
 
@@ -17,6 +18,7 @@ public class CRON extends HttpServlet {
         try {
             if (request.getPathInfo().equalsIgnoreCase("/update")) {
                 // Update DataManager
+                DataManager.getInstance().updateData();
                 out.println("update");
             } else if (request.getPathInfo().equalsIgnoreCase("/notify")) {
                 // Send notifications

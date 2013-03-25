@@ -16,19 +16,40 @@ import java.net.URL;
 import java.net.MalformedURLException;
 
 /**
- *
- * @author sildar
+ * DataManager is a Singleton
  */
 public class DataManager {
     private static final Logger log = Logger.getLogger(DataManager.class.getName());
+    private static DataManager instance = null;
+    
+    private URL urlToFetch;
+    private List<CollectePoint> points;
 
+    
+    protected DataManager() {
+        points = new ArrayList<CollectePoint>();
+        try {
+            urlToFetch = new URL("http://data.nantes.fr/api/publication/"
+                                 + "JOURS_COLLECTE_DECHETS_VDN/JOURS_COLLECTE_DECHETS_VDN_STBL/content/"
+                                 + "?format=csv");
+        } catch(MalformedURLException ex) {
+            log.warning(ex.toString());
+        }
+    }
 
-    URL urlToFetch;
-    List<CollectePoint> points;
+    public static DataManager getInstance() {
+        if (instance == null) {
+            instance = new DataManager();
+            instance.updateData();
+        }
+        return instance;
+    }
 
-    public DataManager() {
+    public List<CollectePoint> getPoints() {
+        return instance.points;
+    }
 
-
+    public void updateData() {
         String http_proxy = System.getenv().get("http_proxy");
         try {
             if (http_proxy != null) {
@@ -46,39 +67,6 @@ public class DataManager {
             log.warning(ex.toString());
         }
 
-        try {
-            points = new ArrayList<CollectePoint>();
-
-            String urlString = "http://data.nantes.fr/api/publication/"
-                + "JOURS_COLLECTE_DECHETS_VDN/JOURS_COLLECTE_DECHETS_VDN_STBL/content/"
-                + "?format=csv";
-
-            urlToFetch = new URL(urlString);
-
-            InputStreamReader in = new InputStreamReader(urlToFetch.openConnection().getInputStream());
-            BufferedReader buffer = new BufferedReader(in);
-
-            //reads the header
-            String nextLine = buffer.readLine();
-            //reads first line
-            nextLine = buffer.readLine();
-
-            while (nextLine != null) {
-                //System.out.println(nextLine);
-                points.add(new CollectePoint(nextLine));
-                nextLine = buffer.readLine();
-            }
-
-        } catch (IOException ex) {
-            log.severe(ex.toString());
-        }
-    }
-
-    public List<CollectePoint> getPoints() {
-        return points;
-    }
-
-    public void updateData() {
         try {
             InputStreamReader in = new InputStreamReader(urlToFetch.openConnection().getInputStream());
             BufferedReader buffer = new BufferedReader(in);

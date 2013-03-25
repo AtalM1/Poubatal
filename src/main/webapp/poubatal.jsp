@@ -16,10 +16,8 @@
     <body>
         <h1>Collectable days by street</h1>
         <%
-        DataManager dm = new DataManager();
         
-        
-        for (CollectePoint point : dm.getPoints())
+        for (CollectePoint point : DataManager.getInstance().getPoints())
         {
         %>
         <%=point.toString()%>
