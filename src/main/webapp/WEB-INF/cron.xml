@@ -6,4 +6,10 @@
     <schedule>every day 03:00</schedule>
     <timezone>Europe/Paris</timezone>
   </cron>
+  <cron>
+    <url>/cron/notify</url>
+    <description>Notify users if needed</description>
+    <schedule>every 1 hour</schedule>
+    <timezone>Europe/Paris</timezone>
+  </cron>
 </cronentries>
