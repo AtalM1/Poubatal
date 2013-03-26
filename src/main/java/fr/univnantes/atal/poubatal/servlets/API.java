@@ -1,14 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fr.univnantes.atal.poubatal.servlets;
 
-import fr.univnantes.atal.poubatal.api.APIDataDirectory;
 import fr.univnantes.atal.poubatal.api.APIResult;
 import fr.univnantes.atal.poubatal.api.APIResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,28 +32,31 @@ public class API extends HttpServlet {
 
         response.setContentType("application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        String pathInfo = request.getPathInfo().substring(1).toLowerCase();
         try {
-            if (request.getPathInfo().equalsIgnoreCase("/directory")) {
+            if (request.getPathInfo().equals("directory")) {
                 out.println(apiDirectory(request.getParameter("address"), "oauth"));
-            } else if (request.getPathInfo().equalsIgnoreCase("/add-address")) {
+            } else if (request.getPathInfo().equals("add-address")) {
                 out.println(apiAddAddress(request.getParameter("address"), "oauth"));
-            } else if (request.getPathInfo().equalsIgnoreCase("/delete-address")) {
+            } else if (request.getPathInfo().equals("delete-address")) {
                 out.println(apiDeleteAddress(request.getParameter("address"), "oauth"));
-            } else if (request.getPathInfo().equalsIgnoreCase("/new-account")) {
+            } else if (request.getPathInfo().equals("new-account")) {
                 out.println(apiNewAccount("oauth"));
-            } else if (request.getPathInfo().equalsIgnoreCase("/delete-account")) {
+            } else if (request.getPathInfo().equals("delete-account")) {
                 out.println(apiDeleteAccount("oauth"));
-            } else if (request.getPathInfo().equalsIgnoreCase("/add-notif")) {
+            } else if (request.getPathInfo().equals("add-notif")) {
                 out.println(apiAddNotif(request.getParameter("type"), request.getParameter("value"), "oauth"));
-            } else if (request.getPathInfo().equalsIgnoreCase("/delete-notif")) {
+            } else if (request.getPathInfo().equals("delete-notif")) {
                 out.println(apiAddNotif(request.getParameter("notif"), "oauth"));
-            } else if (request.getPathInfo().equalsIgnoreCase("/address-list")) {
+            } else if (request.getPathInfo().equals("address-list")) {
                 out.println(apiAddressList("oauth"));
-            } else if (request.getPathInfo().equalsIgnoreCase("/notif-list")) {
-                out.println(apiAddressList("oauth"));
+            } else if (request.getPathInfo().equals("notif-list")) {
+                out.println(apiNotifList("oauth"));
             } else {
                 APIResponse apiResponse = new APIResponse();
-                apiResponse.getMap().put("result", APIResult.SERVICE_NON_EXISTING);
+                APIResult result = APIResult.SERVICE_NON_EXISTING;
+                result.setDetail("Service \'" + pathInfo + "\' dosen't exist.");
+                apiResponse.getMap().put("result", result);
                 out.println(apiResponse.toJson());
             }
         } finally {
@@ -112,10 +112,10 @@ public class API extends HttpServlet {
             apiResponse.getMap().put("result", APIResult.WRONG_PARAMETERS);
             return apiResponse.toJson();
         } else {
-            APIDataDirectory data = new APIDataDirectory();
-            data.getAddressList().add(address + " 1");
-            data.getAddressList().add(address + " 2");
-            data.getAddressList().add(address + " 3");
+            List<String> data = new ArrayList();
+            data.add(address + " 1");
+            data.add(address + " 2");
+            data.add(address + " 3");
             APIResponse apiResponse = new APIResponse();
             apiResponse.getMap().put("result", APIResult.SUCCESS);
             apiResponse.getMap().put("data", data);

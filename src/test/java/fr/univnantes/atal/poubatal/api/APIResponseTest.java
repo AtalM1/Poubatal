@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
  * @author Noemi
  */
 public class APIResponseTest {
-    
+
     public APIResponseTest() {
     }
 
@@ -19,9 +19,11 @@ public class APIResponseTest {
     public void testToJson() {
         System.out.println("Test toJson");
         APIResponse instance = new APIResponse();
-        instance.getMap().put("result", APIResult.SERVICE_NON_EXISTING);
-        String expResult = "{\"result\":{\"id\":";
+        APIResult apiResult = APIResult.SERVICE_NON_EXISTING;
+        apiResult.setDetail("Test detail");
+        instance.getMap().put("result", apiResult);
+        String expResult = "{\"result\":{\"id\":" + apiResult.getId() + ",\"message\":\"" + apiResult.getMessage() + "\",\"detail\":\"" + apiResult.getDetail() + "\"}}";
         String result = instance.toJson();
-        assertTrue(result.startsWith(expResult));
+        assertEquals(expResult, result);
     }
 }

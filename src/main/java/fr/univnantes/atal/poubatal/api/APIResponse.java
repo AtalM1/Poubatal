@@ -10,23 +10,24 @@ import java.util.Map;
  * @author Noemi
  */
 public class APIResponse {
-    
+
     private Map map;
-    
+
     public APIResponse() {
         map = new HashMap();
     }
-    
+
     public APIResponse(Map map) {
         this.map = map;
     }
-    
+
     public String toJson() {
         ObjectMapper mapper = new ObjectMapper();   // Création du mapper json
         try {
-            return mapper.writeValueAsString(getMap());
+            return mapper.writeValueAsString(map);
         } catch (JsonProcessingException ex) {
-            return "error : " + ex.getMessage();
+            APIResult result = APIResult.JSON_PROCESSING_EXCEPTION;
+            return "{\"result\":{\"id\":" + result.getId() + ",\"message\":\"" + result.getMessage() + "\",\"detail\":\"" + ex.getMessage() + "\"}}";
         }
     }
 
@@ -43,5 +44,4 @@ public class APIResponse {
     public void setMap(Map map) {
         this.map = map;
     }
-    
 }
