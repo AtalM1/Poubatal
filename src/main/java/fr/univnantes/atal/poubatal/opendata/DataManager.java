@@ -42,6 +42,10 @@ public class DataManager {
     }
 
     public List<CollectePoint> getPoints() {
+        if (instance.points.isEmpty()) {
+            // something goes wrong during the initialization
+            instance.updateData();
+        }
         return instance.points;
     }
 
