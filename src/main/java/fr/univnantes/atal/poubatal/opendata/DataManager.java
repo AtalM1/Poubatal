@@ -59,11 +59,6 @@ public class DataManager {
                 }
                 System.out.println("Now using http_proxy=" + proxy_url);
             }
-        } catch(MalformedURLException ex) {
-            log.warning(ex.toString());
-        }
-
-        try {
             InputStreamReader in = new InputStreamReader(urlToFetch.openConnection().getInputStream());
             BufferedReader buffer = new BufferedReader(in);
 
@@ -77,9 +72,8 @@ public class DataManager {
                 points.add(new CollectePoint(nextLine));
                 nextLine = buffer.readLine();
             }
-
         } catch (IOException ex) {
             log.severe(ex.toString());
         }
-    }
+    }        
 }
