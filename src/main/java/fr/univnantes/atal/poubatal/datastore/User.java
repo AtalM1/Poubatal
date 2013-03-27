@@ -7,11 +7,13 @@ import java.util.TreeSet;
 
 class User {
     private String username;
-    private Map<String, Set<String>> data; // address -> notification*
+    private Set<String> addresses;
+    private Set<String> notifications;
 
     public User(String username) {
         this.username = username;
-        this.data = new TreeMap<String, Set<String>>();
+        addresses = new TreeSet<String>();
+        notifications = new TreeSet<String>();
     }
 
     public void save() {
@@ -24,36 +26,20 @@ class User {
     }
 
     // Add address and notifications
-    public void add(String address) {
-        if (!data.containsKey(address)) {
-            data.put(address, new TreeSet<String>());
-        }
+    public void addAddress(String address) {
+        addresses.add(address);
     }
 
-    public void add(String address, String notification) {
-        add(address);
-        data.get(address).add(notification);
-    }
-
-    public void add(String address, Set<String> notifications) {
-        add(address);
-        data.get(address).addAll(notifications);            
+    public void addNotifications(String notification) {
+        notifications.add(notification);
     }
 
     // Remove address and notifications
-    public void remove(String address) {
-        data.remove(address);
+    public void removeAddress(String address) {
+        addresses.remove(address);
     }
 
-    public void remove(String address, String notification) {
-        if (data.containsKey(address)) {
-            data.get(address).remove(notification);
-        }
-    }
-
-    public void remove(String address, Set<String> notifications) {
-        if (data.containsKey(address)) {
-            data.get(address).removeAll(notifications);
-        }
+    public void remove(String notification) {
+        notifications.remove(notification);
     }
 }
