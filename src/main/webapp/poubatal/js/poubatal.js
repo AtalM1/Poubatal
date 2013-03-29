@@ -1,23 +1,17 @@
 $('#connect').click(function() {
     connect();
 });
-$('#disconnect').click(function() {
-    disconnect();
-});
+
 $('#verify').click(function() {
     verify();
 });
 
 function connect() {
     console.log("connect");
-    authorize();
-}
-
-function disconnect() {
-    console.log("disconnect");
+    handleAuthClick();
 }
 
 function verify() {
     console.log("verify");
-    getUserInfo(accessToken);
+    makeApiCall();
 }

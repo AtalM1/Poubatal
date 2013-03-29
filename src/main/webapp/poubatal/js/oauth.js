@@ -1,37 +1,43 @@
 var accessToken;
+var clientId = '385110343883';
+var scopes = ['https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile'];
 
-function load() {
-    console.log('Google API loading...');
-    gapi.client.load('oauth2', 'v2');
-    //gapi.client.load('oauth2', 'v2', authorize);
+function handleClientLoad() {
+    setTimeout(checkAuth, 1); // L'exemple utilisait un setTimeout, donc je l'ai laissé
 }
 
-function authorize() {
-    // Step 3: get authorization to use private data
-    gapi.auth.authorize({
-        client_id: '385110343883.apps.googleusercontent.com',
-        scope: [
-            'https://www.googleapis.com/auth/userinfo.email',
-            'https://www.googleapis.com/auth/userinfo.profile'
-        ],
-        immediate: false
-    }, handle_token);
-    return false;
+// Vérification automatique des droits de l'application
+function checkAuth() {
+    gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
 }
 
-function handle_token(auth_result) {
-    console.log(auth_result);
-    accessToken = auth_result;
-}
-
-function getUserInfo(token) {
-    if (token && !token.error) {
-        gapi.auth.setToken(token);
-        var request = gapi.client.oauth2.userinfo.get();
-        request.execute(handle_email);
+function handleAuthResult(authResult) {
+    if (authResult && !authResult.error) {
+        console.log('success');
+        $('#connect').hide();
+        gapi.auth.setToken(authResult); // On stock le token dans l'application
+        console.log('accessToken = ' + authResult.access_token);
+        makeApiCall();
+    } else {
+        console.log('fail');
+        $('#connect').removeAttr('disabled');
     }
 }
 
-function handle_email(email_result) {
-    console.log(email_result);
+// Vérification avec popup des droits de l'application
+function handleAuthClick(event) {
+    gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
+    return false;
+}
+
+// Chargement de l'API Oauth2 et récupération de l'ID
+function makeApiCall() {
+    console.log('makeApiCall');
+    gapi.client.load('oauth2', 'v2', function() {
+        var request = gapi.client.oauth2.userinfo.get();
+        request.execute(function(resp) {
+            console.log(resp);
+        });
+    });
 }
