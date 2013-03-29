@@ -19,7 +19,7 @@ public class APIResponseTest {
     public void testToJson() {
         System.out.println("Test toJson");
         APIResponse instance = new APIResponse();
-        APIResult apiResult = APIResult.SERVICE_NON_EXISTING;
+        APIResult apiResult = APIResult.nonExistentService();
         apiResult.setDetail("Test detail");
         instance.getMap().put("result", apiResult);
         String expResult = "{\"result\":{\"id\":" + apiResult.getId() + ",\"message\":\"" + apiResult.getMessage() + "\",\"detail\":\"" + apiResult.getDetail() + "\"}}";

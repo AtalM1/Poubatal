@@ -9,11 +9,11 @@ public class OauthTest {
      * Test of verifyOauth method, of class Oauth.
      */
     @Test
-    public void testVerifyOauth() {
+    public void testVerifyOauth() throws Exception {
         System.out.println("Test verifyOauth with wrong token");
         String token = "toto";
-        boolean expResult = false;
-        boolean result = Oauth.verifyOauth(token);
+        GoogleUser expResult = null;
+        GoogleUser result = Oauth.getGoogleUser(token);
         assertEquals(expResult, result);
     }
 }

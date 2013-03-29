@@ -6,11 +6,6 @@ package fr.univnantes.atal.poubatal.api;
  */
 public class APIResult {
 
-    public static final APIResult SUCCESS = new APIResult(0, "Success.");
-    public static final APIResult SERVICE_NON_EXISTING = new APIResult(1, "Service dosen't exist.");
-    public static final APIResult WRONG_PARAMETERS = new APIResult(2, "One or more parameters are wrong.");
-    public static final APIResult JSON_PROCESSING_EXCEPTION = new APIResult(3, "Json processing exception.");
-    
     private int id;
     private String message;
     private String detail;
@@ -19,6 +14,26 @@ public class APIResult {
         this.id = id;
         this.message = message;
         this.detail = "";
+    }
+    
+    public static APIResult success() {
+        return new APIResult(0, "Success.");
+    }
+    
+    public static APIResult nonExistentService() {
+        return new APIResult(1, "Service dosen't exist.");
+    }
+    
+    public static APIResult wrongParameters() {
+        return new APIResult(2, "One or more parameters are wrong.");
+    }
+    
+    public static APIResult jsonException() {
+        return new APIResult(3, "Json processing exception.");
+    }
+    
+    public static APIResult authenticationRequired() {
+        return new APIResult(4, "Authentication required.");
     }
 
     /**

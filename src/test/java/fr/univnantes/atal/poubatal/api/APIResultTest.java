@@ -13,32 +13,32 @@ public class APIResultTest {
     }
     
     /**
-     * Test of SUCCESS static object, of class APIResult.
+     * Test of success() static method, of class APIResult.
      */
     @Test
     public void testSuccess() {
-        System.out.println("Test SUCCESS");
-        APIResult instance = APIResult.SUCCESS;
+        System.out.println("Test success()");
+        APIResult instance = APIResult.success();
         assertEquals(instance.getId(), 0);
     }
     
     /**
-     * Test of SERVICE_NON_EXISTING static object, of class APIResult.
+     * Test of nonExistentService() static method, of class APIResult.
      */
     @Test
     public void testServiceNonExisting() {
-        System.out.println("Test SERVICE_NON_EXISTING");
-        APIResult instance = APIResult.SERVICE_NON_EXISTING;
+        System.out.println("Test nonExistentService()");
+        APIResult instance = APIResult.nonExistentService();
         assertEquals(instance.getId(), 1);
     }
     
     /**
-     * Test of WRONG_PARAMETERS static object, of class APIResult.
+     * Test of wrongParameters() static method, of class APIResult.
      */
     @Test
     public void testWrongParameters() {
-        System.out.println("Test WRONG_PARAMETERS");
-        APIResult instance = APIResult.WRONG_PARAMETERS;
+        System.out.println("Test wrongParameters()");
+        APIResult instance = APIResult.wrongParameters();
         assertEquals(instance.getId(), 2);
     }
 }
