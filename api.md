@@ -36,16 +36,6 @@ DeleteAddress
 **Return :**
   - success
 
-NewAccount
-----------
-**Description :** Création d'un nouveau compte utilisateur
-
-**Param :**
-  - oauth
-  
-**Return :**
-  - success
-
 DeleteAccount
 -------------
 **Description :** Suppression d'un compte utilisateur
