@@ -2,31 +2,38 @@ package fr.univnantes.atal.poubatal.datastore;
 
 import java.util.Collections;
 import java.util.Set;
-import java.util.TreeSet;
+import java.util.TreeSet;                                                                                                                             import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Ignore;
+import static fr.univnantes.atal.poubatal.datastore.OfyService.ofy;
 
+@Entity
 public class User {
 
-    private String id;
-    private Set<String> addresses;
-    private Set<String> notifications;
+    @Id String id;
+    Set<String> addresses;
+    Set<String> notifications;
 
-    private User(String id) {
+    private User() {}
+    
+    public User(String id) {
         this.id = id;
         addresses = new TreeSet<>();
         notifications = new TreeSet<>();
     }
 
-    public void save() {
-        // save current user in the DataStore
+    public String getId() {
+        return id;
     }
 
+    // save a User in the DataStore
+    public void save() {
+        ofy().save().entity(this).now();
+    }
+
+    // Load a User from the DataStore, returns null if not found.
     public static User load(String id) {
-        User user = new User(id);
-        for (int i = 1; i <= 3; i++) {
-            user.addAddress(i + ", Rue de " + id);
-        }
-        // retrieve a user in the DataStore
-        return user;
+        return ofy().load().type(User.class).id(id).get();
     }
 
     public void addAddress(String address) {
