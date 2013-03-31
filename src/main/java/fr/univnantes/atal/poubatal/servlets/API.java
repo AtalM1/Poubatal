@@ -2,9 +2,10 @@ package fr.univnantes.atal.poubatal.servlets;
 
 import fr.univnantes.atal.poubatal.api.APIResult;
 import fr.univnantes.atal.poubatal.api.APIResponse;
-import fr.univnantes.atal.poubatal.api.GoogleUser;
-import fr.univnantes.atal.poubatal.api.Oauth;
-import fr.univnantes.atal.poubatal.datastore.User;
+import fr.univnantes.atal.poubatal.UserLoader;
+import fr.univnantes.atal.poubatal.entity.Address;
+import fr.univnantes.atal.poubatal.entity.Notification;
+import fr.univnantes.atal.poubatal.entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -37,10 +38,8 @@ public class API extends HttpServlet {
         String accessToken = request.getParameter("oauth");
         try (PrintWriter out = response.getWriter()) {
             if (accessToken != null) {
-                GoogleUser gUser = Oauth.getGoogleUser(accessToken);
-                if (gUser != null) {
-                    String userId = gUser.getId();
-                    User user = User.load(userId);
+                User user = UserLoader.load(accessToken);
+                if (user != null) {
                     requestDispatcher(request, out, user);
                 } else {
                     APIResponse apiResponse = new APIResponse();
@@ -107,25 +106,25 @@ public class API extends HttpServlet {
                 out.println(directory(request.getParameter("address")));
                 break;
             case "add-address":
-                out.println(addAddress(request.getParameter("address"), user));
+                out.println(addAddress(request.getParameter("addressId"), user));
                 break;
-            case "delete-address":
-                out.println(deleteAddress(request.getParameter("address"), user));
+            case "remove-address":
+                out.println(removeAddress(request.getParameter("addressId"), user));
                 break;
             case "delete-account":
                 out.println(deleteAccount(user));
                 break;
-            case "add-notif":
-                out.println(addNotif(request.getParameter("type"), request.getParameter("value"), user));
+            case "add-notification":
+                out.println(addNotification(request.getParameter("notificationId"), user));
                 break;
-            case "delete-notif":
-                out.println(deleteNotif(request.getParameter("notif"), user));
+            case "remove-notification":
+                out.println(removeNotification(request.getParameter("notificationId"), user));
                 break;
             case "addresses-list":
                 out.println(addressesList(user));
                 break;
-            case "notif-list":
-                out.println(apiNotifList(user));
+            case "notifications-list":
+                out.println(notificationList(user));
                 break;
             default:
                 APIResponse apiResponse = new APIResponse();
@@ -156,30 +155,30 @@ public class API extends HttpServlet {
         }
     }
 
-    private String addAddress(String address, User user) {
-        if (address == null) {
+    private String addAddress(String addressId, User user) {
+        if (addressId == null) {
             APIResponse apiResponse = new APIResponse();
             APIResult apiResult = APIResult.wrongParameters();
-            apiResult.setDetail("Parameter 'address' is missing.");
+            apiResult.setDetail("Parameter 'addressId' is missing.");
             apiResponse.getMap().put("result", APIResult.wrongParameters());
             return apiResponse.toJson();
         } else {
-            user.addAddress(address);
+            user.addAddress(new Address(addressId));
             APIResponse apiResponse = new APIResponse();
             apiResponse.getMap().put("result", APIResult.success());
             return apiResponse.toJson();
         }
     }
 
-    private String deleteAddress(String address, User user) {
-        if (address == null) {
+    private String removeAddress(String addressId, User user) {
+        if (addressId == null) {
             APIResponse apiResponse = new APIResponse();
             APIResult apiResult = APIResult.wrongParameters();
-            apiResult.setDetail("Parameter 'address' is missing.");
+            apiResult.setDetail("Parameter 'addressId' is missing.");
             apiResponse.getMap().put("result", APIResult.wrongParameters());
             return apiResponse.toJson();
         } else {
-            user.deleteAddress(address);
+            user.removeAddress(new Address(addressId));
             APIResponse apiResponse = new APIResponse();
             apiResponse.getMap().put("result", APIResult.success());
             return apiResponse.toJson();
@@ -193,30 +192,30 @@ public class API extends HttpServlet {
         return apiResponse.toJson();
     }
 
-    private String addNotif(String type, String value, User user) {
-        if (type == null || value == null) {
+    private String addNotification(String notificationId, User user) {
+        if (notificationId == null) {
             APIResponse apiResponse = new APIResponse();
             APIResult apiResult = APIResult.wrongParameters();
-            apiResult.setDetail("Parameter 'type' or 'value' is missing.");
+            apiResult.setDetail("Parameter 'notificationId' is missing.");
             apiResponse.getMap().put("result", APIResult.wrongParameters());
             return apiResponse.toJson();
         } else {
-            user.addNotif(type, value);
+            user.addNotification(new Notification(notificationId));
             APIResponse apiResponse = new APIResponse();
             apiResponse.getMap().put("result", APIResult.success());
             return apiResponse.toJson();
         }
     }
 
-    private String deleteNotif(String notif, User user) {
-        if (notif == null) {
+    private String removeNotification(String notificationId, User user) {
+        if (notificationId == null) {
             APIResponse apiResponse = new APIResponse();
             APIResult apiResult = APIResult.wrongParameters();
-            apiResult.setDetail("Parameter 'notif' is missing.");
+            apiResult.setDetail("Parameter 'notificationId' is missing.");
             apiResponse.getMap().put("result", APIResult.wrongParameters());
             return apiResponse.toJson();
         } else {
-            user.deleteNotif(notif);
+            user.removeNotification(new Notification(notificationId));
             APIResponse apiResponse = new APIResponse();
             apiResponse.getMap().put("result", APIResult.success());
             return apiResponse.toJson();
@@ -224,18 +223,19 @@ public class API extends HttpServlet {
     }
 
     private String addressesList(User user) {
-        Set<String> addressesList = user.addressesList();
+        Set<Address> addressesList = user.getAddresses();
         APIResponse apiResponse = new APIResponse();
         apiResponse.getMap().put("result", APIResult.success());
         apiResponse.getMap().put("data", addressesList);
         return apiResponse.toJson();
     }
 
-    private String apiNotifList(User user) {
-        Set<String> notifList = user.notifList();
+    private String notificationList(User user) {
+        Set<Notification> notificationsList = user.getNotifications();
         APIResponse apiResponse = new APIResponse();
         apiResponse.getMap().put("result", APIResult.success());
-        apiResponse.getMap().put("data", notifList);
+        apiResponse.getMap().put("data", notificationsList);
+        apiResponse.getMap().put("toto", "prout");
         return apiResponse.toJson();
     }
 }

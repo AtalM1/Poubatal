@@ -1,10 +1,12 @@
 package fr.univnantes.atal.poubatal.datastore;
-import fr.univnantes.atal.poubatal.datastore.User;
+
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
+import fr.univnantes.atal.poubatal.entity.User;
 
 public class OfyService {
+
     static {
         factory().register(User.class);
     }

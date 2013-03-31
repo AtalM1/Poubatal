@@ -1,4 +1,4 @@
-package fr.univnantes.atal.poubatal.api;
+package fr.univnantes.atal.poubatal;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,9 +11,9 @@ public class Oauth {
 
     static private ObjectMapper mapper = new ObjectMapper();
 
-    public static GoogleUser getGoogleUser(String token) {
+    public static Map<String, String> getGoogleUser(String accessToken) {
         try {
-            URL url = new URL("https://www.googleapis.com/oauth2/v1/tokeninfo" + "?access_token=" + token);
+            URL url = new URL("https://www.googleapis.com/oauth2/v1/tokeninfo" + "?access_token=" + accessToken);
 
             Map<String, String> userData = mapper.readValue(
                     new InputStreamReader(url.openStream(), "UTF-8"),
@@ -22,11 +22,7 @@ public class Oauth {
             if (userData.containsKey("error") || !userData.get("audience").equals(Constants.APPLICATION_ID)) {
                 return null;
             } else {
-                GoogleUser user = new GoogleUser();
-                user.setEmail(userData.get("email"));
-                user.setId(userData.get("user_id"));
-                user.setName(userData.get("name"));
-                return user;
+                return userData;
             }
         } catch (Exception ex) {
             return null;
