@@ -2,7 +2,6 @@ package fr.univnantes.atal.poubatal.servlets;
 
 import fr.univnantes.atal.poubatal.api.APIResult;
 import fr.univnantes.atal.poubatal.api.APIResponse;
-import fr.univnantes.atal.poubatal.UserLoader;
 import fr.univnantes.atal.poubatal.entity.Address;
 import fr.univnantes.atal.poubatal.entity.Notification;
 import fr.univnantes.atal.poubatal.entity.User;
@@ -38,7 +37,7 @@ public class API extends HttpServlet {
         String accessToken = request.getParameter("oauth");
         try (PrintWriter out = response.getWriter()) {
             if (accessToken != null) {
-                User user = UserLoader.load(accessToken);
+                User user = User.load(accessToken);
                 if (user != null) {
                     requestDispatcher(request, out, user);
                 } else {

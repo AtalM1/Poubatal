@@ -5,7 +5,9 @@ import java.util.Set;
 import java.util.TreeSet;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import fr.univnantes.atal.poubatal.Oauth;
 import static fr.univnantes.atal.poubatal.datastore.OfyService.ofy;
+import java.util.Map;
 
 @Entity
 public class User {
@@ -28,6 +30,24 @@ public class User {
     // save a User in the DataStore
     public void save() {
         ofy().save().entity(this).now();
+    }
+
+    public static User load(String accessToken) {
+        // Récupération du GoogleUser avec l'accessToken
+        Map<String, String> userData = Oauth.getGoogleUser(accessToken);
+        if (userData == null) {
+            return null;
+        }
+        String id = userData.get("user_id");
+        String email = userData.get("email");
+
+        // Récupération du User avec l'ID Google
+        User user = ofy().load().type(User.class).id(id).get();
+        if (user == null) {
+            user = new User(id, email);
+            user.save();
+        }
+        return user;
     }
 
     public Set<Address> getAddresses() {
