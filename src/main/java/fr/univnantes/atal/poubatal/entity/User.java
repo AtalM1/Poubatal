@@ -13,9 +13,9 @@ import java.util.Map;
 public class User {
 
     @Id
-    String id;
-    Set<Address> addresses;
-    Set<Notification> notifications;
+    private String id;
+    private Set<Address> addresses;
+    private Set<Notification> notifications;
 
     private User() {
     }

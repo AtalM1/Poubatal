@@ -5,7 +5,7 @@ import com.googlecode.objectify.annotation.Embed;
 @Embed
 public class Address implements Comparable<Address> {
 
-    String id;
+    private String id;
 
     public Address() {}
 
@@ -15,6 +15,13 @@ public class Address implements Comparable<Address> {
 
     @Override
     public int compareTo(Address t) {
-        return this.id.compareToIgnoreCase(t.id);
+        return this.getId().compareToIgnoreCase(t.getId());
+    }
+
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
     }
 }

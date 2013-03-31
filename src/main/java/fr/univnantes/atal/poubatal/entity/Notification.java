@@ -5,7 +5,7 @@ import com.googlecode.objectify.annotation.Embed;
 @Embed
 public class Notification implements Comparable<Notification> {
 
-    String id;
+    private String id;
 
     public Notification() {}
 
@@ -15,6 +15,13 @@ public class Notification implements Comparable<Notification> {
 
     @Override
     public int compareTo(Notification t) {
-        return this.id.compareToIgnoreCase(t.id);
+        return this.getId().compareToIgnoreCase(t.getId());
+    }
+
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
     }
 }
