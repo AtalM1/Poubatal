@@ -5,10 +5,11 @@ import fr.univnantes.atal.poubatal.api.APIResponse;
 import fr.univnantes.atal.poubatal.entity.Address;
 import fr.univnantes.atal.poubatal.entity.Notification;
 import fr.univnantes.atal.poubatal.entity.User;
+import fr.univnantes.atal.poubatal.opendata.CollectePoint;
+import fr.univnantes.atal.poubatal.opendata.DataManager;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -170,16 +171,12 @@ public class API extends HttpServlet {
     private String directory(String address) {
         if (address == null) {
             APIResponse apiResponse = new APIResponse();
-            apiResponse.getMap().put("result", APIResult.wrongParameters());
+            apiResponse.getMap().put("result", APIResult.wrongParameters());            
             return apiResponse.toJson();
         } else {
-            List<String> data = new ArrayList();
-            data.add(address + " 1");
-            data.add(address + " 2");
-            data.add(address + " 3");
             APIResponse apiResponse = new APIResponse();
             apiResponse.getMap().put("result", APIResult.success());
-            apiResponse.getMap().put("data", data);
+            apiResponse.getMap().put("data", DataManager.getInstance().getPoints());
             return apiResponse.toJson();
         }
     }
@@ -245,9 +242,13 @@ public class API extends HttpServlet {
 
     private String addressesList(User user) {
         Set<Address> addressesList = user.getAddresses();
+        Set<CollectePoint> collectePoints = new HashSet<>();
+        for (Address current : addressesList) {
+            collectePoints.add(current.getCollectePoint());
+        }
         APIResponse apiResponse = new APIResponse();
         apiResponse.getMap().put("result", APIResult.success());
-        apiResponse.getMap().put("data", addressesList);
+        apiResponse.getMap().put("data", collectePoints);
         return apiResponse.toJson();
     }
 

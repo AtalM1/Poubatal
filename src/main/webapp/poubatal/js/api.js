@@ -1,7 +1,6 @@
 function apiAddressesList(accessToken) {
-    var addressesList;
     $.ajax({
-        url: 'http://poubatal.appspot.com/api/address',
+        url: url + '/api/address',
         type: 'GET',
         dataType: 'json',
         data: {oauth: accessToken},
@@ -9,13 +8,11 @@ function apiAddressesList(accessToken) {
             console.log(response);
         }
     });
-    return addressesList;
 }
 
 function apiNotificationsList(accessToken) {
-    var addressesList;
     $.ajax({
-        url: 'http://poubatal.appspot.com/api/notification',
+        url: url + '/api/notification',
         type: 'GET',
         dataType: 'json',
         data: {oauth: accessToken},
@@ -23,33 +20,28 @@ function apiNotificationsList(accessToken) {
             console.log(response);
         }
     });
-    return addressesList;
 }
 
-function apiAddressesListLocal(accessToken) {
-    var addressesList;
+function apiDirectory(accessToken, address) {
     $.ajax({
-        url: 'http://localhost:8080/api/address',
+        url: url + '/api/directory',
         type: 'GET',
         dataType: 'json',
-        data: {oauth: accessToken},
+        data: {oauth: accessToken, address: address},
         success: function(response) {
             console.log(response);
         }
     });
-    return addressesList;
 }
 
-function apiNotificationsListLocal(accessToken) {
-    var addressesList;
+function apiAddAddress(accessToken, address) {
     $.ajax({
-        url: 'http://localhost:8080/api/notification',
-        type: 'GET',
+        url: url + '/api/address',
+        type: 'POST',
         dataType: 'json',
-        data: {oauth: accessToken},
+        data: {oauth: accessToken, addressId: address},
         success: function(response) {
             console.log(response);
         }
     });
-    return addressesList;
 }

@@ -1,3 +1,5 @@
+var url = "http://localhost:8080";
+
 $('#connect').click(function() {
     connect();
 });
@@ -20,18 +22,18 @@ $('#notificationsList').click(function() {
     apiNotificationsList(authResult.access_token); 
 });
 
-$('#addressesListLocal').click(function() {
+$('#directory').click(function() {
     var authResult = gapi.auth.getToken();
+    var address = "toto";
     console.log(authResult);
     console.log(authResult.access_token);
-    apiAddressesListLocal(authResult.access_token); 
+    apiDirectory(authResult.access_token, address); 
 });
 
-$('#notificationsListLocal').click(function() {
+$('#add-address').click(function() {
     var authResult = gapi.auth.getToken();
-    console.log(authResult);
-    console.log(authResult.access_token);
-    apiNotificationsListLocal(authResult.access_token); 
+    var address = $('#input-address').val();
+    apiAddAddress(authResult.access_token, address); 
 });
 
 function connect() {

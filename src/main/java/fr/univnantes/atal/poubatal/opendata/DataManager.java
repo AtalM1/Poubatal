@@ -60,7 +60,7 @@ public class DataManager {
                 }
                 System.out.println("Now using http_proxy=" + proxy_url);
             }
-            InputStreamReader in = new InputStreamReader(urlToFetch.openConnection().getInputStream());
+            InputStreamReader in = new InputStreamReader(urlToFetch.openConnection().getInputStream(), "UTF-8");
             BufferedReader buffer = new BufferedReader(in);
 
             //reads the header
