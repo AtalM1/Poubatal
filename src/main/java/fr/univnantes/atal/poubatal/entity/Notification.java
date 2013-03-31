@@ -7,6 +7,8 @@ public class Notification implements Comparable<Notification> {
 
     String id;
 
+    public Notification() {}
+
     public Notification(String id) {
         this.id = id;
     }

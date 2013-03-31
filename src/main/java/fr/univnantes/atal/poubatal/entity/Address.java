@@ -7,6 +7,8 @@ public class Address implements Comparable<Address> {
 
     String id;
 
+    public Address() {}
+
     public Address(String id) {
         this.id = id;
     }
