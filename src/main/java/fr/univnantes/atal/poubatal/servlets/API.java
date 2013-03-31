@@ -42,16 +42,12 @@ public class API extends HttpServlet {
                     requestDispatcher(request, out, user);
                 } else {
                     APIResponse apiResponse = new APIResponse();
-                    APIResult result = APIResult.authenticationRequired();
-                    result.setDetail("Invalid oauth access token : '" + accessToken + "'.");
-                    apiResponse.getMap().put("result", result);
+                    apiResponse.getMap().put("result", APIResult.authenticationRequired(accessToken));
                     out.println(apiResponse.toJson());
                 }
             } else {
                 APIResponse apiResponse = new APIResponse();
-                APIResult result = APIResult.wrongParameters();
-                result.setDetail("Parameter 'oauth' is missing.");
-                apiResponse.getMap().put("result", result);
+                apiResponse.getMap().put("result", APIResult.wrongParameters());
                 out.println(apiResponse.toJson());
             }
         }
@@ -100,36 +96,72 @@ public class API extends HttpServlet {
 
     private void requestDispatcher(HttpServletRequest request, PrintWriter out, User user) {
         String pathInfo = request.getPathInfo().substring(1).toLowerCase();
+        String method = request.getMethod().toUpperCase();
         switch (pathInfo) {
             case "directory":
-                out.println(directory(request.getParameter("address")));
+                switch (method) {
+                    case "GET":
+                        out.println(directory(request.getParameter("address")));
+                        break;
+                    default:
+                        APIResponse apiResponse = new APIResponse();
+                        apiResponse.getMap().put("result", APIResult.httpMethodNotAllowed(method, pathInfo));
+                        out.println(apiResponse.toJson());
+                        break;
+                }
                 break;
-            case "add-address":
-                out.println(addAddress(request.getParameter("addressId"), user));
+            case "address":
+                switch (method) {
+                    case "POST":
+                        out.println(addAddress(request.getParameter("addressId"), user));
+                        break;
+                    case "GET":
+                        out.println(addressesList(user));
+                        break;
+                    case "DELETE":
+                        out.println(removeAddress(request.getParameter("addressId"), user));
+                        break;
+                    default:
+                        APIResponse apiResponse = new APIResponse();
+                        apiResponse.getMap().put("result", APIResult.httpMethodNotAllowed(method, pathInfo));
+                        out.println(apiResponse.toJson());
+                        break;
+                }
                 break;
-            case "remove-address":
-                out.println(removeAddress(request.getParameter("addressId"), user));
+            case "notification":
+                switch (method) {
+                    case "POST":
+                        out.println(addNotification(request.getParameter("notificationId"), user));
+                        break;
+                    case "GET":
+                        out.println(notificationList(user));
+                        break;
+                    case "DELETE":
+                        out.println(removeNotification(request.getParameter("notificationId"), user));
+                        break;
+                    default:
+                        APIResponse apiResponse = new APIResponse();
+                        apiResponse.getMap().put("result", APIResult.httpMethodNotAllowed(method, pathInfo));
+                        out.println(apiResponse.toJson());
+                        break;
+                }
                 break;
-            case "delete-account":
-                out.println(deleteAccount(user));
+            case "user":
+                switch (method) {
+                    case "DELETE":
+                        out.println(deleteAccount(user));
+                        break;
+                    default:
+                        APIResponse apiResponse = new APIResponse();
+                        apiResponse.getMap().put("result", APIResult.httpMethodNotAllowed(method, pathInfo));
+                        out.println(apiResponse.toJson());
+                        break;
+                }
                 break;
-            case "add-notification":
-                out.println(addNotification(request.getParameter("notificationId"), user));
-                break;
-            case "remove-notification":
-                out.println(removeNotification(request.getParameter("notificationId"), user));
-                break;
-            case "addresses-list":
-                out.println(addressesList(user));
-                break;
-            case "notifications-list":
-                out.println(notificationList(user));
-                break;
+
             default:
                 APIResponse apiResponse = new APIResponse();
-                APIResult result = APIResult.nonExistentService();
-                result.setDetail("Service '" + pathInfo + "' dosen't exist.");
-                apiResponse.getMap().put("result", result);
+                apiResponse.getMap().put("result", APIResult.nonExistentService(pathInfo));
                 out.println(apiResponse.toJson());
                 break;
         }
@@ -138,8 +170,6 @@ public class API extends HttpServlet {
     private String directory(String address) {
         if (address == null) {
             APIResponse apiResponse = new APIResponse();
-            APIResult apiResult = APIResult.wrongParameters();
-            apiResult.setDetail("Parameter 'address' is missing.");
             apiResponse.getMap().put("result", APIResult.wrongParameters());
             return apiResponse.toJson();
         } else {
@@ -157,8 +187,6 @@ public class API extends HttpServlet {
     private String addAddress(String addressId, User user) {
         if (addressId == null) {
             APIResponse apiResponse = new APIResponse();
-            APIResult apiResult = APIResult.wrongParameters();
-            apiResult.setDetail("Parameter 'addressId' is missing.");
             apiResponse.getMap().put("result", APIResult.wrongParameters());
             return apiResponse.toJson();
         } else {
@@ -172,8 +200,6 @@ public class API extends HttpServlet {
     private String removeAddress(String addressId, User user) {
         if (addressId == null) {
             APIResponse apiResponse = new APIResponse();
-            APIResult apiResult = APIResult.wrongParameters();
-            apiResult.setDetail("Parameter 'addressId' is missing.");
             apiResponse.getMap().put("result", APIResult.wrongParameters());
             return apiResponse.toJson();
         } else {
@@ -194,8 +220,6 @@ public class API extends HttpServlet {
     private String addNotification(String notificationId, User user) {
         if (notificationId == null) {
             APIResponse apiResponse = new APIResponse();
-            APIResult apiResult = APIResult.wrongParameters();
-            apiResult.setDetail("Parameter 'notificationId' is missing.");
             apiResponse.getMap().put("result", APIResult.wrongParameters());
             return apiResponse.toJson();
         } else {
@@ -209,8 +233,6 @@ public class API extends HttpServlet {
     private String removeNotification(String notificationId, User user) {
         if (notificationId == null) {
             APIResponse apiResponse = new APIResponse();
-            APIResult apiResult = APIResult.wrongParameters();
-            apiResult.setDetail("Parameter 'notificationId' is missing.");
             apiResponse.getMap().put("result", APIResult.wrongParameters());
             return apiResponse.toJson();
         } else {
@@ -234,7 +256,6 @@ public class API extends HttpServlet {
         APIResponse apiResponse = new APIResponse();
         apiResponse.getMap().put("result", APIResult.success());
         apiResponse.getMap().put("data", notificationsList);
-        apiResponse.getMap().put("toto", "prout");
         return apiResponse.toJson();
     }
 }

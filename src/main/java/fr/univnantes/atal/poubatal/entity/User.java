@@ -51,30 +51,52 @@ public class User {
     }
 
     public Set<Address> getAddresses() {
+        if (addresses == null) {
+            addresses = new TreeSet<>();
+        }
         return Collections.unmodifiableSet(addresses);
     }
 
     public void addAddress(Address address) {
+        if (addresses == null) {
+            addresses = new TreeSet<>();
+        }
         addresses.add(address);
+        save();
     }
 
     public void removeAddress(Address address) {
+        if (addresses == null) {
+            addresses = new TreeSet<>();
+        }
         addresses.remove(address);
+        save();
     }
 
     public Set<Notification> getNotifications() {
+        if (notifications == null) {
+            notifications = new TreeSet<>();
+        }
         return Collections.unmodifiableSet(notifications);
     }
 
     public void addNotification(Notification notification) {
+        if (notifications == null) {
+            notifications = new TreeSet<>();
+        }
         notifications.add(notification);
+        save();
     }
 
     public void removeNotification(Notification notification) {
+        if (notifications == null) {
+            notifications = new TreeSet<>();
+        }
         notifications.remove(notification);
+        save();
     }
 
     public void deleteAccount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ofy().delete().entity(this);
     }
 }

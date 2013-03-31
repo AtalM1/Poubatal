@@ -28,7 +28,7 @@ public class APIResultTest {
     @Test
     public void testServiceNonExisting() {
         System.out.println("Test nonExistentService()");
-        APIResult instance = APIResult.nonExistentService();
+        APIResult instance = APIResult.nonExistentService("Test detail");
         assertEquals(instance.getId(), 1);
     }
     

@@ -1,8 +1,8 @@
 function apiAddressesList(accessToken) {
     var addressesList;
     $.ajax({
-        url: 'http://poubatal.appspot.com/api/addresses-list',
-        type: 'POST',
+        url: 'http://poubatal.appspot.com/api/address',
+        type: 'GET',
         dataType: 'json',
         data: {oauth: accessToken},
         success: function(response) {
@@ -15,8 +15,8 @@ function apiAddressesList(accessToken) {
 function apiNotificationsList(accessToken) {
     var addressesList;
     $.ajax({
-        url: 'http://poubatal.appspot.com/api/notifications-list',
-        type: 'POST',
+        url: 'http://poubatal.appspot.com/api/notification',
+        type: 'GET',
         dataType: 'json',
         data: {oauth: accessToken},
         success: function(response) {
@@ -29,8 +29,8 @@ function apiNotificationsList(accessToken) {
 function apiAddressesListLocal(accessToken) {
     var addressesList;
     $.ajax({
-        url: 'http://localhost:8080/api/addresses-list',
-        type: 'POST',
+        url: 'http://localhost:8080/api/address',
+        type: 'GET',
         dataType: 'json',
         data: {oauth: accessToken},
         success: function(response) {
@@ -43,8 +43,8 @@ function apiAddressesListLocal(accessToken) {
 function apiNotificationsListLocal(accessToken) {
     var addressesList;
     $.ajax({
-        url: 'http://localhost:8080/api/notifications-list',
-        type: 'POST',
+        url: 'http://localhost:8080/api/notification',
+        type: 'GET',
         dataType: 'json',
         data: {oauth: accessToken},
         success: function(response) {
