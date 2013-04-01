@@ -31,18 +31,17 @@ public class CollectePoint {
 
     }
 
-    public double filter(String address) {
-        String concat = streetName + city + zoneName;
+    public boolean filter(String address) {
+        String concat = streetName + " " + city + " " + zoneName;
         concat = Tools.normalizeString(concat);
         address = Tools.normalizeString(address);
         String[] filters = address.split(" ");
-        int cpt = 0;
         for (String filter : filters) {
-            if (concat.contains(filter)) {
-                cpt++;
+            if (!concat.contains(filter)) {
+                return false;
             }
         }
-        return cpt / filters.length;
+        return true;
     }
 
     @Override

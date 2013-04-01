@@ -177,7 +177,7 @@ public class API extends HttpServlet {
         } else {
             APIResponse apiResponse = new APIResponse();
             apiResponse.setResult(APIResult.success());
-            apiResponse.setData(DataManager.getInstance().getPoints(address));
+            apiResponse.setData(DataManager.getInstance().getPoints(address, 15));
             return apiResponse.toJson();
         }
     }

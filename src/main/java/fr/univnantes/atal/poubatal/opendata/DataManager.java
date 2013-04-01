@@ -44,31 +44,32 @@ public class DataManager {
         return instance;
     }
     
-    public List<CollectePoint> getPoints(String filter) {
-        // Création d'une liste de couple
-        List<Map.Entry<Double,CollectePoint>> scores = new ArrayList<>();
-        // Pour chaque adresse, on calcule son score par rapport au filtre
-        for (CollectePoint current : getPoints()) {
-            double score = current.filter(filter);
-            if (score > 0.4) {
-                scores.add(new AbstractMap.SimpleEntry<>(score, current));
-            }
-        }
-        // On trie la collection par ordre de score
-        Collections.sort(scores, new Comparator<Map.Entry<Double, CollectePoint>>() {
-            @Override
-            public int compare(Entry<Double, CollectePoint> o1, Entry<Double, CollectePoint> o2) {
-                return o2.getKey().compareTo(o1.getKey());
-            }
-        });
+    /**
+     * 
+     * Renvoi les 'range' premières adresses filtrées
+     */
+    public List<CollectePoint> getPoints(String filter, int range) {
         List<CollectePoint> filteredPoints = new ArrayList<>();
-        // On recopie la liste triée dans la liste de retour
-        for (Map.Entry<Double,CollectePoint> entry : scores) {
-            filteredPoints.add(entry.getValue());
+        int cpt = 1;
+        pointsList:
+        for (CollectePoint current : getPoints()) {
+            if(current.filter(filter)) {
+                filteredPoints.add(current);
+                cpt++;
+                if (range != 0 && cpt > range) {
+                    break pointsList;
+                }
+            }
         }
-        // On récupère au maximum 10 enregistrements
-        int range = Math.min(filteredPoints.size(), 10);
-        return filteredPoints.subList(0, range);
+        return filteredPoints;
+    }
+    
+    /**
+     * 
+     * Renvoi toutes les adresses filtrées 
+     */
+    public List<CollectePoint> getPoints(String filter) {
+        return getPoints(filter, 0);
     }
 
     public List<CollectePoint> getPoints() {
