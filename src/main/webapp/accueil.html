@@ -33,15 +33,35 @@
         </div>
         <div class="container">
             <h1>Poubatal</h1>
-            <button id="connect" type="button" class="btn btn-info" disabled="disabled">Connexion</button>
-            <button id="verify" type="button" class="btn btn-success">Vérification</button>
-            <button id="addressesList" type="button" class="btn btn-success">Liste des adresses</button>
-            <button id="notificationsList" type="button" class="btn btn-success">Liste des notifications</button>
-            <input id="input-directory" type="text">
-            <button id="directory" type ="button" class="btn btn-danger">Annuaire</button>
-            <input id="input-address" type="text">
-            <button id="add-address" type ="button" class="btn btn-danger">Ajouter adresse</button>
-        
+            <h2>Compte</h2>
+            <p>
+                <button id="connect" type="button" class="btn btn-success" disabled="disabled">Connexion</button>
+                <button id="delete-account" type="button" class="btn btn-danger">Suppression du compte</button>
+            </p>
+            <h2>Annuaire</h2>
+            <p>
+                <input id="input-directory" type="text">
+                <button id="directory" type ="button" class="btn btn-danger">Annuaire</button>
+            </p>
+            <h2>Notifications</h2>
+            <p>
+                <button id="notificationsList" type="button" class="btn btn-info">Liste des notifications</button>
+            </p>
+            <p>
+                <input id="input-notification" type="text">
+                <button id="add-notification" type ="button" class="btn btn-warning">Ajouter notification</button>
+                <button id="delete-notification" type ="button" class="btn btn-danger">Supprimer notification</button>
+            </p>
+            <h2>Adresses</h2>
+            <p>
+                <button id="addressesList" type="button" class="btn btn-info">Liste des adresses</button>
+            </p>
+            <p>
+                <input id="input-address" type="text">
+                <button id="add-address" type ="button" class="btn btn-warning">Ajouter adresse</button>
+                <button id="delete-address" type ="button" class="btn btn-danger">Supprimer adresse</button>
+            </p>
+
         </div>                
         <script src="jquery/js/jquery-1.9.1.js"></script>
         <script src="bootstrap/js/bootstrap.js"></script>

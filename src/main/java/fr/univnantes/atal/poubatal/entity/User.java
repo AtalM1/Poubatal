@@ -7,6 +7,7 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import fr.univnantes.atal.poubatal.Oauth;
 import static fr.univnantes.atal.poubatal.datastore.OfyService.ofy;
+import fr.univnantes.atal.poubatal.opendata.CollectePoint;
 import java.util.Map;
 
 @Entity
@@ -14,7 +15,7 @@ public class User {
 
     @Id
     private String id;
-    private Set<Address> addresses;
+    private Set<CollectePoint> addresses;
     private Set<Notification> notifications;
 
     private User() {
@@ -50,27 +51,25 @@ public class User {
         return user;
     }
 
-    public Set<Address> getAddresses() {
+    public Set<CollectePoint> getAddresses() {
         if (addresses == null) {
             addresses = new TreeSet<>();
         }
         return Collections.unmodifiableSet(addresses);
     }
 
-    public void addAddress(Address address) {
+    public void addAddress(CollectePoint address) {
         if (addresses == null) {
             addresses = new TreeSet<>();
         }
         addresses.add(address);
-        save();
     }
 
-    public void removeAddress(Address address) {
+    public void removeAddress(CollectePoint address) {
         if (addresses == null) {
             addresses = new TreeSet<>();
         }
         addresses.remove(address);
-        save();
     }
 
     public Set<Notification> getNotifications() {
@@ -85,7 +84,6 @@ public class User {
             notifications = new TreeSet<>();
         }
         notifications.add(notification);
-        save();
     }
 
     public void removeNotification(Notification notification) {
@@ -93,7 +91,6 @@ public class User {
             notifications = new TreeSet<>();
         }
         notifications.remove(notification);
-        save();
     }
 
     public void deleteAccount() {

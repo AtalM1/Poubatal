@@ -1,7 +1,16 @@
-function apiAddressesList(accessToken) {
+// ACCOUNT
+function apiAccount(method, accessToken) {
+    method = method.toUpperCase();
+    var fullUrl;
+    if (method === 'DELETE') {
+        method = 'POST';
+        fullUrl = url + '/api/delete-user';
+    } else {
+        fullUrl = url + '/api/user';
+    }
     $.ajax({
-        url: url + '/api/address',
-        type: 'GET',
+        url: fullUrl,
+        type: method,
         dataType: 'json',
         data: {oauth: accessToken},
         success: function(response) {
@@ -10,22 +19,12 @@ function apiAddressesList(accessToken) {
     });
 }
 
-function apiNotificationsList(accessToken) {
-    $.ajax({
-        url: url + '/api/notification',
-        type: 'GET',
-        dataType: 'json',
-        data: {oauth: accessToken},
-        success: function(response) {
-            console.log(response);
-        }
-    });
-}
-
-function apiDirectory(accessToken, address) {
+// DIRECTORY
+function apiDirectory(method, accessToken, address) {
+    method = method.toUpperCase();    
     $.ajax({
         url: url + '/api/directory',
-        type: 'GET',
+        type: method,
         dataType: 'json',
         data: {oauth: accessToken, address: address},
         success: function(response) {
@@ -34,10 +33,40 @@ function apiDirectory(accessToken, address) {
     });
 }
 
-function apiAddAddress(accessToken, address) {
+// NOTIFICATION
+function apiNotification(method, accessToken, notification) {
+    method = method.toUpperCase();
+    var fullUrl;
+    if (method === 'DELETE') {
+        method = 'POST';
+        fullUrl = url + '/api/delete-notification';
+    } else {
+        fullUrl = url + '/api/notification';
+    }
     $.ajax({
-        url: url + '/api/address',
-        type: 'POST',
+        url: fullUrl,
+        type: method,
+        dataType: 'json',
+        data: {oauth: accessToken, notificationId: notification},
+        success: function(response) {
+            console.log(response);
+        }
+    });
+}
+
+// ADDRESS
+function apiAddress(method, accessToken, address) {
+    method = method.toUpperCase();
+    var fullUrl;
+    if (method === 'DELETE') {
+        method = 'POST';
+        fullUrl = url + '/api/delete-address';
+    } else {
+        fullUrl = url + '/api/address';
+    }
+    $.ajax({
+        url: fullUrl,
+        type: method,
         dataType: 'json',
         data: {oauth: accessToken, addressId: address},
         success: function(response) {

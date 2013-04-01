@@ -1,47 +1,50 @@
 var url = "http://localhost:8080";
 
+// ACCOUNT
 $('#connect').click(function() {
-    connect();
+    handleAuthClick();
 });
-
-$('#verify').click(function() {
-    verify();
-});
-
-$('#addressesList').click(function() {
+$('#delete-account').click(function() {
     var authResult = gapi.auth.getToken();
-    console.log(authResult);
-    console.log(authResult.access_token);
-    apiAddressesList(authResult.access_token); 
+    apiAccount('DELETE', authResult.access_token)
 });
 
-$('#notificationsList').click(function() {
-    var authResult = gapi.auth.getToken();
-    console.log(authResult);
-    console.log(authResult.access_token);
-    apiNotificationsList(authResult.access_token); 
-});
-
+// DIRECTORY
 $('#directory').click(function() {
     var authResult = gapi.auth.getToken();
     var address = $('#input-directory').val();
-    console.log(authResult);
-    console.log(authResult.access_token);
-    apiDirectory(authResult.access_token, address); 
+    apiDirectory('GET', authResult.access_token, address); 
 });
 
+// NOTIFICATION
+$('#notificationsList').click(function() {
+    var authResult = gapi.auth.getToken();
+    apiNotification('GET', authResult.access_token); 
+});
+$('#add-notification').click(function() {
+    var authResult = gapi.auth.getToken();
+    var notification = $('#input-notification').val();
+    apiNotification('POST', authResult.access_token, notification); 
+});
+$('#delete-notification').click(function() {
+    var authResult = gapi.auth.getToken();
+    var notification = $('#input-notification').val();
+    apiNotification('DELETE', authResult.access_token, notification); 
+});
+
+// ADDRESS
+$('#addressesList').click(function() {
+    var authResult = gapi.auth.getToken();
+    apiAddress('GET', authResult.access_token); 
+});
 $('#add-address').click(function() {
     var authResult = gapi.auth.getToken();
     var address = $('#input-address').val();
-    apiAddAddress(authResult.access_token, address); 
+    apiAddress('POST', authResult.access_token, address); 
 });
-
-function connect() {
-    console.log("connect");
-    handleAuthClick();
-}
-
-function verify() {
-    console.log("verify");
-    makeApiCall();
-}
+$('#delete-address').click(function() {
+    var authResult = gapi.auth.getToken();
+    console.log(authResult);
+    var address = $('#input-address').val();
+    apiAddress('DELETE', authResult.access_token, address); 
+});

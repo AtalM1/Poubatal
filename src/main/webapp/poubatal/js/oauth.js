@@ -1,4 +1,3 @@
-var accessToken;
 var clientId = '385110343883';
 var scopes = ['https://www.googleapis.com/auth/userinfo.email',
     'https://www.googleapis.com/auth/userinfo.profile'];

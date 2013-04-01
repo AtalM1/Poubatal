@@ -38,7 +38,7 @@ public class APIResultTest {
     @Test
     public void testWrongParameters() {
         System.out.println("Test wrongParameters()");
-        APIResult instance = APIResult.wrongParameters();
+        APIResult instance = APIResult.wrongParameters("name", "value");
         assertEquals(instance.getId(), 2);
     }
 }

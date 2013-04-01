@@ -2,14 +2,12 @@ package fr.univnantes.atal.poubatal.servlets;
 
 import fr.univnantes.atal.poubatal.api.APIResult;
 import fr.univnantes.atal.poubatal.api.APIResponse;
-import fr.univnantes.atal.poubatal.entity.Address;
 import fr.univnantes.atal.poubatal.entity.Notification;
 import fr.univnantes.atal.poubatal.entity.User;
 import fr.univnantes.atal.poubatal.opendata.CollectePoint;
 import fr.univnantes.atal.poubatal.opendata.DataManager;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashSet;
 import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -48,7 +46,7 @@ public class API extends HttpServlet {
                 }
             } else {
                 APIResponse apiResponse = new APIResponse();
-                apiResponse.setResult(APIResult.wrongParameters());
+                apiResponse.setResult(APIResult.wrongParameters("accessToken", accessToken));
                 out.println(apiResponse.toJson());
             }
         }
@@ -119,7 +117,16 @@ public class API extends HttpServlet {
                     case "GET":
                         out.println(addressesList(user));
                         break;
-                    case "DELETE":
+                    default:
+                        APIResponse apiResponse = new APIResponse();
+                        apiResponse.setResult(APIResult.httpMethodNotAllowed(method, pathInfo));
+                        out.println(apiResponse.toJson());
+                        break;
+                }
+                break;
+            case "delete-address":
+                switch (method) {
+                    case "POST":
                         out.println(removeAddress(request.getParameter("addressId"), user));
                         break;
                     default:
@@ -137,7 +144,16 @@ public class API extends HttpServlet {
                     case "GET":
                         out.println(notificationList(user));
                         break;
-                    case "DELETE":
+                    default:
+                        APIResponse apiResponse = new APIResponse();
+                        apiResponse.setResult(APIResult.httpMethodNotAllowed(method, pathInfo));
+                        out.println(apiResponse.toJson());
+                        break;
+                }
+                break;
+            case "delete-notification":
+                switch (method) {
+                    case "POST":
                         out.println(removeNotification(request.getParameter("notificationId"), user));
                         break;
                     default:
@@ -147,9 +163,9 @@ public class API extends HttpServlet {
                         break;
                 }
                 break;
-            case "user":
+            case "delete-user":
                 switch (method) {
-                    case "DELETE":
+                    case "POST":
                         out.println(deleteAccount(user));
                         break;
                     default:
@@ -185,10 +201,11 @@ public class API extends HttpServlet {
     private String addAddress(String addressId, User user) {
         if (addressId == null) {
             APIResponse apiResponse = new APIResponse();
-            apiResponse.setResult(APIResult.wrongParameters());
+            apiResponse.setResult(APIResult.wrongParameters("addressId", addressId));
             return apiResponse.toJson();
         } else {
-            user.addAddress(new Address(addressId));
+            user.addAddress(CollectePoint.getById(addressId));
+            user.save();
             APIResponse apiResponse = new APIResponse();
             apiResponse.setResult(APIResult.success());
             return apiResponse.toJson();
@@ -198,10 +215,11 @@ public class API extends HttpServlet {
     private String removeAddress(String addressId, User user) {
         if (addressId == null) {
             APIResponse apiResponse = new APIResponse();
-            apiResponse.setResult(APIResult.wrongParameters());
+            apiResponse.setResult(APIResult.wrongParameters("addressId", addressId));
             return apiResponse.toJson();
         } else {
-            user.removeAddress(new Address(addressId));
+            user.removeAddress(CollectePoint.getById(addressId));
+            user.save();
             APIResponse apiResponse = new APIResponse();
             apiResponse.setResult(APIResult.success());
             return apiResponse.toJson();
@@ -218,10 +236,11 @@ public class API extends HttpServlet {
     private String addNotification(String notificationId, User user) {
         if (notificationId == null) {
             APIResponse apiResponse = new APIResponse();
-            apiResponse.setResult(APIResult.wrongParameters());
+            apiResponse.setResult(APIResult.wrongParameters("notificationId", notificationId));
             return apiResponse.toJson();
         } else {
             user.addNotification(new Notification(notificationId));
+            user.save();
             APIResponse apiResponse = new APIResponse();
             apiResponse.setResult(APIResult.success());
             return apiResponse.toJson();
@@ -231,10 +250,11 @@ public class API extends HttpServlet {
     private String removeNotification(String notificationId, User user) {
         if (notificationId == null) {
             APIResponse apiResponse = new APIResponse();
-            apiResponse.setResult(APIResult.wrongParameters());
+            apiResponse.setResult(APIResult.wrongParameters("notificationId", notificationId));
             return apiResponse.toJson();
         } else {
             user.removeNotification(new Notification(notificationId));
+            user.save();
             APIResponse apiResponse = new APIResponse();
             apiResponse.setResult(APIResult.success());
             return apiResponse.toJson();
@@ -242,14 +262,10 @@ public class API extends HttpServlet {
     }
 
     private String addressesList(User user) {
-        Set<Address> addressesList = user.getAddresses();
-        Set<CollectePoint> collectePoints = new HashSet<>();
-        for (Address current : addressesList) {
-            collectePoints.add(current.getCollectePoint());
-        }
+        Set<CollectePoint> addressesList = user.getAddresses();
         APIResponse apiResponse = new APIResponse();
         apiResponse.setResult(APIResult.success());
-        apiResponse.setData(collectePoints);
+        apiResponse.setData(addressesList);
         return apiResponse.toJson();
     }
 

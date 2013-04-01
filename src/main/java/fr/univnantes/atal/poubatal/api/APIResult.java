@@ -24,8 +24,8 @@ public class APIResult {
         return new APIResult(1, "Service dosen't exist.", "Service '" + service + "' dosen't exist.");
     }
 
-    public static APIResult wrongParameters() {
-        return new APIResult(2, "One or more parameters are wrong.");
+    public static APIResult wrongParameters(String name, String value) {
+        return new APIResult(2, "One or more parameters are wrong.", "Wrong parameter : '" + name + "' = '" + value + "'.");
     }
 
     public static APIResult jsonException() {

@@ -3,13 +3,13 @@ package fr.univnantes.atal.poubatal.opendata;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- *
- * @author sildar
- */
-class CollectableDays extends ArrayList<String> {
+@Deprecated
+public class CollectableDays extends ArrayList<String> {
 
-    CollectableDays(String dayString) {
+    private CollectableDays() {
+    }
+
+    public CollectableDays(String dayString) {
 
         dayString = dayString.replaceAll("et", " ");
         dayString = dayString.replaceAll("-", " ");

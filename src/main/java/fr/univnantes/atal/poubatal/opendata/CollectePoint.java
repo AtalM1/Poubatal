@@ -1,20 +1,28 @@
 package fr.univnantes.atal.poubatal.opendata;
 
+import com.googlecode.objectify.annotation.Embed;
+import com.googlecode.objectify.annotation.Serialize;
 import fr.univnantes.atal.poubatal.Tools;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-/**
- *
- * @author sildar
- */
-public class CollectePoint {
+@Embed
+public class CollectePoint implements Comparable<CollectePoint> {
 
     private String id;
     private String streetName;
     private String numberDescription;
     private String zoneName;
     private String city;
-    private CollectableDays yellowBin;
-    private CollectableDays blueBin;
+    @Serialize
+    private List<String> yellowBin;
+    @Serialize
+    private List<String> blueBin;
+
+    private CollectePoint() {
+    }
 
     public CollectePoint(String csvRow) {
 
@@ -26,9 +34,23 @@ public class CollectePoint {
         numberDescription = columns[9].replaceAll("\"", "");
         zoneName = columns[13].replaceAll("\"", "");
 
-        yellowBin = new CollectableDays(columns[11].replaceAll("\"", ""));
-        blueBin = new CollectableDays(columns[10].replaceAll("\"", ""));
+        yellowBin = parseCollectableDays(columns[11].replaceAll("\"", ""));
+        blueBin = parseCollectableDays(columns[10].replaceAll("\"", ""));
 
+    }
+    
+    private List<String> parseCollectableDays(String dayString) {
+        List<String> collectableDays = new ArrayList<>();
+        dayString = dayString.replaceAll("et", " ");
+        dayString = dayString.replaceAll("-", " ");
+        dayString = dayString.replaceAll("\\s+", " ");
+
+        if (!dayString.contains("mixte")) {
+            collectableDays.addAll(Arrays.asList(dayString.split(" ")));
+        } else {
+            //handle mixtes ?
+        }
+        return collectableDays;
     }
 
     public boolean filter(String address) {
@@ -42,6 +64,24 @@ public class CollectePoint {
             }
         }
         return true;
+    }
+
+    /**
+     * Renvoi le CollectePoint correspondant à l'ID
+     *
+     * @param addressId L'ID du CollectePoint dans l'OpenData
+     * @return Le CollectePoint correspondant, ou null
+     */
+    public static CollectePoint getById(String addressId) {
+        CollectePoint point = null;
+        LoopCollectePoint:
+        for (CollectePoint current : DataManager.getInstance().getPoints()) {
+            if (current.getId().equals(addressId)) {
+                point = current;
+                break LoopCollectePoint;
+            }
+        }
+        return point;
     }
 
     @Override
@@ -85,15 +125,15 @@ public class CollectePoint {
     /**
      * @return the yellowBin
      */
-    public CollectableDays getYellowBin() {
-        return yellowBin;
+    public List<String> getYellowBin() {
+        return Collections.unmodifiableList(yellowBin);
     }
 
     /**
      * @return the blueBin
      */
-    public CollectableDays getBlueBin() {
-        return blueBin;
+    public List<String> getBlueBin() {
+        return Collections.unmodifiableList(blueBin);
     }
 
     /**
@@ -101,5 +141,10 @@ public class CollectePoint {
      */
     public String getId() {
         return id;
+    }
+
+    @Override
+    public int compareTo(CollectePoint t) {
+        return id.compareTo(t.id);
     }
 }

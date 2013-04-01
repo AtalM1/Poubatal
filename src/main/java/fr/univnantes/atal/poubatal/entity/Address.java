@@ -5,6 +5,7 @@ import fr.univnantes.atal.poubatal.opendata.CollectePoint;
 import fr.univnantes.atal.poubatal.opendata.DataManager;
 
 @Embed
+@Deprecated
 public class Address implements Comparable<Address> {
 
     private String id;

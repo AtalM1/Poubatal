@@ -7,7 +7,7 @@ public class Notification implements Comparable<Notification> {
 
     private String id;
 
-    public Notification() {}
+    private Notification() {}
 
     public Notification(String id) {
         this.id = id;
@@ -15,7 +15,8 @@ public class Notification implements Comparable<Notification> {
 
     @Override
     public int compareTo(Notification t) {
-        return this.getId().compareToIgnoreCase(t.getId());
+        System.out.println(this.id + " COMPARED TO " + t.id + " -> " + this.id.compareToIgnoreCase(t.id));
+        return this.id.compareToIgnoreCase(t.id);
     }
 
     /**
