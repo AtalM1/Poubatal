@@ -17,10 +17,6 @@ public class APIResponse {
         map = new HashMap();
     }
 
-    public APIResponse(Map map) {
-        this.map = map;
-    }
-
     public String toJson() {
         ObjectMapper mapper = new ObjectMapper();   // Création du mapper json
         try {
@@ -30,18 +26,12 @@ public class APIResponse {
             return "{\"result\":{\"id\":" + result.getId() + ",\"message\":\"" + result.getMessage() + "\",\"detail\":\"" + ex.getMessage() + "\"}}";
         }
     }
-
-    /**
-     * @return the map
-     */
-    public Map getMap() {
-        return map;
+    
+    public void setResult(APIResult result) {
+        map.put("result", result);
     }
-
-    /**
-     * @param map the map to set
-     */
-    public void setMap(Map map) {
-        this.map = map;
+    
+    public void setData(Object data) {
+        map.put("data", data);
     }
 }

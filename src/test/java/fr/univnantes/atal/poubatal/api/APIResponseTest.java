@@ -20,7 +20,7 @@ public class APIResponseTest {
         System.out.println("Test toJson");
         APIResponse instance = new APIResponse();
         APIResult apiResult = APIResult.nonExistentService("Test detail");
-        instance.getMap().put("result", apiResult);
+        instance.setResult(apiResult);
         String expResult = "{\"result\":{\"id\":" + apiResult.getId() + ",\"message\":\"" + apiResult.getMessage() + "\",\"detail\":\"" + apiResult.getDetail() + "\"}}";
         String result = instance.toJson();
         assertEquals(expResult, result);

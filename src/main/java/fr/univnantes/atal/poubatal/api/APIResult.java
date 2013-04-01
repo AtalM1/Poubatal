@@ -1,9 +1,5 @@
 package fr.univnantes.atal.poubatal.api;
 
-/**
- *
- * @author Noemi
- */
 public class APIResult {
 
     private int id;
@@ -19,7 +15,7 @@ public class APIResult {
         this.message = message;
         this.detail = detail;
     }
-
+    
     public static APIResult success() {
         return new APIResult(0, "Success.");
     }
@@ -56,7 +52,7 @@ public class APIResult {
      */
     public String getMessage() {
         return message;
-    }
+}
 
     /**
      * @return the detail

@@ -43,12 +43,12 @@ public class API extends HttpServlet {
                     requestDispatcher(request, out, user);
                 } else {
                     APIResponse apiResponse = new APIResponse();
-                    apiResponse.getMap().put("result", APIResult.authenticationRequired(accessToken));
+                    apiResponse.setResult(APIResult.authenticationRequired(accessToken));
                     out.println(apiResponse.toJson());
                 }
             } else {
                 APIResponse apiResponse = new APIResponse();
-                apiResponse.getMap().put("result", APIResult.wrongParameters());
+                apiResponse.setResult(APIResult.wrongParameters());
                 out.println(apiResponse.toJson());
             }
         }
@@ -106,7 +106,7 @@ public class API extends HttpServlet {
                         break;
                     default:
                         APIResponse apiResponse = new APIResponse();
-                        apiResponse.getMap().put("result", APIResult.httpMethodNotAllowed(method, pathInfo));
+                        apiResponse.setResult(APIResult.httpMethodNotAllowed(method, pathInfo));
                         out.println(apiResponse.toJson());
                         break;
                 }
@@ -124,7 +124,7 @@ public class API extends HttpServlet {
                         break;
                     default:
                         APIResponse apiResponse = new APIResponse();
-                        apiResponse.getMap().put("result", APIResult.httpMethodNotAllowed(method, pathInfo));
+                        apiResponse.setResult(APIResult.httpMethodNotAllowed(method, pathInfo));
                         out.println(apiResponse.toJson());
                         break;
                 }
@@ -142,7 +142,7 @@ public class API extends HttpServlet {
                         break;
                     default:
                         APIResponse apiResponse = new APIResponse();
-                        apiResponse.getMap().put("result", APIResult.httpMethodNotAllowed(method, pathInfo));
+                        apiResponse.setResult(APIResult.httpMethodNotAllowed(method, pathInfo));
                         out.println(apiResponse.toJson());
                         break;
                 }
@@ -154,7 +154,7 @@ public class API extends HttpServlet {
                         break;
                     default:
                         APIResponse apiResponse = new APIResponse();
-                        apiResponse.getMap().put("result", APIResult.httpMethodNotAllowed(method, pathInfo));
+                        apiResponse.setResult(APIResult.httpMethodNotAllowed(method, pathInfo));
                         out.println(apiResponse.toJson());
                         break;
                 }
@@ -162,7 +162,7 @@ public class API extends HttpServlet {
 
             default:
                 APIResponse apiResponse = new APIResponse();
-                apiResponse.getMap().put("result", APIResult.nonExistentService(pathInfo));
+                apiResponse.setResult(APIResult.nonExistentService(pathInfo));
                 out.println(apiResponse.toJson());
                 break;
         }
@@ -171,12 +171,12 @@ public class API extends HttpServlet {
     private String directory(String address) {
         if (address == null) {
             APIResponse apiResponse = new APIResponse();
-            apiResponse.getMap().put("result", APIResult.wrongParameters());            
+            apiResponse.setResult(APIResult.wrongParameters());            
             return apiResponse.toJson();
         } else {
             APIResponse apiResponse = new APIResponse();
-            apiResponse.getMap().put("result", APIResult.success());
-            apiResponse.getMap().put("data", DataManager.getInstance().getPoints());
+            apiResponse.setResult(APIResult.success());
+            apiResponse.setData(DataManager.getInstance().getPoints());
             return apiResponse.toJson();
         }
     }
@@ -184,12 +184,12 @@ public class API extends HttpServlet {
     private String addAddress(String addressId, User user) {
         if (addressId == null) {
             APIResponse apiResponse = new APIResponse();
-            apiResponse.getMap().put("result", APIResult.wrongParameters());
+            apiResponse.setResult(APIResult.wrongParameters());
             return apiResponse.toJson();
         } else {
             user.addAddress(new Address(addressId));
             APIResponse apiResponse = new APIResponse();
-            apiResponse.getMap().put("result", APIResult.success());
+            apiResponse.setResult(APIResult.success());
             return apiResponse.toJson();
         }
     }
@@ -197,12 +197,12 @@ public class API extends HttpServlet {
     private String removeAddress(String addressId, User user) {
         if (addressId == null) {
             APIResponse apiResponse = new APIResponse();
-            apiResponse.getMap().put("result", APIResult.wrongParameters());
+            apiResponse.setResult(APIResult.wrongParameters());
             return apiResponse.toJson();
         } else {
             user.removeAddress(new Address(addressId));
             APIResponse apiResponse = new APIResponse();
-            apiResponse.getMap().put("result", APIResult.success());
+            apiResponse.setResult(APIResult.success());
             return apiResponse.toJson();
         }
     }
@@ -210,19 +210,19 @@ public class API extends HttpServlet {
     private String deleteAccount(User user) {
         user.deleteAccount();
         APIResponse apiResponse = new APIResponse();
-        apiResponse.getMap().put("result", APIResult.success());
+        apiResponse.setResult(APIResult.success());
         return apiResponse.toJson();
     }
 
     private String addNotification(String notificationId, User user) {
         if (notificationId == null) {
             APIResponse apiResponse = new APIResponse();
-            apiResponse.getMap().put("result", APIResult.wrongParameters());
+            apiResponse.setResult(APIResult.wrongParameters());
             return apiResponse.toJson();
         } else {
             user.addNotification(new Notification(notificationId));
             APIResponse apiResponse = new APIResponse();
-            apiResponse.getMap().put("result", APIResult.success());
+            apiResponse.setResult(APIResult.success());
             return apiResponse.toJson();
         }
     }
@@ -230,12 +230,12 @@ public class API extends HttpServlet {
     private String removeNotification(String notificationId, User user) {
         if (notificationId == null) {
             APIResponse apiResponse = new APIResponse();
-            apiResponse.getMap().put("result", APIResult.wrongParameters());
+            apiResponse.setResult(APIResult.wrongParameters());
             return apiResponse.toJson();
         } else {
             user.removeNotification(new Notification(notificationId));
             APIResponse apiResponse = new APIResponse();
-            apiResponse.getMap().put("result", APIResult.success());
+            apiResponse.setResult(APIResult.success());
             return apiResponse.toJson();
         }
     }
@@ -247,16 +247,16 @@ public class API extends HttpServlet {
             collectePoints.add(current.getCollectePoint());
         }
         APIResponse apiResponse = new APIResponse();
-        apiResponse.getMap().put("result", APIResult.success());
-        apiResponse.getMap().put("data", collectePoints);
+        apiResponse.setResult(APIResult.success());
+        apiResponse.setData(collectePoints);
         return apiResponse.toJson();
     }
 
     private String notificationList(User user) {
         Set<Notification> notificationsList = user.getNotifications();
         APIResponse apiResponse = new APIResponse();
-        apiResponse.getMap().put("result", APIResult.success());
-        apiResponse.getMap().put("data", notificationsList);
+        apiResponse.setResult(APIResult.success());
+        apiResponse.setData(notificationsList);
         return apiResponse.toJson();
     }
 }
