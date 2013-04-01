@@ -24,7 +24,7 @@ $('#notificationsList').click(function() {
 
 $('#directory').click(function() {
     var authResult = gapi.auth.getToken();
-    var address = "toto";
+    var address = $('#input-directory').val();
     console.log(authResult);
     console.log(authResult.access_token);
     apiDirectory(authResult.access_token, address); 

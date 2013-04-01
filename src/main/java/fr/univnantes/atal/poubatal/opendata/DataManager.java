@@ -8,6 +8,12 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.net.URL;
 import java.net.MalformedURLException;
+import java.util.AbstractMap;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * DataManager is a Singleton
@@ -20,7 +26,7 @@ public class DataManager {
     private List<CollectePoint> points;
 
     protected DataManager() {
-        points = new ArrayList<CollectePoint>();
+        points = new ArrayList<>();
         try {
             urlToFetch = new URL("http://data.nantes.fr/api/publication/"
                     + "JOURS_COLLECTE_DECHETS_VDN/JOURS_COLLECTE_DECHETS_VDN_STBL/content/"
@@ -36,6 +42,33 @@ public class DataManager {
             instance.updateData();
         }
         return instance;
+    }
+    
+    public List<CollectePoint> getPoints(String filter) {
+        // Création d'une liste de couple
+        List<Map.Entry<Double,CollectePoint>> scores = new ArrayList<>();
+        // Pour chaque adresse, on calcule son score par rapport au filtre
+        for (CollectePoint current : getPoints()) {
+            double score = current.filter(filter);
+            if (score > 0.4) {
+                scores.add(new AbstractMap.SimpleEntry<>(score, current));
+            }
+        }
+        // On trie la collection par ordre de score
+        Collections.sort(scores, new Comparator<Map.Entry<Double, CollectePoint>>() {
+            @Override
+            public int compare(Entry<Double, CollectePoint> o1, Entry<Double, CollectePoint> o2) {
+                return o2.getKey().compareTo(o1.getKey());
+            }
+        });
+        List<CollectePoint> filteredPoints = new ArrayList<>();
+        // On recopie la liste triée dans la liste de retour
+        for (Map.Entry<Double,CollectePoint> entry : scores) {
+            filteredPoints.add(entry.getValue());
+        }
+        // On récupère au maximum 10 enregistrements
+        int range = Math.min(filteredPoints.size(), 10);
+        return filteredPoints.subList(0, range);
     }
 
     public List<CollectePoint> getPoints() {

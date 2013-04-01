@@ -1,5 +1,6 @@
 package fr.univnantes.atal.poubatal.api;
 
+import java.text.Normalizer;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -18,6 +19,8 @@ public class APIResponseTest {
     @Test
     public void testToJson() {
         System.out.println("Test toJson");
+        String toto = "étudîationèf";
+        System.out.println(Normalizer.normalize(toto, Normalizer.Form.NFD).replaceAll("[\u0300-\u036F]", ""));
         APIResponse instance = new APIResponse();
         APIResult apiResult = APIResult.nonExistentService("Test detail");
         instance.setResult(apiResult);

@@ -169,14 +169,15 @@ public class API extends HttpServlet {
     }
 
     private String directory(String address) {
-        if (address == null) {
+        if (address == null || address.trim().isEmpty()) {
             APIResponse apiResponse = new APIResponse();
-            apiResponse.setResult(APIResult.wrongParameters());            
+            apiResponse.setResult(APIResult.success());
+            apiResponse.setData(DataManager.getInstance().getPoints());
             return apiResponse.toJson();
         } else {
             APIResponse apiResponse = new APIResponse();
             apiResponse.setResult(APIResult.success());
-            apiResponse.setData(DataManager.getInstance().getPoints());
+            apiResponse.setData(DataManager.getInstance().getPoints(address));
             return apiResponse.toJson();
         }
     }

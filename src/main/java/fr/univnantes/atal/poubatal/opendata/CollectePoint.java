@@ -1,5 +1,7 @@
 package fr.univnantes.atal.poubatal.opendata;
 
+import fr.univnantes.atal.poubatal.Tools;
+
 /**
  *
  * @author sildar
@@ -27,6 +29,20 @@ public class CollectePoint {
         yellowBin = new CollectableDays(columns[11].replaceAll("\"", ""));
         blueBin = new CollectableDays(columns[10].replaceAll("\"", ""));
 
+    }
+
+    public double filter(String address) {
+        String concat = streetName + city + zoneName;
+        concat = Tools.normalizeString(concat);
+        address = Tools.normalizeString(address);
+        String[] filters = address.split(" ");
+        int cpt = 0;
+        for (String filter : filters) {
+            if (concat.contains(filter)) {
+                cpt++;
+            }
+        }
+        return cpt / filters.length;
     }
 
     @Override
