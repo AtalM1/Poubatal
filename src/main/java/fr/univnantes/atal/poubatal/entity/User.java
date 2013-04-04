@@ -1,14 +1,14 @@
 package fr.univnantes.atal.poubatal.entity;
 
-import java.util.Collections;
-import java.util.Set;
-import java.util.TreeSet;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import fr.univnantes.atal.poubatal.Oauth;
 import static fr.univnantes.atal.poubatal.datastore.OfyService.ofy;
 import fr.univnantes.atal.poubatal.opendata.CollectePoint;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Entity
 public class User {

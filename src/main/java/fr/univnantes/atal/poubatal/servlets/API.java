@@ -22,8 +22,9 @@ public class API extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
+     * <code>GET</code>,
+     * <code>POST</code>,
+     * <code>DELETE</code> methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -81,6 +82,22 @@ public class API extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+
+    }
+
+    /**
+     * Handles the HTTP
+     * <code>DELETE</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
 
     /**
@@ -95,7 +112,14 @@ public class API extends HttpServlet {
 
     private void requestDispatcher(HttpServletRequest request, PrintWriter out, User user) {
         String pathInfo = request.getPathInfo().substring(1).toLowerCase();
-        String method = request.getMethod().toUpperCase();
+        String method = request.getMethod();
+        if (method.equalsIgnoreCase("POST")) {
+            String methodParam = request.getParameter("method");
+            if (methodParam != null) {
+                method = methodParam;
+            }
+        }
+        method = method.toUpperCase();
         switch (pathInfo) {
             case "directory":
                 switch (method) {
@@ -117,16 +141,7 @@ public class API extends HttpServlet {
                     case "GET":
                         out.println(addressesList(user));
                         break;
-                    default:
-                        APIResponse apiResponse = new APIResponse();
-                        apiResponse.setResult(APIResult.httpMethodNotAllowed(method, pathInfo));
-                        out.println(apiResponse.toJson());
-                        break;
-                }
-                break;
-            case "delete-address":
-                switch (method) {
-                    case "POST":
+                    case "DELETE":
                         out.println(removeAddress(request.getParameter("addressId"), user));
                         break;
                     default:
@@ -144,16 +159,7 @@ public class API extends HttpServlet {
                     case "GET":
                         out.println(notificationList(user));
                         break;
-                    default:
-                        APIResponse apiResponse = new APIResponse();
-                        apiResponse.setResult(APIResult.httpMethodNotAllowed(method, pathInfo));
-                        out.println(apiResponse.toJson());
-                        break;
-                }
-                break;
-            case "delete-notification":
-                switch (method) {
-                    case "POST":
+                    case "DELETE":
                         out.println(removeNotification(request.getParameter("notificationId"), user));
                         break;
                     default:
@@ -163,9 +169,9 @@ public class API extends HttpServlet {
                         break;
                 }
                 break;
-            case "delete-user":
+            case "user":
                 switch (method) {
-                    case "POST":
+                    case "DELETE":
                         out.println(deleteAccount(user));
                         break;
                     default:

@@ -1,18 +1,11 @@
 // ACCOUNT
 function apiAccount(method, accessToken) {
     method = method.toUpperCase();
-    var fullUrl;
-    if (method === 'DELETE') {
-        method = 'POST';
-        fullUrl = url + '/api/delete-user';
-    } else {
-        fullUrl = url + '/api/user';
-    }
     $.ajax({
-        url: fullUrl,
-        type: method,
+        url: url + '/api/user',
+        type: 'POST',
         dataType: 'json',
-        data: {oauth: accessToken},
+        data: {oauth: accessToken, method: method},
         success: function(response) {
             console.log(response);
         }
@@ -36,18 +29,11 @@ function apiDirectory(method, accessToken, address) {
 // NOTIFICATION
 function apiNotification(method, accessToken, notification) {
     method = method.toUpperCase();
-    var fullUrl;
-    if (method === 'DELETE') {
-        method = 'POST';
-        fullUrl = url + '/api/delete-notification';
-    } else {
-        fullUrl = url + '/api/notification';
-    }
     $.ajax({
-        url: fullUrl,
-        type: method,
+        url: url + '/api/notification',
+        type: 'POST',
         dataType: 'json',
-        data: {oauth: accessToken, notificationId: notification},
+        data: {oauth: accessToken, notificationId: notification, method: method},
         success: function(response) {
             console.log(response);
         }
@@ -57,18 +43,11 @@ function apiNotification(method, accessToken, notification) {
 // ADDRESS
 function apiAddress(method, accessToken, address) {
     method = method.toUpperCase();
-    var fullUrl;
-    if (method === 'DELETE') {
-        method = 'POST';
-        fullUrl = url + '/api/delete-address';
-    } else {
-        fullUrl = url + '/api/address';
-    }
     $.ajax({
-        url: fullUrl,
-        type: method,
+        url: url + '/api/address',
+        type: 'POST',
         dataType: 'json',
-        data: {oauth: accessToken, addressId: address},
+        data: {oauth: accessToken, addressId: address, method: method},
         success: function(response) {
             console.log(response);
         }
