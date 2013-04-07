@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
@@ -55,11 +56,13 @@ public class User {
 
         // Récupération du User avec l'ID Google
         PersistenceManager pm = PMF.get().getPersistenceManager();
-        User user = pm.getObjectById(User.class, id);
-        if (user == null) {
-            user = new User(id, email);
-        }
-        User detached = pm.detachCopy(user);
+        User detached;
+        try {
+            User user = pm.getObjectById(User.class, id);
+            detached = pm.detachCopy(user);
+        } catch (JDOObjectNotFoundException e) {
+            detached = new User(id, email);
+        }        
         return detached;
     }
 
