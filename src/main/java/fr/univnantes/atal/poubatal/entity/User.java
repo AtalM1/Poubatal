@@ -1,6 +1,6 @@
 package fr.univnantes.atal.poubatal.entity;
 
-import fr.univnantes.atal.poubatal.Oauth;
+import fr.univnantes.atal.poubatal.tools.Oauth;
 import fr.univnantes.atal.poubatal.datastore.PMF;
 import fr.univnantes.atal.poubatal.opendata.CollectePoint;
 import java.util.Collections;
@@ -110,6 +110,7 @@ public class User {
 
     public void deleteAccount() {
         PersistenceManager pm = PMF.get().getPersistenceManager();
+        pm.makePersistent(this);
         pm.deletePersistent(this);
     }
 }

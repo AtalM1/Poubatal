@@ -7,14 +7,12 @@ $('#connect').click(function() {
 });
 $('#delete-account').click(function() {
     var authResult = gapi.auth.getToken();
-    apiAccount('DELETE', authResult.access_token);
+    apiAccount(authResult.access_token);
 });
 
 // DIRECTORY
 $('#directory').click(function() {
-    var authResult = gapi.auth.getToken();
-    var address = $('#input-directory').val();
-    apiDirectory('GET', authResult.access_token, address);
+    apiDirectory();
 });
 
 // NOTIFICATION
@@ -45,7 +43,6 @@ $('#add-address').click(function() {
 });
 $('#delete-address').click(function() {
     var authResult = gapi.auth.getToken();
-    console.log(authResult);
     var address = $('#input-address').val();
     apiAddress('DELETE', authResult.access_token, address);
 });

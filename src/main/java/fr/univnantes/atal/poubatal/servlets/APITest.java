@@ -1,7 +1,5 @@
 package fr.univnantes.atal.poubatal.servlets;
 
-import fr.univnantes.atal.poubatal.api.APIResult;
-import fr.univnantes.atal.poubatal.api.APIResponse;
 import fr.univnantes.atal.poubatal.entity.Notification;
 import fr.univnantes.atal.poubatal.entity.Test;
 import fr.univnantes.atal.poubatal.entity.User;
@@ -19,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Noemi
  */
-public class API extends HttpServlet {
+public class APITest extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -200,7 +198,7 @@ public class API extends HttpServlet {
         } else {
             APIResponse apiResponse = new APIResponse();
             apiResponse.setResult(APIResult.success());
-            apiResponse.setData(DataManager.getInstance().getPoints(address, 15));
+            apiResponse.setData(DataManager.getInstance().getPoints());
             return apiResponse.toJson();
         }
     }

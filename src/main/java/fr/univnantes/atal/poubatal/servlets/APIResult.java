@@ -1,4 +1,4 @@
-package fr.univnantes.atal.poubatal.api;
+package fr.univnantes.atal.poubatal.servlets;
 
 public class APIResult {
 

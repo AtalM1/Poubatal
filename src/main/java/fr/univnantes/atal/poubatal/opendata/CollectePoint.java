@@ -1,7 +1,7 @@
 package fr.univnantes.atal.poubatal.opendata;
 
 import com.google.appengine.api.datastore.Key;
-import fr.univnantes.atal.poubatal.Tools;
+import fr.univnantes.atal.poubatal.tools.Tools;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,7 +42,7 @@ public class CollectePoint implements Comparable<CollectePoint> {
         city = columns[2].replaceAll("\"", "");
         numberDescription = columns[9].replaceAll("\"", "");
         zoneName = columns[13].replaceAll("\"", "");
-        id = Tools.normalizeString(streetName) + " " + Tools.normalizeString(numberDescription);
+        id = Tools.fullNormalizeString(streetName) + " " + Tools.fullNormalizeString(numberDescription);
 
         yellowBin = parseCollectableDays(columns[11].replaceAll("\"", ""));
         blueBin = parseCollectableDays(columns[10].replaceAll("\"", ""));
@@ -61,19 +61,6 @@ public class CollectePoint implements Comparable<CollectePoint> {
             //handle mixtes ?
         }
         return collectableDays;
-    }
-
-    public boolean filter(String address) {
-        String concat = streetName + " " + city + " " + zoneName;
-        concat = Tools.normalizeString(concat);
-        address = Tools.normalizeString(address);
-        String[] filters = address.split(" ");
-        for (String filter : filters) {
-            if (!concat.contains(filter)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     /**

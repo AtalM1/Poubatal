@@ -1,7 +1,8 @@
-package fr.univnantes.atal.poubatal;
+package fr.univnantes.atal.poubatal.tools;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.univnantes.atal.poubatal.Constants;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Map;

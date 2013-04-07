@@ -1,11 +1,10 @@
 // ACCOUNT
-function apiAccount(method, accessToken) {
-    method = method.toUpperCase();
+function apiAccount(accessToken) {
     $.ajax({
-        url: url + '/api/user',
+        url: url + '/api/account',
         type: 'POST',
         dataType: 'json',
-        data: {oauth: accessToken, method: method},
+        data: {oauth: accessToken, method: "delete"},
         success: function(response) {
             console.log(response);
         }
@@ -13,13 +12,11 @@ function apiAccount(method, accessToken) {
 }
 
 // DIRECTORY
-function apiDirectory(method, accessToken, address) {
-    method = method.toUpperCase();    
+function apiDirectory() {
     $.ajax({
         url: url + '/api/directory',
-        type: method,
+        type: "GET",
         dataType: 'json',
-        data: {oauth: accessToken, address: address},
         success: function(response) {
             console.log(response);
         }
@@ -29,11 +26,24 @@ function apiDirectory(method, accessToken, address) {
 // NOTIFICATION
 function apiNotification(method, accessToken, notification) {
     method = method.toUpperCase();
+    var type;
+    var data;
+    if (method === "DELETE") {
+        type = "POST";
+        data = {oauth: accessToken, notification: notification, method: method};
+    } else {
+        type = method;
+        if (method === "GET") {
+            data = {oauth: accessToken};
+        } else {
+            data = {oauth: accessToken, notification: notification};
+        }
+    }
     $.ajax({
         url: url + '/api/notification',
-        type: 'POST',
+        type: type,
         dataType: 'json',
-        data: {oauth: accessToken, notificationId: notification, method: method},
+        data: data,
         success: function(response) {
             console.log(response);
         }
@@ -43,11 +53,24 @@ function apiNotification(method, accessToken, notification) {
 // ADDRESS
 function apiAddress(method, accessToken, address) {
     method = method.toUpperCase();
+    var type;
+    var data;
+    if (method === "DELETE") {
+        type = "POST";
+        data = {oauth: accessToken, address: address, method: method};
+    } else {
+        type = method;
+        if (method === "GET") {
+            data = {oauth: accessToken};
+        } else {
+            data = {oauth: accessToken, address: address};
+        }
+    }
     $.ajax({
         url: url + '/api/address',
-        type: 'POST',
+        type: type,
         dataType: 'json',
-        data: {oauth: accessToken, addressId: address, method: method},
+        data: data,
         success: function(response) {
             console.log(response);
         }

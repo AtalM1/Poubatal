@@ -1,5 +1,7 @@
 package fr.univnantes.atal.poubatal.api;
 
+import fr.univnantes.atal.poubatal.servlets.APIResponse;
+import fr.univnantes.atal.poubatal.servlets.APIResult;
 import java.text.Normalizer;
 import org.junit.Test;
 import static org.junit.Assert.*;

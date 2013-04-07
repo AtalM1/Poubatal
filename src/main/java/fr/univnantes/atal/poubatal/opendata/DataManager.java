@@ -8,12 +8,8 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.net.URL;
 import java.net.MalformedURLException;
-import java.util.AbstractMap;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * DataManager is a Singleton
@@ -23,10 +19,10 @@ public class DataManager {
     private static final Logger log = Logger.getLogger(DataManager.class.getName());
     private static DataManager instance = null;
     private URL urlToFetch;
-    private List<CollectePoint> points;
+    private Set<CollectePoint> points;
 
     protected DataManager() {
-        points = new ArrayList<>();
+        points = new HashSet<>();
         try {
             urlToFetch = new URL("http://data.nantes.fr/api/publication/"
                     + "JOURS_COLLECTE_DECHETS_VDN/JOURS_COLLECTE_DECHETS_VDN_STBL/content/"
@@ -44,35 +40,7 @@ public class DataManager {
         return instance;
     }
     
-    /**
-     * 
-     * Renvoi les 'range' premières adresses filtrées
-     */
-    public List<CollectePoint> getPoints(String filter, int range) {
-        List<CollectePoint> filteredPoints = new ArrayList<>();
-        int cpt = 1;
-        pointsList:
-        for (CollectePoint current : getPoints()) {
-            if(current.filter(filter)) {
-                filteredPoints.add(current);
-                cpt++;
-                if (range != 0 && cpt > range) {
-                    break pointsList;
-                }
-            }
-        }
-        return filteredPoints;
-    }
-    
-    /**
-     * 
-     * Renvoi toutes les adresses filtrées 
-     */
-    public List<CollectePoint> getPoints(String filter) {
-        return getPoints(filter, 0);
-    }
-
-    public List<CollectePoint> getPoints() {
+    public Set<CollectePoint> getPoints() {
         if (instance.points.isEmpty()) {
             // something goes wrong during the initialization
             instance.updateData();

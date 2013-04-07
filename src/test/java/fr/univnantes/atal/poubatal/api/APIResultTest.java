@@ -1,5 +1,6 @@
 package fr.univnantes.atal.poubatal.api;
 
+import fr.univnantes.atal.poubatal.servlets.APIResult;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
