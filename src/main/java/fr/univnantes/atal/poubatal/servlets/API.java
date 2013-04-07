@@ -125,10 +125,6 @@ public class API extends HttpServlet {
             case "directory":
                 switch (method) {
                     case "GET":
-                        Test test = new Test("id", "name");
-                        test.makePersistent();
-                        Test test2 = Test.load("id");
-                        System.out.println(test2.name);
                         out.println(directory(request.getParameter("address")));
                         break;
                     default:

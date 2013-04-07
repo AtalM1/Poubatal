@@ -1,24 +1,35 @@
 package fr.univnantes.atal.poubatal.opendata;
 
-import com.googlecode.objectify.annotation.Embed;
-import com.googlecode.objectify.annotation.Serialize;
+import com.google.appengine.api.datastore.Key;
 import fr.univnantes.atal.poubatal.Tools;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 
-@Embed
+@PersistenceCapable
 public class CollectePoint implements Comparable<CollectePoint> {
 
+    @PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    private Key key; // Unused key
+    @Persistent
     private String id;
+    @Persistent
     private String streetName;
+    @Persistent
     private String numberDescription;
+    @Persistent
     private String zoneName;
+    @Persistent
     private String city;
-    @Serialize
+    @Persistent
     private List<String> yellowBin;
-    @Serialize
+    @Persistent
     private List<String> blueBin;
 
     private CollectePoint() {
@@ -27,18 +38,17 @@ public class CollectePoint implements Comparable<CollectePoint> {
     public CollectePoint(String csvRow) {
 
         String[] columns = csvRow.split(",");
-
-        id = columns[0].replaceAll("\"", "");
         streetName = columns[1].replaceAll("\"", "");
         city = columns[2].replaceAll("\"", "");
         numberDescription = columns[9].replaceAll("\"", "");
         zoneName = columns[13].replaceAll("\"", "");
+        id = Tools.normalizeString(streetName) + " " + Tools.normalizeString(numberDescription);
 
         yellowBin = parseCollectableDays(columns[11].replaceAll("\"", ""));
         blueBin = parseCollectableDays(columns[10].replaceAll("\"", ""));
 
     }
-    
+
     private List<String> parseCollectableDays(String dayString) {
         List<String> collectableDays = new ArrayList<>();
         dayString = dayString.replaceAll("et", " ");
@@ -136,15 +146,12 @@ public class CollectePoint implements Comparable<CollectePoint> {
         return Collections.unmodifiableList(blueBin);
     }
 
-    /**
-     * @return the id
-     */
-    public String getId() {
-        return id;
-    }
-
     @Override
     public int compareTo(CollectePoint t) {
         return id.compareTo(t.id);
+    }
+    
+    public String getId() {
+        return id;
     }
 }

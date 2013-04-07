@@ -1,21 +1,27 @@
 package fr.univnantes.atal.poubatal.entity;
 
-import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
 import fr.univnantes.atal.poubatal.Oauth;
-import static fr.univnantes.atal.poubatal.datastore.OfyService.ofy;
+import fr.univnantes.atal.poubatal.datastore.PMF;
 import fr.univnantes.atal.poubatal.opendata.CollectePoint;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import javax.jdo.PersistenceManager;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 
-@Entity
+@PersistenceCapable
 public class User {
 
-    @Id
+    @PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private String id;
+    @Persistent(defaultFetchGroup = "true")
     private Set<CollectePoint> addresses;
+    @Persistent(defaultFetchGroup = "true")
     private Set<Notification> notifications;
 
     private User() {
@@ -28,9 +34,14 @@ public class User {
         notifications.add(new Notification(email));
     }
 
-    // save a User in the DataStore
+    // Make the user persistent
     public void save() {
-        ofy().save().entity(this).now();
+        PersistenceManager pm = PMF.get().getPersistenceManager();
+        try {
+            pm.makePersistent(this);
+        } finally {
+            pm.close();
+        }
     }
 
     public static User load(String accessToken) {
@@ -43,12 +54,13 @@ public class User {
         String email = userData.get("email");
 
         // Récupération du User avec l'ID Google
-        User user = ofy().load().type(User.class).id(id).get();
+        PersistenceManager pm = PMF.get().getPersistenceManager();
+        User user = pm.getObjectById(User.class, id);
         if (user == null) {
             user = new User(id, email);
-            user.save();
         }
-        return user;
+        User detached = pm.detachCopy(user);
+        return detached;
     }
 
     public Set<CollectePoint> getAddresses() {
@@ -94,6 +106,7 @@ public class User {
     }
 
     public void deleteAccount() {
-        ofy().delete().entity(this);
+        PersistenceManager pm = PMF.get().getPersistenceManager();
+        pm.deletePersistent(this);
     }
 }

@@ -1,10 +1,19 @@
 package fr.univnantes.atal.poubatal.entity;
 
-import com.googlecode.objectify.annotation.Embed;
+import com.google.appengine.api.datastore.Key;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 
-@Embed
+@PersistenceCapable
 public class Notification implements Comparable<Notification> {
+    
+    @PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    private Key key; // Unused key
 
+    @Persistent
     private String id;
 
     private Notification() {}
