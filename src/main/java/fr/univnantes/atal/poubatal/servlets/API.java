@@ -3,6 +3,7 @@ package fr.univnantes.atal.poubatal.servlets;
 import fr.univnantes.atal.poubatal.api.APIResult;
 import fr.univnantes.atal.poubatal.api.APIResponse;
 import fr.univnantes.atal.poubatal.entity.Notification;
+import fr.univnantes.atal.poubatal.entity.Test;
 import fr.univnantes.atal.poubatal.entity.User;
 import fr.univnantes.atal.poubatal.opendata.CollectePoint;
 import fr.univnantes.atal.poubatal.opendata.DataManager;
@@ -124,6 +125,10 @@ public class API extends HttpServlet {
             case "directory":
                 switch (method) {
                     case "GET":
+                        Test test = new Test("id", "name");
+                        test.makePersistent();
+                        Test test2 = Test.load("id");
+                        System.out.println(test2.name);
                         out.println(directory(request.getParameter("address")));
                         break;
                     default:
