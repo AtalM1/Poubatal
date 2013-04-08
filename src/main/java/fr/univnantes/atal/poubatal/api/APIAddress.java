@@ -1,6 +1,5 @@
 package fr.univnantes.atal.poubatal.api;
 
-import fr.univnantes.atal.poubatal.entity.Notification;
 import fr.univnantes.atal.poubatal.entity.User;
 import fr.univnantes.atal.poubatal.entity.Address;
 import java.io.IOException;
@@ -21,8 +20,16 @@ public class APIAddress extends API {
             if (address == null) {
                 error(response, HttpServletResponse.SC_BAD_REQUEST, "'address' parameter is missing");
             } else {
-                user.removeAddress(Address.getById(address));
-                user.save();
+                Address objAddress = Address.getById(address);
+                if (objAddress == null) {
+                    error(response, HttpServletResponse.SC_NOT_FOUND, "This address does not exist in Nantes OpenData");
+                } else {
+                    if (user.removeAddress(objAddress)) {
+                        user.save();
+                    } else {
+                        error(response, HttpServletResponse.SC_NOT_FOUND, "This address is not registered in this account");
+                    }
+                }
             }
         }
     }
@@ -34,6 +41,7 @@ public class APIAddress extends API {
         User user = authenticate(request, response);
         if (user != null) {
             Set<Address> addresses = user.getAddresses();
+            user.save();
             data(response, addresses);
         }
     }
@@ -48,8 +56,16 @@ public class APIAddress extends API {
             if (address == null) {
                 error(response, HttpServletResponse.SC_BAD_REQUEST, "'address' parameter is missing");
             } else {
-                user.addAddress(Address.getById(address));
-                user.save();
+                Address objAddress = Address.getById(address);
+                if (objAddress == null) {
+                    error(response, HttpServletResponse.SC_NOT_FOUND, "This address does not exist in Nantes OpenData");
+                } else {
+                    if (user.addAddress(objAddress)) {
+                        user.save();
+                    } else {
+                        error(response, HttpServletResponse.SC_CONFLICT, "This address is already registered in this account");
+                    }
+                }
             }
         }
     }

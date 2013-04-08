@@ -1,20 +1,15 @@
 package fr.univnantes.atal.poubatal.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.univnantes.atal.poubatal.tools.json.JSON;
 import fr.univnantes.atal.poubatal.entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ResourceBundle;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public abstract class API extends HttpServlet {
-
-    private static final String LSTRING_FILE = "javax.servlet.http.LocalStrings";
-    private static final ResourceBundle lStrings = ResourceBundle.getBundle(LSTRING_FILE);
 
     /**
      * Handles the HTTP
@@ -63,11 +58,10 @@ public abstract class API extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
         String protocol = request.getProtocol();
-        String msg = lStrings.getString("http.method_post_not_supported");
         if (protocol.endsWith("1.1")) {
-            error(response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, msg);
+            error(response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, "HTTP method POST is not supported by this URL");
         } else {
-            error(response, HttpServletResponse.SC_BAD_REQUEST, msg);
+            error(response, HttpServletResponse.SC_BAD_REQUEST, "HTTP method POST is not supported by this URL");
         }
     }
 
@@ -105,11 +99,10 @@ public abstract class API extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
         String protocol = request.getProtocol();
-        String msg = lStrings.getString("http.method_get_not_supported");
         if (protocol.endsWith("1.1")) {
-            error(response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, msg);
+            error(response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, "HTTP method GET is not supported by this URL");
         } else {
-            error(response, HttpServletResponse.SC_BAD_REQUEST, msg);
+            error(response, HttpServletResponse.SC_BAD_REQUEST, "HTTP method GET is not supported by this URL");
         }
     }
 
@@ -146,11 +139,10 @@ public abstract class API extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
         String protocol = request.getProtocol();
-        String msg = lStrings.getString("http.method_put_not_supported");
         if (protocol.endsWith("1.1")) {
-            error(response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, msg);
+            error(response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, "HTTP method PUT is not supported by this URL");
         } else {
-            error(response, HttpServletResponse.SC_BAD_REQUEST, msg);
+            error(response, HttpServletResponse.SC_BAD_REQUEST, "HTTP method PUT is not supported by this URL");
         }
     }
 
@@ -187,11 +179,10 @@ public abstract class API extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
         String protocol = request.getProtocol();
-        String msg = lStrings.getString("http.method_delete_not_supported");
         if (protocol.endsWith("1.1")) {
-            error(response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, msg);
+            error(response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, "HTTP method DELETE is not supported by this URL");
         } else {
-            error(response, HttpServletResponse.SC_BAD_REQUEST, msg);
+            error(response, HttpServletResponse.SC_BAD_REQUEST, "HTTP method DELETE is not supported by this URL");
         }
     }
 

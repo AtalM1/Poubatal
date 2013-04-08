@@ -34,19 +34,9 @@ public class User {
         notifications.add(new Notification(email));
     }
 
-    // Make the user persistent
-    public void save() {
-        PersistenceManager pm = PMF.get().getPersistenceManager();
-        try {
-            pm.makePersistent(this);
-        } finally {
-            pm.close();
-        }
-    }
-
-    public static User load(String accessToken) {
+    public static User load(String oauth) {
         // Récupération du GoogleUser avec l'accessToken
-        Map<String, String> userData = Oauth.getGoogleUser(accessToken);
+        Map<String, String> userData = Oauth.getGoogleUser(oauth);
         if (userData == null) {
             return null;
         }
@@ -58,58 +48,67 @@ public class User {
         User detached;
         try {
             User user = pm.getObjectById(User.class, id);
+            pm.makePersistent(user);
             detached = pm.detachCopy(user);
         } catch (JDOObjectNotFoundException e) {
             detached = new User(id, email);
-        }        
+        } finally {
+            pm.close();
+        }
         return detached;
     }
 
-    public Set<Address> getAddresses() {
-        if (addresses == null) {
-            addresses = new HashSet<>();
+    public static int delete(String oauth) {
+        // Récupération du GoogleUser avec l'accessToken
+        Map<String, String> userData = Oauth.getGoogleUser(oauth);
+        if (userData == null) {
+            return -1;
         }
+        String id = userData.get("user_id");
+
+        // Récupération du User avec l'ID Google
+        PersistenceManager pm = PMF.get().getPersistenceManager();
+        try {
+            User user = pm.getObjectById(User.class, id);
+            pm.deletePersistent(user);
+            return 1;
+        } catch (JDOObjectNotFoundException e) {
+            return 0;
+        } finally {
+            pm.close();
+        }
+    }
+
+    public void save() {
+        PersistenceManager pm = PMF.get().getPersistenceManager();
+        try {
+            pm.makePersistent(this);
+        } finally {
+            pm.close();
+        }
+    }
+
+    public Set<Address> getAddresses() {
         return Collections.unmodifiableSet(addresses);
     }
 
-    public void addAddress(Address address) {
-        if (addresses == null) {
-            addresses = new HashSet<>();
-        }
-        addresses.add(address);
+    public boolean addAddress(Address address) {
+        return addresses.add(address);
     }
 
-    public void removeAddress(Address address) {
-        if (addresses == null) {
-            addresses = new HashSet<>();
-        }
-        addresses.remove(address);
+    public boolean removeAddress(Address address) {
+        return addresses.remove(address);
     }
 
     public Set<Notification> getNotifications() {
-        if (notifications == null) {
-            notifications = new HashSet<>();
-        }
         return Collections.unmodifiableSet(notifications);
     }
 
-    public void addNotification(Notification notification) {
-        if (notifications == null) {
-            notifications = new HashSet<>();
-        }
-        notifications.add(notification);
+    public boolean addNotification(Notification notification) {
+        return notifications.add(notification);
     }
 
-    public void removeNotification(Notification notification) {
-        if (notifications == null) {
-            notifications = new HashSet<>();
-        }
-        notifications.remove(notification);
-    }
-
-    public void deleteAccount() {
-        PersistenceManager pm = PMF.get().getPersistenceManager();
-        pm.makePersistent(this);
-        pm.deletePersistent(this);
+    public boolean removeNotification(Notification notification) {
+        return notifications.remove(notification);
     }
 }

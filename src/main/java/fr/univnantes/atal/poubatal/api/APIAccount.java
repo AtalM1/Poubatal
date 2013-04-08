@@ -12,9 +12,20 @@ public class APIAccount extends API {
     protected void delete(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
-        User user = authenticate(request, response);
-        if (user != null) {
-            user.deleteAccount();
-        }        
+        String oauth = request.getParameter("oauth");
+        if (oauth == null) {
+            error(response, HttpServletResponse.SC_UNAUTHORIZED, "'oauth' parameter is missing");
+        } else {
+            int result = User.delete(oauth);
+            switch (result) {
+                case -1:
+                    error(response, HttpServletResponse.SC_UNAUTHORIZED, "The oauth access token is incorrect");
+                    break;
+                case 0:
+                    error(response, HttpServletResponse.SC_NOT_FOUND, "This account does not exist on Poubatal");
+                    break;
+            }
+
+        }
     }
 }

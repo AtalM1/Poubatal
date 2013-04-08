@@ -4,13 +4,11 @@ import fr.univnantes.atal.poubatal.entity.Address;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 import java.net.URL;
 import java.net.MalformedURLException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * DataManager is a Singleton
@@ -20,10 +18,10 @@ public class DataManager {
     private static final Logger log = Logger.getLogger(DataManager.class.getName());
     private static DataManager instance = null;
     private URL urlToFetch;
-    private Set<Address> points;
+    private List<Address> points;
 
     protected DataManager() {
-        points = new HashSet<>();
+        points = new ArrayList<>();
         try {
             urlToFetch = new URL("http://data.nantes.fr/api/publication/"
                     + "JOURS_COLLECTE_DECHETS_VDN/JOURS_COLLECTE_DECHETS_VDN_STBL/content/"
@@ -41,7 +39,7 @@ public class DataManager {
         return instance;
     }
     
-    public Set<Address> getPoints() {
+    public List<Address> getPoints() {
         if (instance.points.isEmpty()) {
             // something goes wrong during the initialization
             instance.updateData();
@@ -72,7 +70,6 @@ public class DataManager {
             nextLine = buffer.readLine();
 
             while (nextLine != null) {
-                //System.out.println(nextLine);
                 points.add(new Address(nextLine));
                 nextLine = buffer.readLine();
             }

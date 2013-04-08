@@ -3,17 +3,18 @@ package fr.univnantes.atal.poubatal.entity;
 import com.google.appengine.api.datastore.Key;
 import fr.univnantes.atal.poubatal.opendata.DataManager;
 import fr.univnantes.atal.poubatal.tools.Tools;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable
-public class Address implements Comparable<Address> {
+public class Address {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -29,67 +30,58 @@ public class Address implements Comparable<Address> {
     @Persistent
     private String city;
     @Persistent
-    private List<String> yellowBin;
+    private boolean mixte;
     @Persistent
-    private List<String> blueBin;
+    private Set<String> yellowBin;
+    @Persistent
+    private Set<String> blueBin;
 
     private Address() {
     }
 
     public Address(String csvRow) {
-
         String[] columns = csvRow.split(",");
         streetName = columns[1].replaceAll("\"", "");
         city = columns[2].replaceAll("\"", "");
         numberDescription = columns[9].replaceAll("\"", "");
         zoneName = columns[13].replaceAll("\"", "");
-        id = Tools.fullNormalizeString(streetName) + " " + Tools.fullNormalizeString(numberDescription);
-
+        id = streetName + " " + numberDescription;
+        id = Tools.fullNormalizeString(id);
         yellowBin = parseCollectableDays(columns[11].replaceAll("\"", ""));
         blueBin = parseCollectableDays(columns[10].replaceAll("\"", ""));
-
     }
 
-    private List<String> parseCollectableDays(String dayString) {
-        List<String> collectableDays = new ArrayList<>();
+    private Set<String> parseCollectableDays(String dayString) {
+        Set<String> collectableDays = new TreeSet<>();
         dayString = dayString.replaceAll("et", " ");
         dayString = dayString.replaceAll("-", " ");
         dayString = dayString.replaceAll("\\s+", " ");
 
         if (!dayString.contains("mixte")) {
+            mixte = false;
             collectableDays.addAll(Arrays.asList(dayString.split(" ")));
         } else {
-            //handle mixtes ?
+            mixte = true;
         }
         return collectableDays;
     }
 
     /**
-     * Renvoi le Address correspondant à l'ID
+     * Récupère l'Address correspondante à l'ID
      *
-     * @param addressId L'ID du Address dans l'OpenData
-     * @return Le Address correspondant, ou null
+     * @param addressId L'ID de l'Address recherchée
+     * @return L'Address correspondant, ou null
      */
     public static Address getById(String addressId) {
-        Address point = null;
-        LoopCollectePoint:
+        Address address = null;
+        LoopAddresses:
         for (Address current : DataManager.getInstance().getPoints()) {
-            if (current.getId().equals(addressId)) {
-                point = current;
-                break LoopCollectePoint;
+            if (current.id.equals(addressId)) {
+                address = current;
+                break LoopAddresses;
             }
         }
-        return point;
-    }
-
-    @Override
-    public String toString() {
-        String res = "";
-
-        res += getStreetName() + " -> ";
-        res += getBlueBin().toString();
-
-        return res;
+        return address;
     }
 
     /**
@@ -123,23 +115,49 @@ public class Address implements Comparable<Address> {
     /**
      * @return the yellowBin
      */
-    public List<String> getYellowBin() {
-        return Collections.unmodifiableList(yellowBin);
+    public Set<String> getYellowBin() {
+        return Collections.unmodifiableSet(yellowBin);
     }
 
     /**
      * @return the blueBin
      */
-    public List<String> getBlueBin() {
-        return Collections.unmodifiableList(blueBin);
+    public Set<String> getBlueBin() {
+        return Collections.unmodifiableSet(blueBin);
+    }
+
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @return the mixte
+     */
+    public boolean isMixte() {
+        return mixte;
     }
 
     @Override
-    public int compareTo(Address t) {
-        return id.compareTo(t.id);
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (obj == null) {
+            return false;
+        } else if (getClass() != obj.getClass()) {
+            return false;
+        } else {
+            Address other = (Address) obj;
+            return id.equals(other.id);
+        }
     }
-    
-    public String getId() {
-        return id;
+
+    @Override
+    public int hashCode() {        
+        int hash = 5;
+        hash = 37 * hash + Objects.hashCode(this.id);
+        return hash;
     }
 }
