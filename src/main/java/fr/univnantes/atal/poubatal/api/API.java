@@ -1,5 +1,6 @@
 package fr.univnantes.atal.poubatal.api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import fr.univnantes.atal.poubatal.tools.json.JSON;
 import fr.univnantes.atal.poubatal.entity.User;
 import java.io.IOException;
@@ -27,20 +28,24 @@ public abstract class API extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String method = request.getParameter("method");
-        if (method != null) {
-            switch (method.toLowerCase()) {
-                case "put":
-                    put(request, response);
-                    break;
-                case "delete":
-                    delete(request, response);
-                    break;
-                default:
-                    error(request, response, "Bad parameter 'method': " + method, HttpServletResponse.SC_BAD_REQUEST);
+        try {
+            String method = request.getParameter("method");
+            if (method != null) {
+                switch (method.toLowerCase()) {
+                    case "put":
+                        put(request, response);
+                        break;
+                    case "delete":
+                        delete(request, response);
+                        break;
+                    default:
+                        error(response, HttpServletResponse.SC_BAD_REQUEST, "Bad parameter 'method': " + method);
+                }
+            } else {
+                post(request, response);
             }
-        } else {
-            post(request, response);
+        } catch (Throwable e) {
+            error(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, new Exception(e));
         }
     }
 
@@ -60,9 +65,9 @@ public abstract class API extends HttpServlet {
         String protocol = request.getProtocol();
         String msg = lStrings.getString("http.method_post_not_supported");
         if (protocol.endsWith("1.1")) {
-            error(request, response, msg, HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+            error(response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, msg);
         } else {
-            error(request, response, msg, HttpServletResponse.SC_BAD_REQUEST);
+            error(response, HttpServletResponse.SC_BAD_REQUEST, msg);
         }
     }
 
@@ -78,7 +83,12 @@ public abstract class API extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        get(request, response);
+        try {
+            get(request, response);
+        } catch (Throwable e) {
+            error(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, new Exception(e));
+        }
+
     }
 
     /**
@@ -97,9 +107,9 @@ public abstract class API extends HttpServlet {
         String protocol = request.getProtocol();
         String msg = lStrings.getString("http.method_get_not_supported");
         if (protocol.endsWith("1.1")) {
-            error(request, response, msg, HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+            error(response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, msg);
         } else {
-            error(request, response, msg, HttpServletResponse.SC_BAD_REQUEST);
+            error(response, HttpServletResponse.SC_BAD_REQUEST, msg);
         }
     }
 
@@ -115,7 +125,11 @@ public abstract class API extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        put(request, response);
+        try {
+            put(request, response);
+        } catch (Throwable e) {
+            error(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, new Exception(e));
+        }
     }
 
     /**
@@ -134,9 +148,9 @@ public abstract class API extends HttpServlet {
         String protocol = request.getProtocol();
         String msg = lStrings.getString("http.method_put_not_supported");
         if (protocol.endsWith("1.1")) {
-            error(request, response, msg, HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+            error(response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, msg);
         } else {
-            error(request, response, msg, HttpServletResponse.SC_BAD_REQUEST);
+            error(response, HttpServletResponse.SC_BAD_REQUEST, msg);
         }
     }
 
@@ -152,7 +166,11 @@ public abstract class API extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        delete(request, response);
+        try {
+            delete(request, response);
+        } catch (Throwable e) {
+            error(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, new Exception(e));
+        }
     }
 
     /**
@@ -171,27 +189,25 @@ public abstract class API extends HttpServlet {
         String protocol = request.getProtocol();
         String msg = lStrings.getString("http.method_delete_not_supported");
         if (protocol.endsWith("1.1")) {
-            error(request, response, msg, HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+            error(response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, msg);
         } else {
-            error(request, response, msg, HttpServletResponse.SC_BAD_REQUEST);
+            error(response, HttpServletResponse.SC_BAD_REQUEST, msg);
         }
     }
 
     /**
      * Send a JSON formated HTTP error
      *
-     * @param request servlet request
      * @param response servlet response
-     * @param error detail of the error
      * @param status status code of the error
+     * @param error detail of the error
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void error(
-            HttpServletRequest request,
             HttpServletResponse response,
-            String error,
-            int status)
+            int status,
+            String error)
             throws ServletException, IOException {
         response.setStatus(status);
         response.setContentType("application/json");
@@ -201,17 +217,60 @@ public abstract class API extends HttpServlet {
         }
     }
 
+    /**
+     * Send a JSON formated HTTP error
+     *
+     * @param response servlet response
+     * @param status status code of the error
+     * @param exception the error exception
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void error(
+            HttpServletResponse response,
+            int status,
+            Throwable exception)
+            throws ServletException, IOException {
+        response.setStatus(status);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            out.println(JSON.error(exception));
+        }
+    }
+
+    /**
+     * Send a JSON formated data
+     *
+     * @param response servlet response
+     * @param data the data object
+     * @param status status code of the error
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void data(
+            HttpServletResponse response,
+            Object data)
+            throws ServletException, IOException {
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            out.println(JSON.data(data));
+        }
+    }
+
     protected User authenticate(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
         String oauth = request.getParameter("oauth");
         if (oauth == null) {
-            error(request, response, "'oauth' parameter is missing", HttpServletResponse.SC_UNAUTHORIZED);
+            error(response, HttpServletResponse.SC_UNAUTHORIZED, "'oauth' parameter is missing");
             return null;
         } else {
             User user = User.load(oauth);
             if (user == null) {
-                error(request, response, "The oauth access token is incorrect", HttpServletResponse.SC_UNAUTHORIZED);
+                error(response, HttpServletResponse.SC_UNAUTHORIZED, "The oauth access token is incorrect");
                 return null;
             } else {
                 return user;

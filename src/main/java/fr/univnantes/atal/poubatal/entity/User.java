@@ -2,11 +2,10 @@ package fr.univnantes.atal.poubatal.entity;
 
 import fr.univnantes.atal.poubatal.tools.Oauth;
 import fr.univnantes.atal.poubatal.datastore.PMF;
-import fr.univnantes.atal.poubatal.opendata.CollectePoint;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -21,7 +20,7 @@ public class User {
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private String id;
     @Persistent(defaultFetchGroup = "true")
-    private Set<CollectePoint> addresses;
+    private Set<Address> addresses;
     @Persistent(defaultFetchGroup = "true")
     private Set<Notification> notifications;
 
@@ -30,8 +29,8 @@ public class User {
 
     public User(String id, String email) {
         this.id = id;
-        addresses = new TreeSet<>();
-        notifications = new TreeSet<>();
+        addresses = new HashSet<>();
+        notifications = new HashSet<>();
         notifications.add(new Notification(email));
     }
 
@@ -66,44 +65,44 @@ public class User {
         return detached;
     }
 
-    public Set<CollectePoint> getAddresses() {
+    public Set<Address> getAddresses() {
         if (addresses == null) {
-            addresses = new TreeSet<>();
+            addresses = new HashSet<>();
         }
         return Collections.unmodifiableSet(addresses);
     }
 
-    public void addAddress(CollectePoint address) {
+    public void addAddress(Address address) {
         if (addresses == null) {
-            addresses = new TreeSet<>();
+            addresses = new HashSet<>();
         }
         addresses.add(address);
     }
 
-    public void removeAddress(CollectePoint address) {
+    public void removeAddress(Address address) {
         if (addresses == null) {
-            addresses = new TreeSet<>();
+            addresses = new HashSet<>();
         }
         addresses.remove(address);
     }
 
     public Set<Notification> getNotifications() {
         if (notifications == null) {
-            notifications = new TreeSet<>();
+            notifications = new HashSet<>();
         }
         return Collections.unmodifiableSet(notifications);
     }
 
     public void addNotification(Notification notification) {
         if (notifications == null) {
-            notifications = new TreeSet<>();
+            notifications = new HashSet<>();
         }
         notifications.add(notification);
     }
 
     public void removeNotification(Notification notification) {
         if (notifications == null) {
-            notifications = new TreeSet<>();
+            notifications = new HashSet<>();
         }
         notifications.remove(notification);
     }

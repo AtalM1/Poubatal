@@ -1,5 +1,6 @@
 package fr.univnantes.atal.poubatal.opendata;
 
+import fr.univnantes.atal.poubatal.entity.Address;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,7 +20,7 @@ public class DataManager {
     private static final Logger log = Logger.getLogger(DataManager.class.getName());
     private static DataManager instance = null;
     private URL urlToFetch;
-    private Set<CollectePoint> points;
+    private Set<Address> points;
 
     protected DataManager() {
         points = new HashSet<>();
@@ -40,7 +41,7 @@ public class DataManager {
         return instance;
     }
     
-    public Set<CollectePoint> getPoints() {
+    public Set<Address> getPoints() {
         if (instance.points.isEmpty()) {
             // something goes wrong during the initialization
             instance.updateData();
@@ -72,7 +73,7 @@ public class DataManager {
 
             while (nextLine != null) {
                 //System.out.println(nextLine);
-                points.add(new CollectePoint(nextLine));
+                points.add(new Address(nextLine));
                 nextLine = buffer.readLine();
             }
         } catch (IOException ex) {

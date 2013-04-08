@@ -28,6 +28,15 @@
         <url-pattern>/api/notification</url-pattern>
     </servlet-mapping>
     
+    <servlet>
+        <servlet-name>APIAddress</servlet-name>
+        <servlet-class>fr.univnantes.atal.poubatal.api.APIAddress</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>APIAddress</servlet-name>
+        <url-pattern>/api/address</url-pattern>
+    </servlet-mapping>
+    
     <!-- CRON -->
     <servlet>
         <servlet-name>CRON</servlet-name>

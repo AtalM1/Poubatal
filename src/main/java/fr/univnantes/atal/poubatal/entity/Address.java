@@ -1,6 +1,7 @@
-package fr.univnantes.atal.poubatal.opendata;
+package fr.univnantes.atal.poubatal.entity;
 
 import com.google.appengine.api.datastore.Key;
+import fr.univnantes.atal.poubatal.opendata.DataManager;
 import fr.univnantes.atal.poubatal.tools.Tools;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +13,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable
-public class CollectePoint implements Comparable<CollectePoint> {
+public class Address implements Comparable<Address> {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -32,10 +33,10 @@ public class CollectePoint implements Comparable<CollectePoint> {
     @Persistent
     private List<String> blueBin;
 
-    private CollectePoint() {
+    private Address() {
     }
 
-    public CollectePoint(String csvRow) {
+    public Address(String csvRow) {
 
         String[] columns = csvRow.split(",");
         streetName = columns[1].replaceAll("\"", "");
@@ -64,15 +65,15 @@ public class CollectePoint implements Comparable<CollectePoint> {
     }
 
     /**
-     * Renvoi le CollectePoint correspondant à l'ID
+     * Renvoi le Address correspondant à l'ID
      *
-     * @param addressId L'ID du CollectePoint dans l'OpenData
-     * @return Le CollectePoint correspondant, ou null
+     * @param addressId L'ID du Address dans l'OpenData
+     * @return Le Address correspondant, ou null
      */
-    public static CollectePoint getById(String addressId) {
-        CollectePoint point = null;
+    public static Address getById(String addressId) {
+        Address point = null;
         LoopCollectePoint:
-        for (CollectePoint current : DataManager.getInstance().getPoints()) {
+        for (Address current : DataManager.getInstance().getPoints()) {
             if (current.getId().equals(addressId)) {
                 point = current;
                 break LoopCollectePoint;
@@ -134,7 +135,7 @@ public class CollectePoint implements Comparable<CollectePoint> {
     }
 
     @Override
-    public int compareTo(CollectePoint t) {
+    public int compareTo(Address t) {
         return id.compareTo(t.id);
     }
     
