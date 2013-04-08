@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cronentries>
-  <cron>
+  <!--<cron>
     <url>/cron/dailyupdate</url>
     <description>Update collectable days</description>
     <schedule>every day 03:00</schedule>
     <timezone>Europe/Paris</timezone>
-  </cron>
+  </cron>-->
   <cron>
     <url>/cron/notify</url>
     <description>Notify users if needed</description>

@@ -36,7 +36,7 @@ function apiNotification(method, accessToken, notification) {
         if (method === "GET") {
             data = {oauth: accessToken};
         } else {
-            data = {oauth: accessToken, notification: notification};
+            data = {oauth: accessToken, type: "email", email: notification};
         }
     }
     $.ajax({

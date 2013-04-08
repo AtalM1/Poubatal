@@ -1,7 +1,8 @@
 package fr.univnantes.atal.poubatal.api;
 
-import fr.univnantes.atal.poubatal.entity.Address;
+import fr.univnantes.atal.poubatal.Constants;
 import fr.univnantes.atal.poubatal.entity.Notification;
+import fr.univnantes.atal.poubatal.entity.EmailNotification;
 import fr.univnantes.atal.poubatal.entity.User;
 import java.io.IOException;
 import java.util.Set;
@@ -21,10 +22,15 @@ public class APINotification extends API {
             if (notification == null) {
                 error(response, HttpServletResponse.SC_BAD_REQUEST, "'notification' parameter is missing");
             } else {
-                if (user.removeNotification(new Notification(notification))) {
-                    user.save();
-                } else {
+                Notification objNotification = user.getNotificationById(notification);
+                if (objNotification == null) {
                     error(response, HttpServletResponse.SC_NOT_FOUND, "This notification is not registered in this account");
+                } else {
+                    if (user.removeNotification(objNotification)) {
+                        user.save();
+                    } else {
+                        error(response, HttpServletResponse.SC_NOT_FOUND, "This notification is not registered in this account");
+                    }
                 }
             }
         }
@@ -48,15 +54,28 @@ public class APINotification extends API {
             throws ServletException, IOException {
         User user = authenticate(request, response);
         if (user != null) {
-            String notification = request.getParameter("notification");
-            if (notification == null) {
-                error(response, HttpServletResponse.SC_BAD_REQUEST, "'notification' parameter is missing");
+            String type = request.getParameter("type");
+            if (type == null) {
+                error(response, HttpServletResponse.SC_BAD_REQUEST, "'type' parameter is missing");
             } else {
-                if (user.addNotification(new Notification(notification))) {
-                    user.save();
-                } else {
-                    error(response, HttpServletResponse.SC_CONFLICT, "This notification is already registered in this account");
+                switch (type) {
+                    case Constants.EMAIL_NOTIFICATION:
+                        String email = request.getParameter("email");
+                        if (email == null) {
+                            error(response, HttpServletResponse.SC_BAD_REQUEST, "'email' parameter is missing");
+                        } else {
+                            if (user.addNotification(new EmailNotification(email))) {
+                                user.save();
+                            } else {
+                                error(response, HttpServletResponse.SC_CONFLICT, "This notification is already registered in this account");
+                            }
+                        }
+                        break;
+                    default:
+                        error(response, HttpServletResponse.SC_BAD_REQUEST, "The 'type' is incorrect");
+                        break;
                 }
+
             }
         }
     }

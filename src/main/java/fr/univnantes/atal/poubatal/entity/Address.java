@@ -67,24 +67,6 @@ public class Address {
     }
 
     /**
-     * Récupère l'Address correspondante à l'ID
-     *
-     * @param addressId L'ID de l'Address recherchée
-     * @return L'Address correspondant, ou null
-     */
-    public static Address getById(String addressId) {
-        Address address = null;
-        LoopAddresses:
-        for (Address current : DataManager.getInstance().getPoints()) {
-            if (current.id.equals(addressId)) {
-                address = current;
-                break LoopAddresses;
-            }
-        }
-        return address;
-    }
-
-    /**
      * @return the streetName
      */
     public String getStreetName() {
@@ -155,7 +137,7 @@ public class Address {
     }
 
     @Override
-    public int hashCode() {        
+    public int hashCode() {
         int hash = 5;
         hash = 37 * hash + Objects.hashCode(this.id);
         return hash;

@@ -24,23 +24,23 @@ public abstract class API extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String method = request.getParameter("method");
-            if (method != null) {
-                switch (method.toLowerCase()) {
-                    case "put":
-                        put(request, response);
-                        break;
-                    case "delete":
-                        delete(request, response);
-                        break;
-                    default:
-                        error(response, HttpServletResponse.SC_BAD_REQUEST, "Bad parameter 'method': " + method);
-                }
-            } else {
-                post(request, response);
+        String method = request.getParameter("method");
+        if (method != null) {
+            switch (method.toLowerCase()) {
+                case "put":
+                    put(request, response);
+                    break;
+                case "delete":
+                    delete(request, response);
+                    break;
+                default:
+                    error(response, HttpServletResponse.SC_BAD_REQUEST, "Bad parameter 'method': " + method);
             }
+        } else {
+            post(request, response);
+        }
         } catch (Throwable e) {
-            error(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, new Exception(e));
+            error(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, new Exception(e).getCause());
         }
     }
 
@@ -80,9 +80,8 @@ public abstract class API extends HttpServlet {
         try {
             get(request, response);
         } catch (Throwable e) {
-            error(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, new Exception(e));
+            error(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, new Exception(e).getCause());
         }
-
     }
 
     /**
@@ -119,9 +118,9 @@ public abstract class API extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            put(request, response);
+        put(request, response);
         } catch (Throwable e) {
-            error(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, new Exception(e));
+            error(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, new Exception(e).getCause());
         }
     }
 
@@ -159,9 +158,9 @@ public abstract class API extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            delete(request, response);
+        delete(request, response);
         } catch (Throwable e) {
-            error(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, new Exception(e));
+            error(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, new Exception(e).getCause());
         }
     }
 
@@ -207,26 +206,26 @@ public abstract class API extends HttpServlet {
             out.println(JSON.error(error));
         }
     }
-
+    
     /**
      * Send a JSON formated HTTP error
      *
      * @param response servlet response
      * @param status status code of the error
-     * @param exception the error exception
+     * @param error detail of the error
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void error(
             HttpServletResponse response,
             int status,
-            Throwable exception)
+            Throwable error)
             throws ServletException, IOException {
         response.setStatus(status);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            out.println(JSON.error(exception));
+            out.println(JSON.error(error));
         }
     }
 

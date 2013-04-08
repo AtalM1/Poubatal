@@ -31,7 +31,7 @@ public class User {
         this.id = id;
         addresses = new HashSet<>();
         notifications = new HashSet<>();
-        notifications.add(new Notification(email));
+        notifications.add(new EmailNotification(email));
     }
 
     public static User load(String oauth) {
@@ -77,6 +77,18 @@ public class User {
         } finally {
             pm.close();
         }
+    }
+    
+    public Notification getNotificationById(String notificationId) {
+        Notification notification = null;
+        LoopNotifications:
+        for (Notification current : notifications) {
+            if(current.getId().equals(id)) {
+                notification = current;
+                break LoopNotifications;
+            }
+        }
+        return notification;
     }
 
     public void save() {

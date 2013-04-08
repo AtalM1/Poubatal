@@ -2,6 +2,7 @@ package fr.univnantes.atal.poubatal.api;
 
 import fr.univnantes.atal.poubatal.entity.User;
 import fr.univnantes.atal.poubatal.entity.Address;
+import fr.univnantes.atal.poubatal.opendata.DataManager;
 import java.io.IOException;
 import java.util.Set;
 import javax.servlet.ServletException;
@@ -20,7 +21,7 @@ public class APIAddress extends API {
             if (address == null) {
                 error(response, HttpServletResponse.SC_BAD_REQUEST, "'address' parameter is missing");
             } else {
-                Address objAddress = Address.getById(address);
+                Address objAddress = DataManager.getAddressById(address);
                 if (objAddress == null) {
                     error(response, HttpServletResponse.SC_NOT_FOUND, "This address does not exist in Nantes OpenData");
                 } else {
@@ -56,7 +57,7 @@ public class APIAddress extends API {
             if (address == null) {
                 error(response, HttpServletResponse.SC_BAD_REQUEST, "'address' parameter is missing");
             } else {
-                Address objAddress = Address.getById(address);
+                Address objAddress = DataManager.getAddressById(address);
                 if (objAddress == null) {
                     error(response, HttpServletResponse.SC_NOT_FOUND, "This address does not exist in Nantes OpenData");
                 } else {

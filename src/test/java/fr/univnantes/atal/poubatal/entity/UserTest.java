@@ -41,10 +41,10 @@ public class UserTest {
     public void testNotifications() {
         System.out.println("Test Set<Notification>");
         User user = new User("idTest", "notif");
-        Notification notification1 = new Notification("notif");
-        Notification notification2 = new Notification("notif");
-        Notification notification3 = new Notification("notif");
-        Notification notification4 = new Notification("notif");
+        EmailNotification notification1 = new EmailNotification("notif");
+        EmailNotification notification2 = new EmailNotification("notif");
+        EmailNotification notification3 = new EmailNotification("notif");
+        EmailNotification notification4 = new EmailNotification("notif");
         user.addNotification(notification1);
         user.addNotification(notification1);
         user.addNotification(notification2);

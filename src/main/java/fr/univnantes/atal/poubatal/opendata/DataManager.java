@@ -30,6 +30,18 @@ public class DataManager {
             log.warning(ex.toString());
         }
     }
+    
+    public static Address getAddressById(String addressId) {
+        Address address = null;
+        LoopAddresses:
+        for (Address current : DataManager.getInstance().getPoints()) {
+            if (current.getId().equals(addressId)) {
+                address = current;
+                break LoopAddresses;
+            }
+        }
+        return address;
+    }
 
     public static DataManager getInstance() {
         if (instance == null) {
