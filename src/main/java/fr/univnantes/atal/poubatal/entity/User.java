@@ -1,8 +1,11 @@
 package fr.univnantes.atal.poubatal.entity;
 
+import fr.univnantes.atal.poubatal.Constants;
+import fr.univnantes.atal.poubatal.NotificationPropertiesFactory;
 import fr.univnantes.atal.poubatal.tools.Oauth;
 import fr.univnantes.atal.poubatal.datastore.PMF;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -31,7 +34,7 @@ public class User {
         this.id = id;
         addresses = new HashSet<>();
         notifications = new HashSet<>();
-        notifications.add(new EmailNotification(email));
+        notifications.add(new Notification(Constants.EMAIL_NOTIFICATION, NotificationPropertiesFactory.getEmailProperties(email)));
     }
 
     public static User load(String oauth) {

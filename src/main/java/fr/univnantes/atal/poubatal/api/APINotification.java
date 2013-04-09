@@ -1,8 +1,8 @@
 package fr.univnantes.atal.poubatal.api;
 
 import fr.univnantes.atal.poubatal.Constants;
+import fr.univnantes.atal.poubatal.NotificationPropertiesFactory;
 import fr.univnantes.atal.poubatal.entity.Notification;
-import fr.univnantes.atal.poubatal.entity.EmailNotification;
 import fr.univnantes.atal.poubatal.entity.User;
 import java.io.IOException;
 import java.util.Set;
@@ -20,7 +20,7 @@ public class APINotification extends API {
         if (user != null) {
             String notification = request.getParameter("notification");
             if (notification == null) {
-                error(response, HttpServletResponse.SC_BAD_REQUEST, "'notification' parameter is missing");
+                error(response, HttpServletResponse.SC_BAD_REQUEST, "The 'notification' parameter is missing");
             } else {
                 Notification objNotification = user.getNotificationById(notification);
                 if (objNotification == null) {
@@ -56,15 +56,16 @@ public class APINotification extends API {
         if (user != null) {
             String type = request.getParameter("type");
             if (type == null) {
-                error(response, HttpServletResponse.SC_BAD_REQUEST, "'type' parameter is missing");
+                error(response, HttpServletResponse.SC_BAD_REQUEST, "The 'type' parameter is missing");
             } else {
                 switch (type) {
                     case Constants.EMAIL_NOTIFICATION:
                         String email = request.getParameter("email");
                         if (email == null) {
-                            error(response, HttpServletResponse.SC_BAD_REQUEST, "'email' parameter is missing");
+                            error(response, HttpServletResponse.SC_BAD_REQUEST, "The 'email' parameter is missing");
                         } else {
-                            if (user.addNotification(new EmailNotification(email))) {
+                            if (user.addNotification(
+                                    new Notification(type, NotificationPropertiesFactory.getEmailProperties(email)))) {
                                 user.save();
                             } else {
                                 error(response, HttpServletResponse.SC_CONFLICT, "This notification is already registered in this account");
@@ -72,7 +73,7 @@ public class APINotification extends API {
                         }
                         break;
                     default:
-                        error(response, HttpServletResponse.SC_BAD_REQUEST, "The 'type' is incorrect");
+                        error(response, HttpServletResponse.SC_BAD_REQUEST, "The notification 'type' is incorrect");
                         break;
                 }
 

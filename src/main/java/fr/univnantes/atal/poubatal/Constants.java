@@ -6,4 +6,5 @@ public class Constants {
     public static final String BLUE_BIN = "blue";
     public static final String YELLOW_BIN = "yellow";
     public static final String EMAIL_NOTIFICATION = "email";
+    public static final String ERROR_NOTIFICATION = "error";
 }

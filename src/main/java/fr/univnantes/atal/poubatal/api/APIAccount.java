@@ -14,7 +14,7 @@ public class APIAccount extends API {
             throws ServletException, IOException {
         String oauth = request.getParameter("oauth");
         if (oauth == null) {
-            error(response, HttpServletResponse.SC_UNAUTHORIZED, "'oauth' parameter is missing");
+            error(response, HttpServletResponse.SC_UNAUTHORIZED, "The 'oauth' parameter is missing");
         } else {
             int result = User.delete(oauth);
             switch (result) {

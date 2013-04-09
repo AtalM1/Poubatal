@@ -255,12 +255,12 @@ public abstract class API extends HttpServlet {
             throws ServletException, IOException {
         String oauth = request.getParameter("oauth");
         if (oauth == null) {
-            error(response, HttpServletResponse.SC_UNAUTHORIZED, "'oauth' parameter is missing");
+            error(response, HttpServletResponse.SC_UNAUTHORIZED, "The 'oauth' parameter is missing");
             return null;
         } else {
             User user = User.load(oauth);
             if (user == null) {
-                error(response, HttpServletResponse.SC_UNAUTHORIZED, "The oauth access token is incorrect");
+                error(response, HttpServletResponse.SC_UNAUTHORIZED, "The 'oauth' access token is incorrect");
                 return null;
             } else {
                 return user;

@@ -19,7 +19,7 @@ public class APIAddress extends API {
         if (user != null) {
             String address = request.getParameter("address");
             if (address == null) {
-                error(response, HttpServletResponse.SC_BAD_REQUEST, "'address' parameter is missing");
+                error(response, HttpServletResponse.SC_BAD_REQUEST, "The 'address' parameter is missing");
             } else {
                 Address objAddress = DataManager.getAddressById(address);
                 if (objAddress == null) {
@@ -55,7 +55,7 @@ public class APIAddress extends API {
         if (user != null) {
             String address = request.getParameter("address");
             if (address == null) {
-                error(response, HttpServletResponse.SC_BAD_REQUEST, "'address' parameter is missing");
+                error(response, HttpServletResponse.SC_BAD_REQUEST, "The 'address' parameter is missing");
             } else {
                 Address objAddress = DataManager.getAddressById(address);
                 if (objAddress == null) {
