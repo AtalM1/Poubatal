@@ -9,7 +9,7 @@
   <cron>
     <url>/cron/notify</url>
     <description>Notify users if needed</description>
-    <schedule>every 1 minutes</schedule>
+    <schedule>every day 20:00</schedule>
     <timezone>Europe/Paris</timezone>
   </cron>
 </cronentries>

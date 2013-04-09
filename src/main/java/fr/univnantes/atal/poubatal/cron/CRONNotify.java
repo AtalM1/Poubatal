@@ -36,7 +36,8 @@ public class CRONNotify extends HttpServlet {
         try {
             DateFormat dateFormat = new SimpleDateFormat("EEEE", Locale.FRANCE);
             long millis = 1000 * 60 * 60 * 24;
-            String day = dateFormat.format(new Date().getTime() + millis);
+//            String day = dateFormat.format(new Date().getTime() + millis);
+            String day = dateFormat.format(new Date().getTime());
             for (User user : extent) {
                 for (Address address : user.getAddresses()) {
                     if (address.getBlueBin().contains(day)) {

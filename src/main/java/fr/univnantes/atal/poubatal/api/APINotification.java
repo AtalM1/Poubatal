@@ -58,6 +58,7 @@ public class APINotification extends API {
             } else {
                 switch (type) {
                     case Notification.EMAIL_NOTIFICATION:
+                    case Notification.XMPP_NOTIFICATION:
                         String email = request.getParameter("email");
                         if (email == null) {
                             error(response, HttpServletResponse.SC_BAD_REQUEST, "The 'email' parameter is missing");

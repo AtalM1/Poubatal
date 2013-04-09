@@ -1,12 +1,16 @@
 package fr.univnantes.atal.poubatal.entity;
 
+import com.google.appengine.api.xmpp.JID;
+import com.google.appengine.api.xmpp.MessageBuilder;
+import com.google.appengine.api.xmpp.SendResponse;
+import com.google.appengine.api.xmpp.XMPPService;
+import com.google.appengine.api.xmpp.XMPPServiceFactory;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -29,6 +33,7 @@ public class Notification implements Serializable {
     public Notification(String type, String email) {
         switch (type) {
             case EMAIL_NOTIFICATION:
+            case XMPP_NOTIFICATION:
                 this.type = type;
                 this.email = email;
                 this.id = type + "-" + email;
@@ -88,6 +93,9 @@ public class Notification implements Serializable {
             case EMAIL_NOTIFICATION:
                 sendEmail(address, binColor);
                 break;
+            case XMPP_NOTIFICATION:
+                sendXMPP(address, binColor);
+                break;
         }
     }
 
@@ -95,13 +103,13 @@ public class Notification implements Serializable {
         Properties props = new Properties();
         Session session = Session.getDefaultInstance(props, null);
 
-        String subject = "Poubatal - Ordures " + binColor;
-        String msgBody = "Notification automatique pour vous prévenir du ramassage des ordures " + binColor
-                + " à votre adresse " + address.getStreetName();
+        String subject = "Ordures " + binColor + " - " + address.getStreetName();
+        String msgBody = "Ramassage des ordures " + binColor
+                + " demain à votre adresse " + address.getStreetName();
         try {
-            Message msg = new MimeMessage(session);
+            javax.mail.Message msg = new MimeMessage(session);
             msg.setFrom(new InternetAddress("notifications@poubatal.appspotmail.com", "Notification Poubatal"));
-            msg.addRecipient(Message.RecipientType.TO,
+            msg.addRecipient(javax.mail.Message.RecipientType.TO,
                     new InternetAddress(email));
             msg.setSubject(subject);
             msg.setText(msgBody);
@@ -109,5 +117,26 @@ public class Notification implements Serializable {
         } catch (MessagingException | UnsupportedEncodingException e) {
             Logger.getLogger(Notification.class.getName()).log(Level.SEVERE, null, e);
         }
+    }
+
+    private void sendXMPP(Address address, String binColor) {
+        JID jid = new JID(email);
+        String msgBody = "Ramassage des ordures " + binColor
+                + " demain à votre adresse " + address.getStreetName();
+        com.google.appengine.api.xmpp.Message msg = new MessageBuilder()
+                .withRecipientJids(jid)
+                .withBody(msgBody)
+                .build();
+
+        boolean messageSent = false;
+        XMPPService xmpp = XMPPServiceFactory.getXMPPService();
+        if (xmpp.getPresence(jid).isValid()) {
+            SendResponse status = xmpp.sendMessage(msg);
+            messageSent = (status.getStatusMap().get(jid) == SendResponse.Status.SUCCESS);
+        }
+        if (!messageSent) {
+            Logger.getLogger(Notification.class.getName()).log(Level.SEVERE, "{0} not sent", email);
+        }
+
     }
 }
