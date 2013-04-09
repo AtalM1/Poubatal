@@ -1,4 +1,4 @@
-package fr.univnantes.atal.poubatal.servlets;
+package fr.univnantes.atal.poubatal.cron;
 
 import fr.univnantes.atal.poubatal.Constants;
 import fr.univnantes.atal.poubatal.datastore.PMF;
@@ -9,10 +9,9 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
+import javax.jdo.Extent;
 import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public class CRONNotify extends HttpServlet {
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -34,13 +32,12 @@ public class CRONNotify extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PersistenceManager pm = PMF.get().getPersistenceManager();
-        Query query = pm.newQuery(User.class);
+        Extent<User> extent = pm.getExtent(User.class, false);
         try {
-            List<User> users = (List<User>) query.execute();
             DateFormat dateFormat = new SimpleDateFormat("EEEE", Locale.FRANCE);
-            Date date = new Date();
-            String day = dateFormat.format(date);
-            for (User user : users) {
+            long millis = 1000 * 60 * 60 * 24;
+            String day = dateFormat.format(new Date().getTime() + millis);
+            for (User user : extent) {
                 for (Address address : user.getAddresses()) {
                     if (address.getBlueBin().contains(day)) {
                         for (Notification notification : user.getNotifications()) {
@@ -55,7 +52,7 @@ public class CRONNotify extends HttpServlet {
                 }
             }
         } finally {
-            query.closeAll();
+            extent.closeAll();
             pm.close();
         }
     }

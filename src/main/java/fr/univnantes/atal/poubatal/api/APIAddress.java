@@ -42,7 +42,6 @@ public class APIAddress extends API {
         User user = authenticate(request, response);
         if (user != null) {
             Set<Address> addresses = user.getAddresses();
-            user.save();
             data(response, addresses);
         }
     }

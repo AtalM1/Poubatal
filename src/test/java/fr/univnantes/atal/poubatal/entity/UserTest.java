@@ -5,7 +5,6 @@
 package fr.univnantes.atal.poubatal.entity;
 
 import fr.univnantes.atal.poubatal.Constants;
-import fr.univnantes.atal.poubatal.NotificationPropertiesFactory;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -44,10 +43,10 @@ public class UserTest {
     public void testNotifications() {
         System.out.println("Test Set<Notification>");
         User user = new User("idTest", "notif");
-        Notification notification1 = new Notification(Constants.EMAIL_NOTIFICATION, NotificationPropertiesFactory.getEmailProperties("notif"));
-        Notification notification2 = new Notification(Constants.EMAIL_NOTIFICATION, NotificationPropertiesFactory.getEmailProperties("notif"));
-        Notification notification3 = new Notification(Constants.EMAIL_NOTIFICATION, NotificationPropertiesFactory.getEmailProperties("notif"));
-        Notification notification4 = new Notification(Constants.EMAIL_NOTIFICATION, NotificationPropertiesFactory.getEmailProperties("notif"));
+        Notification notification1 = new Notification(Notification.EMAIL_NOTIFICATION, "notif");
+        Notification notification2 = new Notification(Notification.EMAIL_NOTIFICATION, "notif");
+        Notification notification3 = new Notification(Notification.EMAIL_NOTIFICATION, "notif");
+        Notification notification4 = new Notification(Notification.EMAIL_NOTIFICATION, "notif");
         user.addNotification(notification1);
         user.addNotification(notification1);
         user.addNotification(notification2);

@@ -1,42 +1,29 @@
 package fr.univnantes.atal.poubatal.entity;
 
-import com.google.appengine.api.datastore.Key;
-import fr.univnantes.atal.poubatal.opendata.DataManager;
 import fr.univnantes.atal.poubatal.tools.Tools;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
 
-@PersistenceCapable
-public class Address {
+public class Address implements Serializable {
 
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key; // Unused key
-    @Persistent
+    private static final long serialVersionUID = 1L;
     private String id;
-    @Persistent
     private String streetName;
-    @Persistent
     private String numberDescription;
-    @Persistent
     private String zoneName;
-    @Persistent
     private String city;
-    @Persistent
     private boolean mixte;
-    @Persistent
     private Set<String> yellowBin;
-    @Persistent
     private Set<String> blueBin;
 
     private Address() {
+        yellowBin = new HashSet<>();
+        blueBin = new HashSet<>();
     }
 
     public Address(String csvRow) {

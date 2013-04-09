@@ -1,7 +1,6 @@
 package fr.univnantes.atal.poubatal.entity;
 
 import fr.univnantes.atal.poubatal.Constants;
-import fr.univnantes.atal.poubatal.NotificationPropertiesFactory;
 import fr.univnantes.atal.poubatal.tools.Oauth;
 import fr.univnantes.atal.poubatal.datastore.PMF;
 import java.util.Collections;
@@ -21,19 +20,25 @@ public class User {
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private String id;
-    @Persistent(defaultFetchGroup = "true")
+    @Persistent(defaultFetchGroup = "true", serialized = "true")
     private Set<Address> addresses;
-    @Persistent(defaultFetchGroup = "true")
+    @Persistent(defaultFetchGroup = "true", serialized = "true")
     private Set<Notification> notifications;
 
     private User() {
+        addresses = new HashSet<>();
+        notifications = new HashSet<>();
+    }
+
+    public String getId() {
+        return id;
     }
 
     public User(String id, String email) {
         this.id = id;
         addresses = new HashSet<>();
         notifications = new HashSet<>();
-        notifications.add(new Notification(Constants.EMAIL_NOTIFICATION, NotificationPropertiesFactory.getEmailProperties(email)));
+        notifications.add(new Notification(Notification.EMAIL_NOTIFICATION, email));
     }
 
     public static User load(String oauth) {
@@ -47,13 +52,15 @@ public class User {
 
         // Récupération du User avec l'ID Google
         PersistenceManager pm = PMF.get().getPersistenceManager();
-        User detached;
+        User user, detached;
         try {
-            User user = pm.getObjectById(User.class, id);
-            pm.makePersistent(user);
+            user = pm.getObjectById(User.class, id);
             detached = pm.detachCopy(user);
         } catch (JDOObjectNotFoundException e) {
-            detached = new User(id, email);
+            user = new User(id, email);
+            pm.makePersistent(user);
+            detached = pm.detachCopy(user);
+
         } finally {
             pm.close();
         }
@@ -80,12 +87,12 @@ public class User {
             pm.close();
         }
     }
-    
+
     public Notification getNotificationById(String notificationId) {
         Notification notification = null;
         LoopNotifications:
         for (Notification current : notifications) {
-            if(current.getId().equals(notificationId)) {
+            if (current.getId().equals(notificationId)) {
                 notification = current;
                 break LoopNotifications;
             }

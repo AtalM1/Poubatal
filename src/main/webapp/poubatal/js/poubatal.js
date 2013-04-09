@@ -29,6 +29,8 @@ $('#add-notification').click(function() {
 $('#delete-notification').click(function() {
     var authResult = gapi.auth.getToken();
     var notification = $('#input-notification').val();
+    var type = $('#select-notification').val();
+    notification = type + "-" + notification;
     apiNotification('DELETE', authResult.access_token, notification);
 });
 

@@ -1,7 +1,6 @@
 package fr.univnantes.atal.poubatal.api;
 
 import fr.univnantes.atal.poubatal.Constants;
-import fr.univnantes.atal.poubatal.NotificationPropertiesFactory;
 import fr.univnantes.atal.poubatal.entity.Notification;
 import fr.univnantes.atal.poubatal.entity.User;
 import java.io.IOException;
@@ -43,7 +42,6 @@ public class APINotification extends API {
         User user = authenticate(request, response);
         if (user != null) {
             Set<Notification> notifications = user.getNotifications();
-            user.save();
             data(response, notifications);
         }
     }
@@ -59,13 +57,13 @@ public class APINotification extends API {
                 error(response, HttpServletResponse.SC_BAD_REQUEST, "The 'type' parameter is missing");
             } else {
                 switch (type) {
-                    case Constants.EMAIL_NOTIFICATION:
+                    case Notification.EMAIL_NOTIFICATION:
                         String email = request.getParameter("email");
                         if (email == null) {
                             error(response, HttpServletResponse.SC_BAD_REQUEST, "The 'email' parameter is missing");
                         } else {
-                            Notification notification = new Notification(type, NotificationPropertiesFactory.getEmailProperties(email));
-                            if (notification.getType().equals(Constants.ERROR_NOTIFICATION)) {
+                            Notification notification = new Notification(type, email);
+                            if (notification.getType().equals(Notification.ERROR_NOTIFICATION)) {
                                 error(response, HttpServletResponse.SC_CONFLICT, "This notification 'type' is not allowed");
                             } else {
                                 if (user.addNotification(notification)) {
