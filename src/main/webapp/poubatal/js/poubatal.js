@@ -1,5 +1,5 @@
-var url = "http://localhost:8080";
-//var url = "http://poubatal.appspot.com";
+//var url = "http://localhost:8080";
+var url = "http://poubatal.appspot.com";
 
 // ACCOUNT
 $('#connect').click(function() {
