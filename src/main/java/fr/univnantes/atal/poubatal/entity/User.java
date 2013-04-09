@@ -5,7 +5,6 @@ import fr.univnantes.atal.poubatal.NotificationPropertiesFactory;
 import fr.univnantes.atal.poubatal.tools.Oauth;
 import fr.univnantes.atal.poubatal.datastore.PMF;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -86,7 +85,7 @@ public class User {
         Notification notification = null;
         LoopNotifications:
         for (Notification current : notifications) {
-            if(current.getId().equals(id)) {
+            if(current.getId().equals(notificationId)) {
                 notification = current;
                 break LoopNotifications;
             }

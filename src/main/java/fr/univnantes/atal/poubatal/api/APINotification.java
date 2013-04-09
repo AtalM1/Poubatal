@@ -29,7 +29,7 @@ public class APINotification extends API {
                     if (user.removeNotification(objNotification)) {
                         user.save();
                     } else {
-                        error(response, HttpServletResponse.SC_NOT_FOUND, "This notification is not registered in this account");
+                        error(response, HttpServletResponse.SC_NOT_FOUND, "Cannot remove this notification from this account");
                     }
                 }
             }
@@ -64,12 +64,17 @@ public class APINotification extends API {
                         if (email == null) {
                             error(response, HttpServletResponse.SC_BAD_REQUEST, "The 'email' parameter is missing");
                         } else {
-                            if (user.addNotification(
-                                    new Notification(type, NotificationPropertiesFactory.getEmailProperties(email)))) {
-                                user.save();
+                            Notification notification = new Notification(type, NotificationPropertiesFactory.getEmailProperties(email));
+                            if (notification.getType().equals(Constants.ERROR_NOTIFICATION)) {
+                                error(response, HttpServletResponse.SC_CONFLICT, "This notification 'type' is not allowed");
                             } else {
-                                error(response, HttpServletResponse.SC_CONFLICT, "This notification is already registered in this account");
+                                if (user.addNotification(notification)) {
+                                    user.save();
+                                } else {
+                                    error(response, HttpServletResponse.SC_CONFLICT, "This notification is already registered in this account");
+                                }
                             }
+
                         }
                         break;
                     default:

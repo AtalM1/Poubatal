@@ -23,7 +23,8 @@ $('#notificationsList').click(function() {
 $('#add-notification').click(function() {
     var authResult = gapi.auth.getToken();
     var notification = $('#input-notification').val();
-    apiNotification('POST', authResult.access_token, notification);
+    var type = $('#select-notification').val();
+    apiNotification('POST', authResult.access_token, notification, type);
 });
 $('#delete-notification').click(function() {
     var authResult = gapi.auth.getToken();

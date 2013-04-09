@@ -24,7 +24,7 @@ function apiDirectory() {
 }
 
 // NOTIFICATION
-function apiNotification(method, accessToken, notification) {
+function apiNotification(method, accessToken, notification, notificationType) {
     method = method.toUpperCase();
     var type;
     var data;
@@ -36,7 +36,7 @@ function apiNotification(method, accessToken, notification) {
         if (method === "GET") {
             data = {oauth: accessToken};
         } else {
-            data = {oauth: accessToken, type: "email", email: notification};
+            data = {oauth: accessToken, type: notificationType, email: notification};
         }
     }
     $.ajax({

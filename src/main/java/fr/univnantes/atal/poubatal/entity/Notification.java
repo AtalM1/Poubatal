@@ -2,9 +2,7 @@ package fr.univnantes.atal.poubatal.entity;
 
 import com.google.appengine.api.datastore.Key;
 import fr.univnantes.atal.poubatal.Constants;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -22,7 +20,7 @@ public class Notification {
     private String id;
     @Persistent
     private String type;
-    @Persistent
+    @Persistent(defaultFetchGroup = "true")
     private Map<String, String> properties;
 
     private Notification() {
@@ -37,10 +35,10 @@ public class Notification {
                 break;
             default:
                 this.type = Constants.ERROR_NOTIFICATION;
+                this.properties = properties;
+                this.id = Constants.ERROR_NOTIFICATION;
                 break;
         }
-
-
     }
 
     /**
