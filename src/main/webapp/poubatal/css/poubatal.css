@@ -1,4 +1,70 @@
-root { 
-    display: block;
+.header {
+    margin-bottom: 0;
+    padding: 70px 0 80px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 0, 0, 0.075);
+}
+.header h1 {
+    /*font-size: 120px;*/
+    letter-spacing: -2px;
+    line-height: 1;
+}
+.header p {
+    font-size: 40px;
+    font-weight: 200;
+    line-height: 1.25;
+}
+.header-links {
+    list-style: none outside none;
+    margin: 0;
+}
+.header-links li {
+    color: rgba(255, 255, 255, 0.25);
+    display: inline;
+    padding: 0 10px;
 }
 
+.jumbotron {
+    margin-top: 50px;
+    padding: 40px 0;
+    position: relative;
+    text-align: center;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 0, 0, 0.075);
+}
+.jumbotron h1 {
+    font-size: 80px;
+    font-weight: bold;
+    letter-spacing: -1px;
+    line-height: 1;
+}
+.jumbotron p {
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1.25;
+    margin-bottom: 30px;
+}
+.jumbotron .container {
+    position: relative;
+    z-index: 2;
+}
+
+.footer {
+    background-color: #F5F5F5;
+    border-top: 1px solid #E5E5E5;
+    margin-top: 70px;
+    padding: 30px 0;
+    text-align: center;
+}
+.footer p {
+    color: #777777;
+    margin-bottom: 0;
+}
+.footer-links {
+    margin: 10px 0;
+}
+.footer-links li {
+    display: inline;
+    padding: 0 2px;
+}
+.footer-links li:first-child {
+    padding-left: 0;
+}
