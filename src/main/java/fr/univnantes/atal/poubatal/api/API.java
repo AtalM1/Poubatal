@@ -1,9 +1,12 @@
 package fr.univnantes.atal.poubatal.api;
 
+import fr.univnantes.atal.poubatal.entity.Notification;
 import fr.univnantes.atal.poubatal.tools.json.JSON;
 import fr.univnantes.atal.poubatal.entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -221,6 +224,7 @@ public abstract class API extends HttpServlet {
             int status,
             Throwable error)
             throws ServletException, IOException {
+        Logger.getLogger(API.class.getName()).log(Level.SEVERE, null, error);
         response.setStatus(status);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

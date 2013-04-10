@@ -68,7 +68,11 @@ public class APINotification extends API {
                                 error(response, HttpServletResponse.SC_CONFLICT, "This notification 'type' is not allowed");
                             } else {
                                 if (user.addNotification(notification)) {
-                                    user.save();
+                                    if (notification.test()) {
+                                        user.save();
+                                    } else {
+                                        error(response, HttpServletResponse.SC_BAD_REQUEST, "Notification sending has failed");
+                                    }                                    
                                 } else {
                                     error(response, HttpServletResponse.SC_CONFLICT, "This notification is already registered in this account");
                                 }

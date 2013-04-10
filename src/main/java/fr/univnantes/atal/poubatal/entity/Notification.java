@@ -102,17 +102,22 @@ public class Notification implements Serializable {
     private void sendEmail(Address address, String binColor) {
         Properties props = new Properties();
         Session session = Session.getDefaultInstance(props, null);
-
-        String subject = "Ordures " + binColor + " - " + address.getStreetName();
-        String msgBody = "Ramassage des ordures " + binColor
-                + " demain à votre adresse " + address.getStreetName();
         try {
-            javax.mail.Message msg = new MimeMessage(session);
+            // Create email
+            MimeMessage msg = new MimeMessage(session);
+
+            // From
             msg.setFrom(new InternetAddress("notifications@poubatal.appspotmail.com", "Notification Poubatal"));
-            msg.addRecipient(javax.mail.Message.RecipientType.TO,
-                    new InternetAddress(email));
-            msg.setSubject(subject);
-            msg.setText(msgBody);
+
+            // To
+            msg.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(email));
+
+            // Subject & content
+            String subject = "Ordures " + binColor + " - " + address.getStreetName();
+            msg.setSubject(subject, "utf-8");
+            String msgBody = "Ramassage des ordures " + binColor + " demain à votre adresse " + address.getStreetName();
+            msg.setText(msgBody, "utf-8");
+
             Transport.send(msg);
         } catch (MessagingException | UnsupportedEncodingException e) {
             Logger.getLogger(Notification.class.getName()).log(Level.SEVERE, null, e);
@@ -128,15 +133,74 @@ public class Notification implements Serializable {
                 .withBody(msgBody)
                 .build();
 
-        boolean messageSent = false;
         XMPPService xmpp = XMPPServiceFactory.getXMPPService();
         if (xmpp.getPresence(jid).isValid()) {
             SendResponse status = xmpp.sendMessage(msg);
-            messageSent = (status.getStatusMap().get(jid) == SendResponse.Status.SUCCESS);
+            if (status.getStatusMap().get(jid) != SendResponse.Status.SUCCESS) {
+                Logger.getLogger(Notification.class.getName()).log(Level.SEVERE, "{0} not sent", email);
+            }
         }
-        if (!messageSent) {
-            Logger.getLogger(Notification.class.getName()).log(Level.SEVERE, "{0} not sent", email);
-        }
+    }
 
+    public boolean test() {
+        switch (type) {
+            case EMAIL_NOTIFICATION:
+                return testEmail();
+            case XMPP_NOTIFICATION:
+                return testXMPP();
+            default:
+                return false;
+        }
+    }
+
+    private boolean testEmail() {
+        Properties props = new Properties();
+        Session session = Session.getDefaultInstance(props, null);
+
+        try {
+            // Create email
+            MimeMessage msg = new MimeMessage(session);
+
+            // From
+            msg.setFrom(new InternetAddress("notifications@poubatal.appspotmail.com", "Notification Poubatal"));
+
+            // To
+            msg.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(email));
+
+            // Subject & content
+            String subject = "Poubatal - Message de vérification";
+            msg.setSubject(subject, "utf-8");
+            String msgBody = "Confirmation de l'ajout de l'adresse " + email + " à votre liste de notification email.";
+            msg.setText(msgBody, "utf-8");
+
+            Transport.send(msg);
+            return true;
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            return false;
+        }
+    }
+
+    private boolean testXMPP() {
+        try {
+            JID jid = new JID(email);
+            XMPPService xmpp = XMPPServiceFactory.getXMPPService();
+            if (xmpp.getPresence(jid).isValid()) {
+                String msgBody = "Confirmation de l'ajout de l'adresse " + email + " à votre liste de notification par messagerie instantanée.";
+                com.google.appengine.api.xmpp.Message msg = new MessageBuilder()
+                        .withRecipientJids(jid)
+                        .withBody(msgBody)
+                        .build();
+                SendResponse status = xmpp.sendMessage(msg);
+                if (status.getStatusMap().get(jid) == SendResponse.Status.SUCCESS) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 }
