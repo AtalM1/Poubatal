@@ -1,6 +1,5 @@
 package fr.univnantes.atal.poubatal.api;
 
-import fr.univnantes.atal.poubatal.Constants;
 import fr.univnantes.atal.poubatal.entity.Notification;
 import fr.univnantes.atal.poubatal.entity.User;
 import java.io.IOException;
@@ -65,7 +64,7 @@ public class APINotification extends API {
                         } else {
                             Notification notification = new Notification(type, email);
                             if (notification.getType().equals(Notification.ERROR_NOTIFICATION)) {
-                                error(response, HttpServletResponse.SC_CONFLICT, "This notification 'type' is not allowed");
+                                error(response, HttpServletResponse.SC_BAD_REQUEST, "This notification 'type' is not allowed");
                             } else {
                                 if (user.addNotification(notification)) {
                                     if (notification.test()) {
