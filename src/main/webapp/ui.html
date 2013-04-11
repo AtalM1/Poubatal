@@ -12,13 +12,18 @@
         <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-responsive.min.css">
         -->
         <link rel="stylesheet" type="text/css" href="poubatal/css/poubatal.css">
+        <link rel="stylesheet" type="text/css" href="poubatal/css/typeahead.css">
     </head>
     <!-- https://accounts.google.com/Logout?hl=fr&continue=https://www.google.fr/-->
     <body>
         <div class="header">
             <div class="container">
-                <h1>Poubatal</h1>
-                <span id="email">email</span>
+                <div class="title">Poubatal</div>                    
+                <div id="account">
+                    <img alt="profil" src="https://lh4.googleusercontent.com/-rgnY6ZXwktE/AAAAAAAAAAI/AAAAAAAAAIs/m8PV6YwxIKs/s40-c-k/photo.jpg"/>
+                    <span>noemi.salaun@gmail.com</span>
+                    <a href="#"><i class="icon-chevron-down"></i></a>
+                </div>
             </div>
         </div>
         <div class="jumbotron">
@@ -30,20 +35,29 @@
                 </p>
             </div>
         </div>
+        <hr>
+        <div class="container">
+            <div class="poubatal-typeahead">
+                <input id="input-address" type="text" placeholder="Adresse">
+            </div>
+        </div>
         <footer class="footer">
             <div class="container">
-                <p>Design réalisé par l'équipe <a target="_blank" href="https://github.com/AtalM1?tab=members">M1 ATAL</a> de l'Université de Nantes, basé sur <a target="_blank" href="http://twitter.github.io/bootstrap/index.html">Twitter Bootstrap</a>.</p>
+                <p>Site réalisé par l'équipe <a target="_blank" href="https://github.com/AtalM1?tab=members">M1 ATAL</a> de l'Université de Nantes, basé sur <a target="_blank" href="http://twitter.github.io/bootstrap/index.html">Twitter Bootstrap</a>.</p>
                 <p>Les données manipulées sont récupérées sur l'<a href="http://data.nantes.fr/donnees/detail/jours-de-collectes-des-dechets-a-nantes/?tx_icsoddatastore_pi1[page]=3%20|%20garbage%20collection">OpenData de Nantes</a>.</p>
                 <ul class="footer-links">
                     <li><a href="https://github.com/AtalM1/Poubatal">Code source</a></li>
                     <li class="muted">·</li>
                     <li><a href="http://pagesperso.lina.univ-nantes.fr/~molli-p/pmwiki/pmwiki.php/Main/Oodprojet1213">Sujet du projet</a></li>
+                    <li class="muted">·</li>
+                    <li><a href="#">API Poubatal</a></li>
                 </ul>
             </div>
         </footer>
         <script src="jquery/js/jquery-1.9.1.js"></script>
         <script src="bootstrap/js/bootstrap.js"></script>
         <script src="bootstrap/js/typeahead.js"></script>
+        <script src="bootstrap/js/hogan.js"></script>
         <!--
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="bootstrap/js/bootstrap.min.js"></script>
@@ -51,7 +65,6 @@
         -->        
         <script src="poubatal/js/oauth.js"></script>
         <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
-        <script src="poubatal/js/api.js"></script>
-        <script src="poubatal/js/poubatal.js"></script>
+        <script src="poubatal/js/ui.js"></script>
     </body>
 </html>
