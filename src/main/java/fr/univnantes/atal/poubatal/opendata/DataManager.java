@@ -82,7 +82,10 @@ public class DataManager {
             nextLine = buffer.readLine();
 
             while (nextLine != null) {
-                points.add(new Address(nextLine));
+                Address address = new Address(nextLine);
+                if (!address.isMixte()) {
+                    points.add(address);
+                }                
                 nextLine = buffer.readLine();
             }
         } catch (IOException ex) {
