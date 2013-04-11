@@ -12,55 +12,136 @@
         <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-responsive.min.css">
         -->
         <link rel="stylesheet" type="text/css" href="poubatal/css/poubatal.css">
+        <link rel="stylesheet" type="text/css" href="poubatal/css/typeahead.css">
     </head>
+    <!-- -->
     <body>
-        <div class="container">
-            <h1>Poubatal</h1>
-            <h2>Compte</h2>
-            <p>
-                <button id="connect" type="button" class="btn btn-success" disabled="disabled">Connexion</button>
-                <button id="delete-account" type="button" class="btn btn-danger">Suppression du compte</button>
-            </p>
-            <h2>Annuaire</h2>
-            <p>
-                <input id="input-directory" type="text">
-                <button id="directory" type ="button" class="btn btn-info">Annuaire</button>
-            </p>
-            <h2>Notifications</h2>
-            <p>
-                <button id="notificationsList" type="button" class="btn btn-info">Liste des notifications</button>
-            </p>
-            <p>
+        <div class="header">
+            <div class="container">
+                <div class="title">Poubatal</div>
+                <div id="account">
+                    <div class="connected">
+                        <img id="profil-image" alt="profil" src=""/>
+                        <span id ="profil-email">email</span>
+                        <a id="account-toggle-menu" class="dropdown-toggle" data-toggle="dropdown" role="button" href="#"><i class="icon-chevron-down"></i></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="account-toggle-menu">
+                            <li role="menuitem">
+                                <a href="https://accounts.google.com/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://poubatal.appspot.com/"><i class="icon-off"></i>Déconnexion</a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#myModal" data-toggle="modal"><i class="icon-trash"></i>Supprimer le compte</a>
+                            </li>
+                        </ul>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="non-connected">
+            <div class="jumbotron">
+                <div class="container">
+                    <h1>Poubatal</h1>
+                    <p>Recevez des notifications personnalisées pour ne plus oublier de sortir vos poubelles.</p>
+                    <p>
+                        <button id="button-connect" class="btn btn-success btn-large" data-loading-text="Vérification..." type="button">Connexion</button>
+                    </p>
+                </div>
+            </div>
+            <div class="container"><hr><hr></div>
+        </div>
+        <div id="address-selector">
+            <div class="container">
+                <img class="loading-indicator" alt="loader" src="poubatal/img/loader.gif"/>
+                <div class="poubatal-typeahead">
+                    <input id="input-address" type="text" placeholder="Nom de la rue...">
+                </div>
+                <div id="address-results">
+                    <div class="alert alert-info">
+                        <div class="div-icon-add">
+                            <a class="icon-add"><i class="icon-plus-sign"></i></a>
+                        </div>
+                        <h3>Rue du soleil levant</h3>
+                        <p><em>du numéro 12 au 25</em></p>
+                        <ul>
+                            <li><strong>Jours bleus :</strong> mercredi, jeudi</li>
+                            <li><strong>Jours jaunes :</strong> lundi</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="addresses" class="connected">
+            <div class="container elements-container">
+                <div class="elements-header">
+                    <img id="addresses-loader" alt="loader" src="poubatal/img/loader.gif"/>
+                    <h2>Mes adresses</h2>                    
+                </div>
+                <div class="my-elements">
+
+                </div>
+            </div>
+        </div>
+        <div id="notification-selector" class="connected">
+            <div class="container input-prepend input-append">
+                <hr>
                 <select id="select-notification">
                     <option value="email">Email</option>
                     <option value="xmpp">XMPP</option>
                 </select>
-                <input id="input-notification" type="text">
-                <button id="add-notification" type ="button" class="btn btn-warning">Ajouter notification</button>
-                <button id="delete-notification" type ="button" class="btn btn-danger">Supprimer notification</button>
-            </p>
-            <h2>Adresses</h2>
-            <p>
-                <button id="addressesList" type="button" class="btn btn-info">Liste des adresses</button>
-            </p>
-            <p>
-                <input id="input-address" type="text">
-                <button id="add-address" type ="button" class="btn btn-warning">Ajouter adresse</button>
-                <button id="delete-address" type ="button" class="btn btn-danger">Supprimer adresse</button>
-            </p>
+                <input id="input-notification" type="text" placeholder="Notification...">
+                <button id="add-notification" type ="button" class="btn btn-info">Ajouter</button>
+            </div>
+        </div>
+        <div id="notifications" class="connected">
+            <div class="container elements-container">
+                <div class="elements-header">
+                    <img id="notifications-loader" alt="loader" src="poubatal/img/loader.gif"/>
+                    <h2>Mes notifications</h2>
+                </div>
+                <div class="my-elements">
 
-        </div>                
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+            <div class="container">
+                <p>Site réalisé par l'équipe <a target="_blank" href="https://github.com/AtalM1?tab=members">M1 ATAL</a> de l'Université de Nantes, basé sur <a target="_blank" href="http://twitter.github.io/bootstrap/index.html">Twitter Bootstrap</a>.</p>
+                <p>Les données manipulées sont récupérées sur l'<a href="http://data.nantes.fr/donnees/detail/jours-de-collectes-des-dechets-a-nantes/" target="_blank">OpenData de Nantes</a>.</p>
+                <ul class="footer-links">
+                    <li><a href="https://github.com/AtalM1/Poubatal" target="_blank">Code source</a></li>
+                    <li class="muted">·</li>
+                    <li><a href="http://pagesperso.lina.univ-nantes.fr/~molli-p/pmwiki/pmwiki.php/Main/Oodprojet1213" target="_blank">Sujet du projet</a></li>
+                    <li class="muted">·</li>
+                    <li><a href="#" target="_blank">API Poubatal</a></li>
+                </ul>
+            </div>
+        </footer>
+        <!-- Modal -->
+        <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">Suppression du compte</h3>
+            </div>
+            <div class="modal-body">
+                <p>La suppression du compte entraîne la perte des adresses et des notifications enregistrées.</p>
+                <p>Êtes-vous sur de vouloir continuer ?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Annuler</button>
+                <button id="delete-account" class="btn btn-danger" data-dismiss="modal" aria-hidden="true"><i class="icon-trash icon-white"></i> Supprimer</button>
+            </div>
+        </div>
         <script src="jquery/js/jquery-1.9.1.js"></script>
         <script src="bootstrap/js/bootstrap.js"></script>
         <script src="bootstrap/js/typeahead.js"></script>
+        <script src="bootstrap/js/hogan.js"></script>
         <!--
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="bootstrap/js/bootstrap.min.js"></script>
         <script src="bootstrap/js/typeahead.min.js"></script>
         -->        
+        <script src="poubatal/js/api.js"></script>
         <script src="poubatal/js/oauth.js"></script>
         <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
-        <script src="poubatal/js/api.js"></script>
         <script src="poubatal/js/poubatal.js"></script>
     </body>
 </html>

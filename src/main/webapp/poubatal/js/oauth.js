@@ -1,6 +1,7 @@
 var clientId = '385110343883';
 var scopes = ['https://www.googleapis.com/auth/userinfo.email',
     'https://www.googleapis.com/auth/userinfo.profile'];
+var connected = false;
 
 function handleClientLoad() {
     setTimeout(checkAuth, 1); // L'exemple utilisait un setTimeout, donc je l'ai laissé
@@ -16,11 +17,15 @@ function handleAuthResult(authResult) {
     if (authResult && !authResult.error) {
         gapi.auth.setToken(authResult); // On stock le token dans l'application
         makeApiCall(function() {
+            connected = true;
             $('.non-connected').fadeOut(400, function() {
                 $('.connected').fadeIn(600);
             });
+            apiGetAddress(authResult.access_token);
+            apiGetNotification(authResult.access_token);
         });
     } else {
+        connected = false;
         $('#button-connect').button('reset');
     }
 }
