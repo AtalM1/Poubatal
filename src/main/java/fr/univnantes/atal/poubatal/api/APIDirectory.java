@@ -15,6 +15,14 @@ public class APIDirectory extends API {
             HttpServletResponse response)
             throws ServletException, IOException {
         List<Address> addresses = DataManager.getInstance().getPoints();
-        data(response, addresses);
+        if (addresses == null) {
+            error(response, HttpServletResponse.SC_NO_CONTENT, "Nantes OpenData is unavailable.");
+        } else {
+            if (addresses.isEmpty()) {
+                error(response, HttpServletResponse.SC_NO_CONTENT, "Nantes OpenData is unavailable.");
+            } else {
+                data(response, addresses);
+            }
+        }
     }
 }

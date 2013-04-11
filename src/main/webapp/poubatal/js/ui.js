@@ -1,11 +1,13 @@
 (function() {
-    $('#input-address').attr('disabled', 'disabled');
+    $('#address-selector .loading-indicator').show(400);
     $.ajax({
         url: '/api/directory',
         type: 'GET',
         dataType: 'json',
+        complete: function() {            
+            $('#address-selector .loading-indicator').hide(400);
+        },
         success: function(response) {
-            $('#input-address').removeAttr('disabled');
             $('#input-address').typeahead({
                 name: 'directory',
                 valueKey: 'streetName',
@@ -23,3 +25,8 @@
         }
     });
 })();
+
+// ACCOUNT
+$('#button-connect').click(function() {
+    handleAuthClick();
+});

@@ -8,35 +8,41 @@ function handleClientLoad() {
 
 // Vérification automatique des droits de l'application
 function checkAuth() {
+    $('#button-connect').button('loading');
     gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
 }
 
 function handleAuthResult(authResult) {
     if (authResult && !authResult.error) {
-        console.log('success');
-        $('#connect').hide();
         gapi.auth.setToken(authResult); // On stock le token dans l'application
-        console.log('accessToken = ' + authResult.access_token);
-        makeApiCall();
+        makeApiCall(function() {
+            $('.non-connected').fadeOut(400, function() {
+                $('.connected').fadeIn(600);
+            });
+        });
     } else {
-        console.log('fail');
-        $('#connect').removeAttr('disabled');
+        $('#button-connect').button('reset');
     }
 }
 
 // Vérification avec popup des droits de l'application
 function handleAuthClick(event) {
+    $('#button-connect').button('loading');
     gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
     return false;
 }
 
 // Chargement de l'API Oauth2 et récupération de l'ID
-function makeApiCall() {
+function makeApiCall(callback) {
     console.log('makeApiCall');
     gapi.client.load('oauth2', 'v2', function() {
         var request = gapi.client.oauth2.userinfo.get();
         request.execute(function(resp) {
-            console.log(resp);
+            var email = resp.email;
+            var picture = resp.picture.replace('photo.jpg', 's40-c-k/photo.jpg');
+            $('#profil-email').html(email);
+            $('#profil-image').attr('src', picture);
+            callback();
         });
     });
 }

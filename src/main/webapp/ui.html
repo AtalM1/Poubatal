@@ -14,31 +14,51 @@
         <link rel="stylesheet" type="text/css" href="poubatal/css/poubatal.css">
         <link rel="stylesheet" type="text/css" href="poubatal/css/typeahead.css">
     </head>
-    <!-- https://accounts.google.com/Logout?hl=fr&continue=https://www.google.fr/-->
+    <!-- -->
     <body>
         <div class="header">
             <div class="container">
-                <div class="title">Poubatal</div>                    
+                <div class="title">Poubatal</div>
                 <div id="account">
-                    <img alt="profil" src="https://lh4.googleusercontent.com/-rgnY6ZXwktE/AAAAAAAAAAI/AAAAAAAAAIs/m8PV6YwxIKs/s40-c-k/photo.jpg"/>
-                    <span>noemi.salaun@gmail.com</span>
-                    <a href="#"><i class="icon-chevron-down"></i></a>
+                    <div class="connected">
+                        <img id="profil-image" alt="profil" src=""/>
+                        <span id ="profil-email">email</span>
+                        <a id="account-toggle-menu" class="dropdown-toggle" data-toggle="dropdown" role="button" href="#"><i class="icon-chevron-down"></i></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="account-toggle-menu">
+                            <li role="menuitem">
+                                <a href="https://accounts.google.com/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://poubatal.appspot.com/ui.html"><i class="icon-off"></i>Déconnexion</a>
+                            </li>
+                        </ul>                        
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="jumbotron">
-            <div class="container">
-                <h1>Poubatal</h1>
-                <p>Recevez des notifications personnalisées pour ne plus oublier de sortir vos poubelles.</p>
-                <p>
-                    <button class="btn btn-success btn-large" type="button">Connexion</button>
-                </p>
+        <div class="non-connected">
+            <div class="jumbotron">
+                <div class="container">
+                    <h1>Poubatal</h1>
+                    <p>Recevez des notifications personnalisées pour ne plus oublier de sortir vos poubelles.</p>
+                    <p>
+                        <button id="button-connect" class="btn btn-success btn-large" data-loading-text="Vérification..." type="button">Connexion</button>
+                    </p>
+                </div>
             </div>
+            <div class="container"><hr><hr></div>
         </div>
-        <hr>
-        <div class="container">
-            <div class="poubatal-typeahead">
-                <input id="input-address" type="text" placeholder="Adresse">
+        <div id="address-selector">
+            <div class="container">
+                <img class="loading-indicator" alt="loader" src="poubatal/img/loader.gif"/>
+                <div class="poubatal-typeahead">
+                    <input id="input-address" type="text" placeholder="Nom de la rue...">
+                </div>
+                <div class="alert alert-info">
+                    <h3>Rue du soleil levant</h3>
+                    <p><em>du numéro 12 au 25</em></p>
+                    <ul>
+                        <li><strong>Jours bleus :</strong> mercredi, jeudi</li>
+                        <li><strong>Jours jaunes :</strong> lundi</li>
+                    </ul>
+                </div>
             </div>
         </div>
         <footer class="footer">
