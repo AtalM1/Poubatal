@@ -39,7 +39,6 @@ function handleAuthClick(event) {
 
 // Chargement de l'API Oauth2 et récupération de l'ID
 function makeApiCall(callback) {
-    console.log('makeApiCall');
     gapi.client.load('oauth2', 'v2', function() {
         var request = gapi.client.oauth2.userinfo.get();
         request.execute(function(resp) {

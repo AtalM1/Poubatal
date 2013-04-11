@@ -51,7 +51,6 @@
                 }
                 html += '</li></ul></div>';
                 $('#address-results').html(html);
-                console.log(connected);
                 if (connected) {
                     bindAddressSelector();
                 } else {
