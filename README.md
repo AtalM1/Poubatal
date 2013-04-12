@@ -17,7 +17,7 @@ Equipe
 - Noémi SALAÜN
 - Rémi BOIS
 - Grégoire JADI
-- Loïc JANKOWIAC
+- Loic JANKOWIAC
 	
 
 
