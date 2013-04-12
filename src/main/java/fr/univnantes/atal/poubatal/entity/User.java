@@ -1,6 +1,5 @@
 package fr.univnantes.atal.poubatal.entity;
 
-import fr.univnantes.atal.poubatal.Constants;
 import fr.univnantes.atal.poubatal.tools.Oauth;
 import fr.univnantes.atal.poubatal.datastore.PMF;
 import java.util.Collections;
@@ -14,6 +13,10 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+/**
+ *
+ * @author Noemi
+ */
 @PersistenceCapable
 public class User {
 
@@ -30,10 +33,19 @@ public class User {
         notifications = new HashSet<>();
     }
 
+    /**
+     *
+     * @return
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id
+     * @param email
+     */
     public User(String id, String email) {
         this.id = id;
         addresses = new HashSet<>();
@@ -41,6 +53,11 @@ public class User {
         notifications.add(new Notification(Notification.EMAIL_NOTIFICATION, email));
     }
 
+    /**
+     *
+     * @param oauth
+     * @return
+     */
     public static User load(String oauth) {
         // Récupération du GoogleUser avec l'accessToken
         Map<String, String> userData = Oauth.getGoogleUser(oauth);
@@ -67,6 +84,11 @@ public class User {
         return detached;
     }
 
+    /**
+     *
+     * @param oauth
+     * @return
+     */
     public static int delete(String oauth) {
         // Récupération du GoogleUser avec l'accessToken
         Map<String, String> userData = Oauth.getGoogleUser(oauth);
@@ -88,6 +110,11 @@ public class User {
         }
     }
 
+    /**
+     *
+     * @param notificationId
+     * @return
+     */
     public Notification getNotificationById(String notificationId) {
         Notification notification = null;
         LoopNotifications:
@@ -100,6 +127,9 @@ public class User {
         return notification;
     }
 
+    /**
+     *
+     */
     public void save() {
         PersistenceManager pm = PMF.get().getPersistenceManager();
         try {
@@ -109,26 +139,54 @@ public class User {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public Set<Address> getAddresses() {
         return Collections.unmodifiableSet(addresses);
     }
 
+    /**
+     *
+     * @param address
+     * @return
+     */
     public boolean addAddress(Address address) {
         return addresses.add(address);
     }
 
+    /**
+     *
+     * @param address
+     * @return
+     */
     public boolean removeAddress(Address address) {
         return addresses.remove(address);
     }
 
+    /**
+     *
+     * @return
+     */
     public Set<Notification> getNotifications() {
         return Collections.unmodifiableSet(notifications);
     }
 
+    /**
+     *
+     * @param notification
+     * @return
+     */
     public boolean addNotification(Notification notification) {
         return notifications.add(notification);
     }
 
+    /**
+     *
+     * @param notification
+     * @return
+     */
     public boolean removeNotification(Notification notification) {
         return notifications.remove(notification);
     }

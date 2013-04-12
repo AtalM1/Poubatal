@@ -7,10 +7,19 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Map;
 
+/**
+ *
+ * @author Noemi
+ */
 public class Oauth {
 
     static private ObjectMapper mapper = new ObjectMapper();
 
+    /**
+     *
+     * @param accessToken
+     * @return
+     */
     public static Map<String, String> getGoogleUser(String accessToken) {
         try {
             URL url = new URL("https://www.googleapis.com/oauth2/v1/tokeninfo" + "?access_token=" + accessToken);

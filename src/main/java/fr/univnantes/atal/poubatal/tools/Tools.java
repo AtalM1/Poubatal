@@ -1,11 +1,11 @@
 package fr.univnantes.atal.poubatal.tools;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.text.Normalizer;
-import java.util.AbstractMap;
-import java.util.Map;
 
+/**
+ *
+ * @author Noemi
+ */
 public class Tools {
 
     /**

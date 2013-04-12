@@ -9,6 +9,10 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ *
+ * @author Noemi
+ */
 public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -26,6 +30,10 @@ public class Address implements Serializable {
         blueBin = new HashSet<>();
     }
 
+    /**
+     *
+     * @param csvRow
+     */
     public Address(String csvRow) {
         String[] columns = csvRow.split(",");
         streetName = columns[1].replaceAll("\"", "");

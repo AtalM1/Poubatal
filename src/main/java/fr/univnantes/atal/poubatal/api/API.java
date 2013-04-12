@@ -1,6 +1,5 @@
 package fr.univnantes.atal.poubatal.api;
 
-import fr.univnantes.atal.poubatal.entity.Notification;
 import fr.univnantes.atal.poubatal.tools.json.JSON;
 import fr.univnantes.atal.poubatal.entity.User;
 import java.io.IOException;
@@ -12,6 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ *
+ * @author Noemi
+ */
 public abstract class API extends HttpServlet {
 
     /**
@@ -238,7 +241,6 @@ public abstract class API extends HttpServlet {
      *
      * @param response servlet response
      * @param data the data object
-     * @param status status code of the error
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
@@ -254,6 +256,14 @@ public abstract class API extends HttpServlet {
         }
     }
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @return
+     * @throws ServletException
+     * @throws IOException
+     */
     protected User authenticate(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {

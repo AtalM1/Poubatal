@@ -20,6 +20,9 @@ public class DataManager {
     private URL urlToFetch;
     private List<Address> points;
 
+    /**
+     *
+     */
     protected DataManager() {
         points = new ArrayList<>();
         try {
@@ -31,6 +34,11 @@ public class DataManager {
         }
     }
     
+    /**
+     *
+     * @param addressId
+     * @return
+     */
     public static Address getAddressById(String addressId) {
         Address address = null;
         LoopAddresses:
@@ -43,6 +51,10 @@ public class DataManager {
         return address;
     }
 
+    /**
+     *
+     * @return
+     */
     public static DataManager getInstance() {
         if (instance == null) {
             instance = new DataManager();
@@ -51,6 +63,10 @@ public class DataManager {
         return instance;
     }
     
+    /**
+     *
+     * @return
+     */
     public List<Address> getPoints() {
         if (instance.points.isEmpty()) {
             // something goes wrong during the initialization
@@ -59,6 +75,9 @@ public class DataManager {
         return instance.points;
     }
 
+    /**
+     *
+     */
     public void updateData() {
         String http_proxy = System.getenv().get("http_proxy");
         try {

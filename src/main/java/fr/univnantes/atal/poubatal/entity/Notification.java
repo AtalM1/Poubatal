@@ -17,10 +17,23 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+/**
+ *
+ * @author Noemi
+ */
 public class Notification implements Serializable {
 
+    /**
+     *
+     */
     public static final String EMAIL_NOTIFICATION = "email";
+    /**
+     *
+     */
     public static final String XMPP_NOTIFICATION = "xmpp";
+    /**
+     *
+     */
     public static final String ERROR_NOTIFICATION = "error";
     private static final long serialVersionUID = 1L;
     private String id;
@@ -30,6 +43,11 @@ public class Notification implements Serializable {
     private Notification() {
     }
 
+    /**
+     *
+     * @param type
+     * @param email
+     */
     public Notification(String type, String email) {
         switch (type) {
             case EMAIL_NOTIFICATION:
@@ -88,6 +106,11 @@ public class Notification implements Serializable {
         return hash;
     }
 
+    /**
+     *
+     * @param address
+     * @param binColor
+     */
     public void send(Address address, String binColor) {
         switch (type) {
             case EMAIL_NOTIFICATION:
@@ -143,6 +166,10 @@ public class Notification implements Serializable {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean test() {
         switch (type) {
             case EMAIL_NOTIFICATION:
