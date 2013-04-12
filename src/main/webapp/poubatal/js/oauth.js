@@ -43,7 +43,12 @@ function makeApiCall(callback) {
         var request = gapi.client.oauth2.userinfo.get();
         request.execute(function(resp) {
             var email = resp.email;
-            var picture = resp.picture.replace('photo.jpg', 's40-c-k/photo.jpg');
+            var picture;
+            if (resp.picture) {
+                picture = resp.picture.replace('photo.jpg', 's40-c-k/photo.jpg');
+            } else {
+                picture = 'poubatal/img/profil.png';
+            }
             $('#profil-email').html(email);
             $('#profil-image').attr('src', picture);
             callback();
