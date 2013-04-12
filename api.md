@@ -14,8 +14,9 @@ Lorsque un service renvoi des informations, elles sont toujours structurées en 
 ```
 Dans la documentation qui suit, seul le détail des éléments est donnée.
 
-Directory - GET
----------------
+Directory
+---------
+###Méthode GET
 **Description :** Consultation de la liste des adresses disponible sur l'OpenData de Nantes
 
 **Retour :**
@@ -31,8 +32,9 @@ Directory - GET
 **Erreurs :**
   - 204 No content : Si l'OpenData de Nantes ne répond pas
   
-Account - DELETE
--------------
+Account
+-------
+###Méthode DELETE
 **Description :** Suppression du compte d'un utilisateur
 
 **Paramètres :**
@@ -42,8 +44,9 @@ Account - DELETE
   - 401 Unauthorized : Si il manque le paramètre 'oauth', ou si il est erroné
   - 404 Not found : Si le compte de l'utilisateur n'existe pas
 
-Address - GET
---------------
+Address
+-------
+###Méthode GET
 **Description :** Récupération des adresses enregistrées sur le compte d'un utilisateur
 
 **Paramètres :**
@@ -62,8 +65,7 @@ Address - GET
 **Erreurs :**
   - 401 Unauthorized : Si il manque le paramètre 'oauth', ou si il est erroné
 
-Address - POST
---------------
+###Méthode POST
 **Description :** Ajout d'une adresse postale sur le compte d'un utilisateur
 
 **Paramètres :**
@@ -76,8 +78,7 @@ Address - POST
   - 404 Not found : Si l'adresse envoyée ne correspond à aucune adresse de l'OpenData de Nantes
   - 409 Conflict : Si l'adresse est déjà enregistrée sur le compte de l'utilisateur
 
-Address - DELETE
---------------
+###Méthode DELETE
 **Description :** Suppression d'une adresse postale enregistrée sur le compte d'un utilisateur
 
 **Paramètres :**
@@ -89,8 +90,9 @@ Address - DELETE
   - 401 Unauthorized : Si il manque le paramètre 'oauth', ou si il est erroné
   - 404 Not found : Si l'adresse demandée ne correspond à aucune adresse de l'OpenData de Nantes, ou si l'adresse n'est pas enregistrée sur le compte de l'utilisateur
 
-Notification - GET
---------------
+Notification
+------------
+###Méthode GET
 **Description :** Récupération des adresses de notifications enregistrées sur le compte d'un utilisateur
 
 **Paramètres :**
@@ -104,8 +106,7 @@ Notification - GET
 **Erreurs :**
   - 401 Unauthorized : Si il manque le paramètre 'oauth', ou si il est erroné
   
-Notification - POST
---------------
+###Méthode POST
 **Description :** Ajout d'une adresse de notification sur le compte d'un utilisateur
 
 **Paramètres :**
@@ -118,8 +119,7 @@ Notification - POST
   - 401 Unauthorized : Si il manque le paramètre 'oauth', ou si il est erroné
   - 409 Conflict : Si l'adresse de notification est déjà enregistrée sur le compte de l'utilisateur
 
-Notification - DELETE
---------------
+###Méthode DELETE
 **Description :** Suppression d'une adresse de notification enregistrée sur le compte d'un utilisateur
 
 **Paramètres :**
