@@ -1,35 +1,23 @@
-App Engine Java Guestbook
-Copyright (C) 2010-2012 Google Inc.
+Poubatal
+=======
+Projet de développement Web réalisé en master 1 à l'Université de Nantes.
 
-## Application ID
+Sujet du projet : http://pagesperso.lina.univ-nantes.fr/~molli-p/pmwiki/pmwiki.php/Main/Oodprojet1213
+
+OpenData de Nantes : http://data.nantes.fr/donnees/detail/jours-de-collectes-des-dechets-a-nantes/
+
+Documentation de l'API : https://github.com/AtalM1/Poubatal/blob/master/api.md
+
+Identifiant de l'application sur Google AppEngine :
 
 	385110343883.apps.googleusercontent.com
-
-## Sample guestbook for use with App Engine Java.
-
-Requires [Apache Maven](http://maven.apache.org) 3.0 or greater, and JDK 6+ in order to run.
-
-To build, run
-
-    mvn package
-
-Building will run the tests, but to explicitly run tests you can use the test target
-
-    mvn test
-
-To start the app, use the [App Engine Maven Plugin](http://code.google.com/p/appengine-maven-plugin/) that is already included in this demo.  Just run the command.
-
-    mvn appengine:devserver
-
-To deploy the application on App Engine server.
-
-	mvn appengine:update 
-
-For further information, consult the [Java App Engine](https://developers.google.com/appengine/docs/java/overview) documentation.
-
-To see all the available goals for the App Engine plugin, run
-
-    mvn help:describe -Dplugin=appengine
+	
+Equipe
+------
+- Noémi SALAÜN
+- Rémi BOIS
+- Grégoire JADI
+- Loïc JANKOWIAC
 	
 
 
